@@ -18,6 +18,14 @@ in
   };
 
   config = mkIf cfg.enable {
+    i18n.inputMethod = {
+      type = "fcitx5";
+      enable = true;
+      fcitx5.addons = with pkgs; [
+        fcitx5-rime
+        fcitx5-gtk
+      ];
+    };
     xdg.dataFile = {
       theme = {
         source = "${../../dotfile/fcitx/theme}";
@@ -84,7 +92,6 @@ in
       };
 
       zathurarc = ln "zathura/zathurarc";
-      swaybg = ln "systemd/user/swaybg@.service";
       xdgPortal = ln "xdg-desktop-portal";
     };
   };
