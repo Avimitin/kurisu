@@ -46,6 +46,7 @@ in
     };
 
     programs.waybar.enable = true;
+    programs.waybar.systemd.enable = true;
     xdg.configFile.waybar = ln "waybar";
 
     services.swaync.enable = true;
