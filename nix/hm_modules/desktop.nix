@@ -59,17 +59,6 @@ in
 
     xdg.configFile.niri = ln "niri/config.kdl";
 
-    services.flameshot = {
-      enable = true;
-      settings = {
-        General = {
-          useGrimAdapter = true;
-          disabledGrimWarning = true;
-          savePath = "${config.home.homeDirectory}/Pictures/Screenshots";
-        };
-      };
-    };
-
     programs.foot = {
       enable = true;
       server.enable = true;
