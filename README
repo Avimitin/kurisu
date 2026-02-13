@@ -6,5 +6,5 @@ Usage
 -----
 Configure Nix with experimental features "flakes" and "nix-command", then run:
 
-    nix run '.#colmena' -- apply-local --sudo
+    nix run '.#nh' -- os switch .
 
