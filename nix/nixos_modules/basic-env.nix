@@ -58,5 +58,7 @@ with lib;
       dates = "weekly";
       options = "--delete-older-than 7d";
     };
+
+    programs.gdk-pixbuf.modulePackages = [ pkgs.librsvg ];
   };
 }

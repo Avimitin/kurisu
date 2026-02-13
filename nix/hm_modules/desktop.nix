@@ -21,16 +21,20 @@ in
     i18n.inputMethod = {
       type = "fcitx5";
       enable = true;
-      fcitx5.addons = with pkgs; [
-        fcitx5-rime
-        fcitx5-gtk
-      ];
-    };
-    xdg.dataFile = {
-      theme = {
-        source = "${../../dotfile/fcitx/theme}";
-        target = "fcitx5/themes/default";
+      fcitx5 = {
+        addons = with pkgs; [
+          fcitx5-rime
+          fcitx5-gtk
+          rime-data
+          (pkgs.callPackage ../pkgs/rime-dict/package.nix { })
+          rime-moegirl
+        ];
+        waylandFrontend = true;
       };
+    };
+
+    xdg.dataFile = {
+      fcitx5 = ln "fcitx5";
     };
 
     # Application Launcher
