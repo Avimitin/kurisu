@@ -47,5 +47,9 @@
       #   enableSpawn = true;
       # };
     };
+
+    home.packages = [ pkgs.ffmpeg ];
+
+    programs.obs-studio.enable = true;
   };
 }
