@@ -1,4 +1,4 @@
-{ flake-inputs, pkgs, ... }:
+{ inputs, pkgs, ... }:
 {
   news.display = "silent";
 
@@ -17,7 +17,7 @@
       enableAI = true;
       configureBash = true;
       extraPackages = [
-        flake-inputs.nvim.packages.${pkgs.stdenv.hostPlatform.system}.neovim # my neovim
+        inputs.nvim.packages.${pkgs.stdenv.hostPlatform.system}.neovim # my neovim
       ];
     };
 

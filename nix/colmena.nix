@@ -12,8 +12,12 @@ colmena.lib.makeHive {
   meta.nodeNixpkgs = {
     thinkbook13 = import nixpkgs {
       system = "x86_64-linux";
-      overlays = [ ];
+      overlays = [ (import ./overlay.nix) ];
     };
+  };
+
+  meta.specialArgs = {
+    inherit self inputs;
   };
 
   thinkbook13 = {
@@ -28,13 +32,6 @@ colmena.lib.makeHive {
 
     imports = [
       home-manager.nixosModules.home-manager
-      # Gives modules ability to access flake input
-      {
-        _module.args = {
-          inherit self;
-          flake-inputs = inputs;
-        };
-      }
       ./machines/thinkbook13
     ];
   };

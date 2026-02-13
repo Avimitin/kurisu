@@ -1,6 +1,6 @@
 {
   self,
-  flake-inputs,
+  inputs,
   pkgs,
   ...
 }:
@@ -19,7 +19,7 @@
 
     imports = [
       self.homeModules.default
-      flake-inputs.dms.homeModules.dank-material-shell
+      inputs.dms.homeModules.dank-material-shell
     ];
 
     kurisu.coding-env = {
@@ -28,7 +28,7 @@
       enableAI = true;
       configureBash = true;
       extraPackages = [
-        flake-inputs.nvim.packages.${pkgs.stdenv.hostPlatform.system}.neovim # my neovim
+        inputs.nvim.packages.${pkgs.stdenv.hostPlatform.system}.neovim # my neovim
       ];
     };
 

@@ -1,25 +1,23 @@
 {
-  home-manager,
-  withSystem,
   self,
+  home-manager,
+  nixpkgs,
   ...
 }@inputs:
 {
-  homelab = home-manager.lib.homeManagerConfiguration (
-    withSystem "x86_64-linux" (
-      { pkgs, ... }:
-      {
-        inherit pkgs;
-        modules = [
-          self.homeModules.default
-          {
-            _module.args = {
-              flake-inputs = inputs;
-            };
-          }
-          ./machines/homelab.nix
-        ];
-      }
-    )
-  );
+  homelab = home-manager.lib.homeManagerConfiguration {
+    pkgs = import nixpkgs {
+      system = "x86_64-linux";
+      overlays = [ (import ./overlay.nix) ];
+    };
+
+    modules = [
+      self.homeModules.default
+      ./machines/homelab.nix
+    ];
+
+    extraSpecialArgs = {
+      inherit self inputs;
+    };
+  };
 }

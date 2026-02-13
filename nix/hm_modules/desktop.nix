@@ -26,7 +26,7 @@ in
           fcitx5-rime
           fcitx5-gtk
           rime-data
-          (pkgs.callPackage ../pkgs/rime-dict/package.nix { })
+          rime-dict
           rime-moegirl
         ];
         waylandFrontend = true;
