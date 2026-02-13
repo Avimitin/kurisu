@@ -63,27 +63,14 @@
           inputs.home-manager.flakeModules.home-manager
         ];
 
-        # colmenaHive is the central collection of all the NixOS configuration
-        flake.colmenaHive = import ./nix/machines.nix inputs;
-
         flake = {
-          homeModules = {
-            default = import ./nix/hm_modules;
-          };
+          homeModules.default = import ./nix/hm_modules;
 
-          homeConfigurations = {
-            "homelab" = inputs.home-manager.lib.homeManagerConfiguration (
-              withSystem "x86_64-linux" (
-                { pkgs, ... }:
-                {
-                  inherit pkgs;
-                  modules = [
-                    ./nix/home/homelab.nix
-                  ];
-                }
-              )
-            );
-          };
+          # colmenaHive controls how NixOS machine deploy
+          colmenaHive = import ./nix/colmena.nix inputs;
+
+          # homeConfigurations controls how other distro machine deploy
+          homeConfigurations = import ./nix/discrete.nix (inputs // { inherit withSystem; });
         };
 
         perSystem =

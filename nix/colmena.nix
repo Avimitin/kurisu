@@ -36,7 +36,7 @@ colmena.lib.makeHive {
           flake-inputs = inputs;
         };
       }
-      ./nixos_machines/thinkbook13
+      ./machines/thinkbook13
     ];
   };
 }

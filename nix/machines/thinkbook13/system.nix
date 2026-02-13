@@ -78,7 +78,12 @@
   };
 
   # Enable networking
-  networking.networkmanager.enable = true;
+  networking.networkmanager = {
+    enable = true;
+    plugins = [ pkgs.networkmanager-openvpn ];
+  };
+
+  networking.firewall.enable = lib.mkDefault false;
 
   # Set your time zone.
   time.timeZone = "Asia/Hong_Kong";
@@ -100,7 +105,10 @@
       "networkmanager"
       "wheel"
     ];
+    shell = pkgs.fish;
   };
+
+  programs.fish.enable = true;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
