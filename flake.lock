@@ -204,7 +204,7 @@
         "type": "github"
       }
     },
-    "nixpkgs-channel": {
+    "nixpkgs-2511": {
       "locked": {
         "lastModified": 1770841587,
         "narHash": "sha256-VT7O9+S7+106Q+x+zdq8lKvAV2K28nJh5BmflMcE4SQ=",
@@ -337,7 +337,7 @@
         "flake-parts": "flake-parts",
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs_2",
-        "nixpkgs-channel": "nixpkgs-channel",
+        "nixpkgs-2511": "nixpkgs-2511",
         "nvim": "nvim",
         "treefmt-nix": "treefmt-nix_2"
       }
