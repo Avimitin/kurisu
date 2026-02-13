@@ -17,6 +17,13 @@ in
     };
   };
 
+  # Application Launcher
+  programs.vicinae = {
+    enable = true;
+    systemd.enable = true;
+  };
+  xdg.configFile.vicinae-config = ln "vicinae/settings.json";
+
   xdg.configFile = {
     mpv = {
       source = pkgs.runCommand "canonize-uosc-mpv-output" { } ''
@@ -48,7 +55,6 @@ in
       target = "hypr/hyprlock.conf";
     };
 
-    programs.niri.enable = true;
     niri = ln "niri/config.kdl";
 
     foot = ln "foot/foot.ini";
@@ -56,8 +62,6 @@ in
     fastfetch = ln "fastfetch/config.jsonc";
     swaync = ln "swaync";
     swaync-service = ln "systemd/user/swaync.service";
-    vicinae-server = ln "systemd/user/vicinae-server.service";
-    vicinae-config = ln "vicinae/settings.json";
     zathurarc = ln "zathura/zathurarc";
     swaybg = ln "systemd/user/swaybg@.service";
     xdgPortal = ln "xdg-desktop-portal";
