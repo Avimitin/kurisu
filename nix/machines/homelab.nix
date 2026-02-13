@@ -1,6 +1,8 @@
-{ ... }:
+{ flake-inputs, pkgs, ... }:
 {
   news.display = "silent";
+
+  nixpkgs.config.allowUnfree = true;
 
   home = {
     username = "sh1marin";
@@ -14,6 +16,9 @@
       enableLsp = true;
       enableAI = true;
       configureBash = true;
+      extraPackages = [
+        flake-inputs.nvim.packages.${pkgs.stdenv.hostPlatform.system}.neovim # my neovim
+      ];
     };
 
     desktop = {

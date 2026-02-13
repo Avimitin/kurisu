@@ -2,7 +2,6 @@
   config,
   lib,
   pkgs,
-  flake-inputs,
   ...
 }:
 with lib;
@@ -22,6 +21,12 @@ in
     enableAI = mkEnableOption "Install common used AI stuff";
 
     configureBash = mkEnableOption "Configure bash";
+
+    extraPackages = mkOption {
+      type = lib.types.listOf lib.types.package;
+      default = [ ];
+      example = [ ];
+    };
   };
 
   config = mkIf cfg.enable {
@@ -29,7 +34,6 @@ in
       with pkgs;
       [
         # Misc shell tools
-        flake-inputs.nvim.packages.${pkgs.stdenv.hostPlatform.system}.neovim # my neovim
         tmux # terminal multiplxer
         delta # Beautiful git diff
         fd # find alternative
@@ -41,6 +45,7 @@ in
         nix-output-monitor # Pipe nix output for monitor
         just # Just a command executor
       ]
+      ++ cfg.extraPackages
       ++ (lib.optionals cfg.enableLsp [
         # Development
         nixfmt # global formatter for all nix sources
