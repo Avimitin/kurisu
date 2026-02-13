@@ -12,6 +12,7 @@
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
     ../../nixos_modules/ovpn.nix
+    ../../nixos_modules/basic-env.nix
   ];
 
   # Bootloader.
@@ -113,6 +114,7 @@
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
+  programs.fish.enable = true;
   users.users.sh1marin = {
     isNormalUser = true;
     description = "sh1marin";
@@ -123,49 +125,9 @@
     shell = pkgs.fish;
   };
 
-  programs.fish.enable = true;
-
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  environment.systemPackages = with pkgs; [
-    vim
-    wget
-    curl
-    git
-    nautilus
-    firefox
-  ];
-
-  fonts.packages = with pkgs; [
-    noto-fonts
-    noto-fonts-cjk-sans
-    nerd-fonts.fira-code
-  ];
-
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-    "pipe-operators"
-  ];
+  kurisu.basic-env.enable = true;
   nix.settings.substituters = [ "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store" ];
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 7d";
-  };
-  nix.settings.auto-optimise-store = true;
-
-  services.greetd = {
-    enable = true;
-    settings = {
-      terminal.vt = 1;
-      default_session = {
-        command = "${pkgs.tuigreet}/bin/tuigreet --asterisks --remember --remember-session";
-        user = "greeter";
-      };
-    };
-  };
-
-  programs.niri.enable = true;
 }
