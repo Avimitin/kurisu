@@ -1,10 +1,11 @@
-Kurisu
-======
+# Kurisu
+![heading.jpg](./index.jpg)
+
 This is my NixOS configuration, named by Makise Kurisu.
 
-Usage
------
+## Usage
 Configure Nix with experimental features "flakes" and "nix-command", then run:
 
-    nix run '.#nh' -- os switch .
-
+```bash
+nix run '.#nh' -- os switch .
+```
