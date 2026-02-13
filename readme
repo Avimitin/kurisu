@@ -1,0 +1,10 @@
+Kurisu
+======
+This is my NixOS configuration, named by Makise Kurisu.
+
+Usage
+-----
+Configure Nix with experimental features "flakes" and "nix-command", then run:
+
+    nix run '.#colmena' -- apply-local --sudo
+

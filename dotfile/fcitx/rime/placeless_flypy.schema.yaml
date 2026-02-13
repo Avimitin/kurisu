@@ -1,0 +1,144 @@
+# Rime schema
+# encoding: utf-8
+
+schema:
+  schema_id: placeless_flypy
+  name: 小鹤双拼
+  version: "0.1"
+  author:
+    - double pinyin layout by 鶴
+    - Rime schema by 佛振 <chen.sst@gmail.com>
+    - Mod by placeless
+  description: |
+    小鹤双拼自定义方案。
+
+switches:
+  - name: full_shape
+    reset: 0
+    states: [ 半角, 全角 ]
+  - name: ascii_punct
+    states: [ 。，, ．， ]
+
+engine:
+  processors:
+    - recognizer
+    - key_binder
+    - speller
+    - selector
+    - punctuator
+    - navigator
+    - express_editor
+  segmentors:
+    - matcher
+    - abc_segmentor
+    - punct_segmentor
+    - fallback_segmentor
+  translators:
+    - punct_translator
+    - script_translator
+
+speller:
+  alphabet: 'zyxwvutsrqponmlkjihgfedcba:,.!()/-=_+'
+  initials: 'zyxwvutsrqponmlkjihgfedcba'
+  algebra:
+    - erase/^xx$/
+    - derive/^([jqxy])u$/$1v/
+    - derive/^([aoe])([ioun])$/$1$1$2/
+    - xform/^([aoe])(ng)?$/$1$1$2/
+    - xform/iu$/Q/
+    - xform/(.)ei$/$1W/
+    - xform/uan$/R/
+    - xform/[uv]e$/T/
+    - xform/un$/Y/
+    - xform/^sh/U/
+    - xform/^ch/I/
+    - xform/^zh/V/
+    - xform/uo$/O/
+    - xform/ie$/P/
+    - xform/i?ong$/S/
+    - xform/ing$|uai$/K/
+    - xform/(.)ai$/$1D/
+    - xform/(.)en$/$1F/
+    - xform/(.)eng$/$1G/
+    - xform/[iu]ang$/L/
+    - xform/(.)ang$/$1H/
+    - xform/ian$/M/
+    - xform/(.)an$/$1J/
+    - xform/(.)ou$/$1Z/
+    - xform/[iu]a$/X/
+    - xform/iao$/N/
+    - xform/(.)ao$/$1C/
+    - xform/ui$/V/
+    - xform/in$/B/
+    - xlit/QWRTYUIOPSDFGHJKLZXCVBNM/qwrtyuiopsdfghjklzxcvbnm/
+    # 基础
+    - abbrev/^([a-z]).+$/$1/
+    - abbrev/^([zcs]h).+$/$1/
+    
+    # 补全
+    - derive/([dtngkhrzcs])o(u|ng)$/$1o/   # o = ou; o = ong
+    - derive/ong$/on/      # on = ong
+    - derive/^ding$/din/     # din = ding
+    
+    # 处理 v 和 u
+    - derive/^([nl])ue$/$1ve/   # nve = nue; lve = lue
+    - derive/^([jqxy])u/$1v/    # v = u; v = u
+    
+    # 智能纠错
+    - derive/ao$/oa/       # oa = ao
+    - derive/([iu])a(o|ng?)$/a$1$2/   # aio = iao; aing = iang; aung = uang
+    - derive/([aeiou])ng$/$1gn/   # gn = ng
+    - derive/un$/uen/    # uen = un
+    - derive/ui$/uei/    # uei = ui
+    - derive/iu$/iou/    # iou = ui
+    - derive/tie$/tei/    # tei = tie
+    - derive/i$/ii/      # ii = i  # i 不小心按两下
+    - derive/u$/uu/      # ui = u  # u 不小心按两下
+
+translator:
+  dictionary: extended
+  prism: placeless_flypy
+  contextual_suggestions: true
+  max_homophones: 7
+
+grammar:
+  language: zh-hans-t-essay-bgw
+
+punctuator:
+  import_preset: default
+  symbols:
+    "bq": [😂️, 😅️, 🎉, 🐂, 😱️, 👌, 😇️, 🙃️, 🤔️, 💊️, 💯️, 👍️, 🙈️, 💩️, 😈️ ]
+    "kb": [⌘, ⌥, ⇧, ⌃, ⎋, ⇪, , ⌫, ⌦, ↩︎, ⏎, ↑, ↓, ←, →, ↖, ↘, ⇟, ⇞]
+  half_shape:
+    "\\" : "、"
+    "#" : "#"
+    "@" : "@"
+    "~": "~"
+    "/": "/"
+    "'": {pair: ["「", "」"]}
+    "[": "["
+    "]": "]"
+    "{": "{"
+    "}": "}"
+    "*": "*"
+    "%": "%"
+    "<" : ["<", "《"]
+    ">" : [">", "》"]
+
+recognizer:
+  import_preset: default
+  patterns:
+    punct: "^(bq|kb)$"
+
+menu:
+  page_size: 6
+  alternative_select_keys: "';3456"
+  page_down_cycle: true
+
+key_binder:
+  bindings:
+    - { when: composing, accept: Tab,        send: Page_Down }
+    - { when: composing, accept: Shift+Tab,  send: Page_Up }
+    - { when: composing, accept: Control+k,  send: Escape }
+    - { when: composing, accept: Control+p,  send: Page_Up }
+    - { when: composing, accept: Control+n,  send: Page_Down }
