@@ -41,13 +41,36 @@
         systems = inputs.nixpkgs.lib.systems.flakeExposed;
 
         imports = [
+          (
+            { lib, config, ... }:
+
+            let
+              inherit (lib) types mkOption;
+              cfg = config.flake.colmenaHive;
+            in
+            {
+              options.flake.colmenaHive = mkOption {
+                type = types.attrsOf types.raw;
+                default = { };
+              };
+
+              config = {
+                flake.nixosConfigurations = cfg.nodes;
+              };
+            }
+          )
           inputs.treefmt-nix.flakeModule
+          inputs.home-manager.flakeModules.home-manager
         ];
 
         # colmenaHive is the central collection of all the NixOS configuration
         flake.colmenaHive = import ./nix/machines.nix inputs;
 
         flake = {
+          homeModules = {
+            default = import ./nix/hm_modules;
+          };
+
           homeConfigurations = {
             "homelab" = inputs.home-manager.lib.homeManagerConfiguration (
               withSystem "x86_64-linux" (

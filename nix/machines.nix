@@ -1,4 +1,5 @@
 {
+  self,
   colmena,
   nixpkgs,
   nixpkgs-2511,
@@ -30,6 +31,7 @@ colmena.lib.makeHive {
       home-manager.nixosModules.home-manager
       # Gives modules ability to access flake input
       {
+        _module.args = { inherit self; };
         home-manager.extraSpecialArgs = {
           flake-inputs = inputs;
         };
