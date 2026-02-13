@@ -80,8 +80,28 @@
   # Enable networking
   networking.networkmanager = {
     enable = true;
-    plugins = [ pkgs.networkmanager-openvpn ];
+    # plugins = [ pkgs.networkmanager-openvpn ];
   };
+
+  systemd.tmpfiles.rules = [ "d /var/lib/kurisu 0755 root root - -" ];
+
+  services.openvpn.servers = {
+    whlab = {
+      config = "config /var/lib/kurisu/whlab.ovpn ";
+    };
+  };
+  systemd.services.openvpn-whlab.unitConfig = {
+    After = lib.mkForce [ "network-online.target" ];
+    Wants = lib.mkForce [ "network-online.target" ];
+  };
+
+  networking = {
+    nameservers = lib.mkForce [
+      "172.25.52.1"
+      "119.29.29.29"
+    ];
+  };
+  services.resolved.enable = true;
 
   networking.firewall.enable = lib.mkDefault false;
 
