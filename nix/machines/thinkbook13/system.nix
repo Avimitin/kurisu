@@ -52,11 +52,7 @@
     { device = "/dev/disk/by-uuid/f0b397c8-25af-4012-a2fc-2ca304307312"; }
   ];
 
-  # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
-  # (the default) this is the recommended approach. When using systemd-networkd it's
-  # still possible to use this option, but it's recommended to use it in conjunction
-  # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
-  networking.hostName = "thinkbook13"; # Define your hostname.
+  networking.hostName = "thinkbook13";
 
   networking.useDHCP = lib.mkDefault true;
   # networking.interfaces.enp0s31f6.useDHCP = lib.mkDefault true;
@@ -106,10 +102,10 @@
   networking.firewall.enable = lib.mkDefault false;
 
   # Set your time zone.
-  time.timeZone = "Asia/Hong_Kong";
+  time.timeZone = "Asia/Shanghai";
 
   # Select internationalisation properties.
-  i18n.defaultLocale = "en_HK.UTF-8";
+  i18n.defaultLocale = "en_US.UTF-8";
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -133,10 +129,8 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
   environment.systemPackages = with pkgs; [
-    vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    vim
     wget
     curl
     git
