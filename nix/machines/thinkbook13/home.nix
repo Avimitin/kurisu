@@ -19,6 +19,7 @@
 
     imports = [
       self.homeModules.default
+      flake-inputs.dms.homeModules.dank-material-shell
     ];
 
     kurisu.coding-env = {
@@ -33,6 +34,18 @@
 
     kurisu.desktop = {
       enable = true;
+    };
+
+    programs.dank-material-shell = {
+      enable = true;
+      systemd = {
+        enable = true;
+        restartIfChanged = true;
+      };
+      # niri = {
+      #   enableKeybinds = true;
+      #   enableSpawn = true;
+      # };
     };
   };
 }

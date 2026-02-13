@@ -27,6 +27,12 @@
 
     # Nix Devops for machine nix configuration deployment
     colmena.url = "github:zhaofengli/colmena";
+
+    # System widgets for Niri
+    dms = {
+      url = "github:AvengeMedia/DankMaterialShell/stable";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

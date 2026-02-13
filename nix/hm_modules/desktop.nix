@@ -45,13 +45,6 @@ in
       target = "mpv";
     };
 
-    programs.waybar.enable = true;
-    programs.waybar.systemd.enable = true;
-    xdg.configFile.waybar = ln "waybar";
-
-    services.swaync.enable = true;
-    #xdg.configFile.swaync = ln "swaync";
-
     xdg.configFile.niri = ln "niri/config.kdl";
 
     services.flameshot = {
