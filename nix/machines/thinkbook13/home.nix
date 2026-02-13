@@ -1,4 +1,9 @@
-{ self, ... }:
+{
+  self,
+  flake-inputs,
+  pkgs,
+  ...
+}:
 {
   home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;
@@ -21,6 +26,9 @@
       enableLsp = true;
       enableAI = true;
       configureBash = true;
+      extraPackages = [
+        flake-inputs.nvim.packages.${pkgs.stdenv.hostPlatform.system}.neovim # my neovim
+      ];
     };
 
     kurisu.desktop = {

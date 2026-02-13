@@ -30,8 +30,8 @@ colmena.lib.makeHive {
       home-manager.nixosModules.home-manager
       # Gives modules ability to access flake input
       {
-        _module.args = { inherit self; };
-        home-manager.extraSpecialArgs = {
+        _module.args = {
+          inherit self;
           flake-inputs = inputs;
         };
       }
