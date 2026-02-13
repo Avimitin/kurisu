@@ -2,7 +2,6 @@
   self,
   colmena,
   nixpkgs,
-  nixpkgs-2511,
   home-manager,
   ...
 }@inputs:
@@ -11,7 +10,7 @@ colmena.lib.makeHive {
 
   # I would like to configure Nixpkgs per machine based
   meta.nodeNixpkgs = {
-    thinkbook13 = import nixpkgs-2511 {
+    thinkbook13 = import nixpkgs {
       system = "x86_64-linux";
       overlays = [ ];
     };
