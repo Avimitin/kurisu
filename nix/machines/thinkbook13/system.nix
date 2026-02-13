@@ -11,6 +11,7 @@
 
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
+    ../../nixos_modules/ovpn.nix
   ];
 
   # Bootloader.
@@ -81,20 +82,18 @@
 
   systemd.tmpfiles.rules = [ "d /var/lib/kurisu 0755 root root - -" ];
 
-  services.openvpn.servers = {
-    whlab = {
-      config = "config /var/lib/kurisu/whlab.ovpn ";
+  kurisu.openvpn = {
+    enable = true;
+    servers = {
+      whlab = {
+        config = "config /var/lib/kurisu/whlab.ovpn ";
+      };
     };
-  };
-  systemd.services.openvpn-whlab.unitConfig = {
-    After = lib.mkForce [ "network-online.target" ];
-    Wants = lib.mkForce [ "network-online.target" ];
   };
 
   networking = {
-    nameservers = lib.mkForce [
-      "172.25.52.1"
-      "119.29.29.29"
+    nameservers = lib.mkBefore [
+      "172.25.15.1"
     ];
   };
   services.resolved.enable = true;
