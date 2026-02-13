@@ -1,4 +1,9 @@
-{ pkgs, config, flake-inputs, ... }:
+{
+  pkgs,
+  config,
+  flake-inputs,
+  ...
+}:
 
 let
   myLib = import ../myLib.nix { inherit config; };
@@ -73,7 +78,8 @@ in
 
   programs.fish = {
     enable = true;
-    shellInit = builtins.readFile (pkgs.replaceVarsWith {
+    shellInit = builtins.readFile (
+      pkgs.replaceVarsWith {
         name = "config.fish";
 
         src = ../../dotfile/fish/config.fish;
@@ -85,7 +91,8 @@ in
         postInstall = ''
           ${pkgs.fish}/bin/fish -n "$target"
         '';
-      });
+      }
+    );
     plugins = [
       {
         name = "fishAutoPair";

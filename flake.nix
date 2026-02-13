@@ -57,7 +57,7 @@
           meta.nodeNixpkgs = {
             thinkbook13 = import inputs.nixpkgs-channel {
               system = "x86_64-linux";
-              overlays = [];
+              overlays = [ ];
             };
           };
 
@@ -74,7 +74,11 @@
             imports = [
               inputs.home-manager.nixosModules.home-manager
               # Gives modules ability to access flake input
-              { home-manager.extraSpecialArgs = { flake-inputs = inputs; }; }
+              {
+                home-manager.extraSpecialArgs = {
+                  flake-inputs = inputs;
+                };
+              }
               ./nix/modules/thinkbook13
             ];
           };
