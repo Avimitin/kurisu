@@ -130,4 +130,6 @@
 
   kurisu.basic-env.enable = true;
   nix.settings.substituters = [ "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store" ];
+
+  services.upower.enable = true;
 }
