@@ -29,5 +29,20 @@ in
         package = pkgs.whitesur-cursors;
       };
     };
+
+    kurisu.unixporn.qt_settings = {
+      enable = true;
+      platformTheme.name = "qtct";
+      style = {
+        name = "kvantum";
+      };
+    };
+
+    xdg.configFile = {
+      "Kvantum/kvantum.kvconfig".source = (pkgs.formats.ini { }).generate "kvantum.kvconfig" {
+        General.theme = "WhiteSurDark";
+      };
+      "Kvantum/WhiteSur".source = "${pkgs.whitesur-kde}/share/Kvantum/WhiteSur";
+    };
   };
 }
