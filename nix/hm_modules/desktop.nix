@@ -13,6 +13,7 @@ in
 {
   imports = [
     ./fcitx5.nix
+    ./terminal
   ];
 
   options.kurisu.desktop = {
@@ -26,6 +27,12 @@ in
       extraRimeData = [
         ../../dotfile/fcitx5/rime
       ];
+    };
+
+    kurisu.terminal = {
+      enable = true;
+      type = "foot";
+      foot.enableServer = true;
     };
 
     # Application Launcher
@@ -50,15 +57,8 @@ in
 
     xdg.configFile.niri = ln "niri/config.kdl";
 
-    programs.foot = {
-      enable = true;
-      server.enable = true;
-    };
-    xdg.configFile."foot/foot.ini" = ln "foot/foot.ini";
-
     xdg.configFile = {
       #fontconfig = ln "fontconfig/conf.d";
-      #alacritty = ln "alacritty/alacritty.toml";
       #mangohud = ln "MangoHud/MangoHud.conf";
       mimeapps = ln "mimeapps.list";
       "gtk-3.0" = ln "gtk-3.0";
