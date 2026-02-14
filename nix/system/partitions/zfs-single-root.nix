@@ -68,7 +68,7 @@ in
             atime = "off";
           };
 
-          options.ashift = 12;
+          options.ashift = "12";
 
           datasets = {
             "root" = {
