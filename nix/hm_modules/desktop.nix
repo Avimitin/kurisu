@@ -11,30 +11,21 @@ let
   ln = myLib.fromDotfile;
 in
 {
-  imports = [ ];
+  imports = [
+    ./fcitx5.nix
+  ];
 
   options.kurisu.desktop = {
     enable = mkEnableOption "Configured the Desktop env";
   };
 
   config = mkIf cfg.enable {
-    i18n.inputMethod = {
-      type = "fcitx5";
+    kurisu.fcitx5 = {
       enable = true;
-      fcitx5 = {
-        addons = with pkgs; [
-          fcitx5-rime
-          fcitx5-gtk
-          rime-data
-          rime-dict
-          rime-moegirl
-        ];
-        waylandFrontend = true;
-      };
-    };
-
-    xdg.dataFile = {
-      fcitx5 = ln "fcitx5";
+      themesDir = ../../dotfile/fcitx5/themes;
+      extraRimeData = [
+        ../../dotfile/fcitx5/rime
+      ];
     };
 
     # Application Launcher
