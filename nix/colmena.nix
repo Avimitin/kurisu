@@ -12,7 +12,7 @@ colmena.lib.makeHive {
   meta.nodeNixpkgs = {
     thinkbook13 = import nixpkgs {
       system = "x86_64-linux";
-      overlays = [ (import ./overlay.nix) ];
+      overlays = [ (import ./flake/overlay.nix) ];
     };
   };
 

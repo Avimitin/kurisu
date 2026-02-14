@@ -7,7 +7,7 @@
 with lib;
 let
   cfg = config.kurisu.desktop;
-  myLib = import ../myLib.nix { inherit config; };
+  myLib = import ../flake/myLib.nix { inherit config; };
   ln = myLib.fromDotfile;
 in
 {

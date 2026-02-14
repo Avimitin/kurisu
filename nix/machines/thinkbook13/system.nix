@@ -11,8 +11,8 @@
 
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
-    ../../nixos_modules/ovpn.nix
-    ../../nixos_modules/basic-env.nix
+    ../../system/ovpn.nix
+    ../../system/basic-env.nix
   ];
 
   # Bootloader.

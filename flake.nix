@@ -47,33 +47,13 @@
         systems = inputs.nixpkgs.lib.systems.flakeExposed;
 
         imports = [
-          (
-            { lib, config, ... }:
-
-            let
-              inherit (lib) types mkOption;
-              cfg = config.flake.colmenaHive;
-            in
-            {
-              options.flake.colmenaHive = mkOption {
-                type = types.attrsOf types.raw;
-                default = { };
-              };
-
-              config = {
-                # Exposed nixosConfigurations when colmenaHive is defined, thus
-                # the nixos-rebuild and other nix DevOps tools are still able
-                # to query this flake
-                flake.nixosConfigurations = cfg.nodes;
-              };
-            }
-          )
+          ./nix/flake/colmenaToNixOS.nix
           inputs.treefmt-nix.flakeModule
           inputs.home-manager.flakeModules.home-manager
         ];
 
         flake = {
-          homeModules.default = import ./nix/hm_modules;
+          homeModules.default = import ./nix/user;
 
           # colmenaHive controls how NixOS machine deploy
           colmenaHive = import ./nix/colmena.nix inputs;
@@ -93,12 +73,6 @@
             # Override the default "pkgs" attribute in per-system config.
             # This work as same as `specialArgs`
             _module.args.pkgs = pkgs;
-
-            # Although the pkgs attribute is already override, but I am afraid
-            # that the magical evaluation of "pkgs" is confusing, and will lead
-            # to debug hell. So here we use the "pkgs" in "let-in binding" to
-            # explicitly told every user we are using an overlayed version of
-            # nixpkgs.
             legacyPackages = pkgs;
 
             packages.colmena = inputs'.colmena.packages.colmena;
