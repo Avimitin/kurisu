@@ -33,6 +33,11 @@
       url = "github:AvengeMedia/DankMaterialShell/stable";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    disko = {
+      url = "github:nix-community/disko?tag=v1.13.0";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

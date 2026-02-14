@@ -14,7 +14,17 @@
     (modulesPath + "/installer/scan/not-detected.nix")
     self.nixosModules.basic-env
     self.nixosModules.ovpn
+    self.nixosModules.partitions
   ];
+
+  kurisu.partitions = {
+    enable = true;
+    profile = "zfs-single-root";
+    zfs-single-root.diskName = "/dev/nvme0n1";
+  };
+
+  # zfs required networking.hostId to be set
+  networking.hostId = "d38083c3";
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -35,25 +45,6 @@
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
-
-  # TODO: use btrfs
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/0e93b776-331e-4195-9a5e-771f7e1ff9d5";
-    fsType = "ext4";
-  };
-
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/0C2B-023D";
-    fsType = "vfat";
-    options = [
-      "fmask=0077"
-      "dmask=0077"
-    ];
-  };
-
-  swapDevices = [
-    { device = "/dev/disk/by-uuid/f0b397c8-25af-4012-a2fc-2ca304307312"; }
-  ];
 
   networking.hostName = "thinkbook13";
 
@@ -81,8 +72,6 @@
     enable = true;
     # plugins = [ pkgs.networkmanager-openvpn ];
   };
-
-  systemd.tmpfiles.rules = [ "d /var/lib/kurisu 0755 root root - -" ];
 
   kurisu.openvpn = {
     enable = true;
@@ -137,7 +126,6 @@
   nixpkgs.config.allowUnfree = true;
 
   kurisu.basic-env.enable = true;
-  nix.settings.substituters = [ "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store" ];
 
   services.upower.enable = true;
 }
