@@ -2,6 +2,7 @@
   lib,
   pkgs,
   config,
+  self,
   modulesPath,
   ...
 }:
@@ -11,8 +12,8 @@
 
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
-    ../../system/ovpn.nix
-    ../../system/basic-env.nix
+    self.nixosModules.basic-env
+    self.nixosModules.ovpn
   ];
 
   # Bootloader.
