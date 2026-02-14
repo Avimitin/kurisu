@@ -88,6 +88,13 @@
     servers = {
       whlab = {
         config = "config /var/lib/kurisu/whlab.ovpn ";
+        up = ''
+          resolvectl default-route wlp44s0 no
+          resolvectl dns tap0 172.25.15.1
+        '';
+        down = ''
+          resolvectl default-route wlp44s0 yes
+        '';
       };
     };
   };
