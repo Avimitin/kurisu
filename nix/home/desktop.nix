@@ -14,6 +14,7 @@ in
   imports = [
     ./fcitx5.nix
     ./terminal
+    ./unixporn
   ];
 
   options.kurisu.desktop = {
@@ -21,6 +22,11 @@ in
   };
 
   config = mkIf cfg.enable {
+    kurisu.unixporn = {
+      enable = true;
+      style = "whitesur";
+    };
+
     kurisu.fcitx5 = {
       enable = true;
       themesDir = ../../dotfile/fcitx5/themes;
@@ -58,11 +64,7 @@ in
     xdg.configFile.niri = ln "niri/config.kdl";
 
     xdg.configFile = {
-      #fontconfig = ln "fontconfig/conf.d";
-      #mangohud = ln "MangoHud/MangoHud.conf";
       mimeapps = ln "mimeapps.list";
-      "gtk-3.0" = ln "gtk-3.0";
-      "gtk-4.0" = ln "gtk-4.0";
       hyprlock = {
         source = pkgs.replaceVarsWith {
           name = "hyprlock.conf";

@@ -53,7 +53,7 @@
         ];
 
         flake = {
-          homeModules.default = import ./nix/user;
+          homeModules.default = import ./nix/home;
 
           # colmenaHive controls how NixOS machine deploy
           colmenaHive = import ./nix/colmena.nix inputs;
