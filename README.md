@@ -26,6 +26,7 @@ nix run '.#nh' -- os switch .
 - `enable` (bool): Enable Disko partition.
 - `profile` (enum: `zfs-single-root`, nullable): Select an partition profile.
 - `zfs-single-root.diskName` (str): The main disk for zfs to do partition.
+- `zfs-single-root.extraDatasets` (attrs): Extra dataset config to disko.
 
 #### `kurisu.thinkbook13`
 - `isInstall` (bool): Enables a minimal NixOS build layer.

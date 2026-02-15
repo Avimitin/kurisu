@@ -16,6 +16,22 @@ in
       example = "/dev/nvme0n1";
       description = "The main disk for zfs to do partition";
     };
+
+    extraDatasets = lib.mkOption {
+      type = lib.types.attrs;
+      description = "Extra dataset config";
+      default = { };
+      example = {
+        "root/other" = {
+          type = "zfs_fs";
+          options = {
+            mountpoint = "/other";
+            "com.sun:auto-snapshot" = "false";
+          };
+          mountpoint = "/var/lib/other";
+        };
+      };
+    };
   };
 
   config = lib.mkIf (parts.enable && parts.profile == "zfs-single-root") {
@@ -70,32 +86,25 @@ in
 
           options.ashift = "12";
 
-          datasets = {
-            "root" = {
-              type = "zfs_fs";
-              mountpoint = "/";
-            };
+          datasets =
+            let
+              basic_layout = {
+                "root" = {
+                  type = "zfs_fs";
+                  mountpoint = "/";
+                };
 
-            "root/nix" = {
-              type = "zfs_fs";
-              options = {
-                mountpoint = "/nix";
-                "com.sun:auto-snapshot" = "false";
+                "root/nix" = {
+                  type = "zfs_fs";
+                  options = {
+                    mountpoint = "/nix";
+                    "com.sun:auto-snapshot" = "false";
+                  };
+                  mountpoint = "/nix";
+                };
               };
-              mountpoint = "/nix";
-            };
-
-            # Mozart's Sonata No.11
-            "root/sonata" = {
-              type = "zfs_fs";
-              options = {
-                encryption = "aes-256-gcm";
-                keyformat = "passphrase";
-                keylocation = "prompt";
-              };
-              mountpoint = "/sonata";
-            };
-          };
+            in
+            lib.recursiveUpdate basic_layout cfg.extraDatasets;
         };
       };
     };

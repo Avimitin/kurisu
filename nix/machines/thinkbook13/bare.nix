@@ -19,7 +19,21 @@
   kurisu.partitions = {
     enable = true;
     profile = "zfs-single-root";
-    zfs-single-root.diskName = "/dev/nvme0n1";
+    zfs-single-root = {
+      diskName = "/dev/nvme0n1";
+      extraDatasets = {
+        # Mozart's Sonata No.11
+        "root/sonata" = {
+          type = "zfs_fs";
+          options = {
+            encryption = "aes-256-gcm";
+            keyformat = "passphrase";
+            keylocation = "prompt";
+          };
+          mountpoint = "/sonata";
+        };
+      };
+    };
   };
 
   # zfs required networking.hostId to be set
