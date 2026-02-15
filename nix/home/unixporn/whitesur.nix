@@ -36,6 +36,36 @@ in
       style = {
         name = "kvantum";
       };
+      qt5ctSettings = {
+        Appearance = {
+          style = "kvantum";
+          icon_theme = "WhiteSur-dark";
+          standard_dialogs = "default";
+        };
+        Font = {
+          fixed = "Noto Sans CJK SC,12,-1,5,50,0,0,0,0,0";
+          general = "Noto Sans CJK SC,12,-1,5,50,0,0,0,0,0";
+        };
+        Troubleshooting = {
+          force_raster_widgets = "1";
+          ignored_applications = "@Invalid()";
+        };
+      };
+      qt6ctSettings = {
+        Appearance = {
+          style = "kvantum";
+          icon_theme = "WhiteSur-dark";
+          standard_dialogs = "default";
+        };
+        Font = {
+          fixed = "Noto Sans CJK SC,12,-1,5,50,0,0,0,0,0";
+          general = "Noto Sans CJK SC,12,-1,5,50,0,0,0,0,0";
+        };
+        Troubleshooting = {
+          force_raster_widgets = "1";
+          ignored_applications = "@Invalid()";
+        };
+      };
     };
 
     xdg.configFile = {
