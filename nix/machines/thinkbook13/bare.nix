@@ -1,7 +1,6 @@
 {
   lib,
   pkgs,
-  config,
   self,
   modulesPath,
   ...
@@ -12,7 +11,9 @@
 
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
+    self.nixosModules.common-config
     self.nixosModules.partitions
+    self.nixosModules.ovpn
   ];
 
   kurisu.partitions = {
@@ -51,8 +52,6 @@
   # networking.interfaces.wlp44s0.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-  services.xserver.videoDrivers = [ "modesetting" ];
 
   # Enable networking
   networking.networkmanager = {
@@ -64,7 +63,7 @@
     enable = true;
     servers = {
       whlab = {
-        config = "config /var/lib/kurisu/whlab.ovpn ";
+        config = "config /sonata/whlab.ovpn ";
         up = ''
           resolvectl default-route wlp44s0 no
           resolvectl dns tap0 172.25.15.1
@@ -90,4 +89,16 @@
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
+
+  # Define a user account. Don't forget to set a password with ‘passwd’.
+  programs.fish.enable = true;
+  users.users.sh1marin = {
+    isNormalUser = true;
+    description = "sh1marin";
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+    ];
+    shell = pkgs.fish;
+  };
 }

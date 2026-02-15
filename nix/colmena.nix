@@ -2,7 +2,6 @@
   self,
   colmena,
   nixpkgs,
-  home-manager,
   ...
 }@inputs:
 colmena.lib.makeHive {
@@ -31,7 +30,8 @@ colmena.lib.makeHive {
     };
 
     imports = [
-      home-manager.nixosModules.home-manager
+      # Change to true when installing machine
+      { kurisu.thinkbook13.isInstall = false; }
       ./machines/thinkbook13
     ];
   };
