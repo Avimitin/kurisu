@@ -101,4 +101,7 @@
     ];
     shell = pkgs.fish;
   };
+
+  # Provide nh for system switch
+  environment.systemPackages = [ pkgs.nh ];
 }
