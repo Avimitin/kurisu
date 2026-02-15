@@ -14,12 +14,21 @@ nix run '.#nh' -- os switch .
 
 ### NixOS Modules
 
-#### `kurisu.basic-env`
-- `enable` (bool): Minimal Wayland Environment.
+#### `kurisu.graphic`
+- `enable` (bool): Enable video card configuration.
+- `platform` (enum: `intel`, nullable): Select one of the platform to configure.
 
 #### `kurisu.openvpn`
 - `enable` (bool): Create a OpenVPN instance.
 - `servers` (attrs): Configuration for OpenVPN servers.
+
+#### `kurisu.partitions`
+- `enable` (bool): Enable Disko partition.
+- `profile` (enum: `zfs-single-root`, nullable): Select an partition profile.
+- `zfs-single-root.diskName` (str): The main disk for zfs to do partition.
+
+#### `kurisu.thinkbook13`
+- `isInstall` (bool): Enables a minimal NixOS build layer.
 
 ### Home Manager Modules
 
@@ -42,10 +51,10 @@ nix run '.#nh' -- os switch .
 #### `kurisu.terminal`
 - `enable` (bool): Enable Terminal customization.
 - `type` (enum: `foot`, `alacritty`, `ghostty`, nullable): Select an terminal option to enable.
-- `foot.settingsPath` (path): Path to foot config file.
+- `foot.settingsPath` (path): Path to config, default to dotfile/foot/foot.ini.
 - `foot.enableServer` (bool): Enable systemd foot terminal server service.
-- `alacritty.settingsPath` (path): Path to alacritty config file.
-- `ghostty.settingsPath` (path): Path to ghostty config file.
+- `alacritty.settingsPath` (path): Path to config, default to dotfile/alacritty/alacritty.toml.
+- `ghostty.settingsPath` (path): Path to config, default to dotfile/ghostty/config.
 
 #### `kurisu.unixporn`
 - `enable` (bool): Do ricing.
