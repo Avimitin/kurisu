@@ -10,7 +10,7 @@
     # Download stuff
     git
     curl
-    wget
+    aria2
   ];
 
   # Allow unfree packages
