@@ -69,6 +69,8 @@ in
               };
             };
           };
+          # For QEMU qcow2 allocation
+          imageSize = "20G";
         };
       };
 
