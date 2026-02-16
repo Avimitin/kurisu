@@ -98,7 +98,11 @@
         # };
       };
 
-      home.packages = [ pkgs.ffmpeg ];
+      home.packages = [
+        pkgs.ffmpeg
+        pkgs.mtr
+        pkgs.nexttrace
+      ];
 
       programs.obs-studio.enable = true;
     };
