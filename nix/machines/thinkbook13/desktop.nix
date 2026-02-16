@@ -42,6 +42,7 @@
     environment.systemPackages = [
       pkgs.firefox
       pkgs.nautilus
+      pkgs.aria2
     ];
 
     fonts.packages = with pkgs; [
