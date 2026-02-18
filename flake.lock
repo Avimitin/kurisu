@@ -246,18 +246,6 @@
         "type": "github"
       }
     },
-    "nixpkgs-2511": {
-      "locked": {
-        "lastModified": 1770841587,
-        "narHash": "sha256-VT7O9+S7+106Q+x+zdq8lKvAV2K28nJh5BmflMcE4SQ=",
-        "type": "tarball",
-        "url": "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/nixos-25.11/nixexprs.tar.xz"
-      },
-      "original": {
-        "type": "tarball",
-        "url": "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/nixos-25.11/nixexprs.tar.xz"
-      }
-    },
     "nixpkgs-lib": {
       "locked": {
         "lastModified": 1769909678,
@@ -403,7 +391,6 @@
         "flake-parts": "flake-parts",
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs_2",
-        "nixpkgs-2511": "nixpkgs-2511",
         "nvim": "nvim",
         "treefmt-nix": "treefmt-nix_2"
       }
