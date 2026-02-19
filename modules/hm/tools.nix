@@ -49,6 +49,7 @@ in
         mtr # route tracker
         nexttrace # route tracker with world map
         aria2 # better wget
+        _7zz # 7z
       ]
       ++ cfg.extraPackages
       ++ (lib.optionals cfg.enableLsp [
