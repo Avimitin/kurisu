@@ -5,18 +5,22 @@
   ...
 }@inputs:
 colmena.lib.makeHive {
-  meta.nixpkgs.lib = nixpkgs.lib;
+  meta = {
+    nixpkgs.lib = nixpkgs.lib;
 
-  # I would like to configure Nixpkgs per machine based
-  meta.nodeNixpkgs = {
-    thinkbook13 = import nixpkgs {
-      system = "x86_64-linux";
-      overlays = [ (import ./flake/overlay.nix) ];
+    # I would like to configure Nixpkgs per machine based
+    nodeNixpkgs = {
+      thinkbook13 = import nixpkgs {
+        system = "x86_64-linux";
+        overlays = [ (import ./flake/overlay.nix) ];
+      };
     };
-  };
 
-  meta.specialArgs = {
-    inherit self inputs;
+    # Let all modules access flake, flake inputs and my library
+    specialArgs = {
+      inherit self inputs;
+      myLibBuilder = import ./flake/myLib.nix;
+    };
   };
 
   thinkbook13 = {

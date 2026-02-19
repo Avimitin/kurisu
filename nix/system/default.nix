@@ -3,4 +3,5 @@
   graphic = ./graphic;
   ovpn = ./ovpn.nix;
   partitions = ./partitions;
+  wayland = ./wayland;
 }

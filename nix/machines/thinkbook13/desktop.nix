@@ -9,6 +9,7 @@
 {
   imports = [
     self.nixosModules.graphic
+    self.nixosModules.wayland
     inputs.home-manager.nixosModules.home-manager
   ];
 
@@ -18,8 +19,25 @@
         enable = true;
         platform = "intel";
       };
+      os.wayland = {
+        enable = true;
+        user = "sh1marin";
+
+        desktop = "niri-dms";
+
+        unixpornStyle = "whitesur";
+
+        enableFcitx5 = true;
+
+        terminal = {
+          enable = true;
+          type = "foot";
+          foot.enableServer = true;
+        };
+      };
     };
 
+    # Greeter should be in a module
     services.greetd = {
       enable = true;
       settings = {
@@ -31,33 +49,9 @@
       };
     };
 
-    # Configure keymap in X11
-    services.xserver.xkb = {
-      layout = "us";
-      variant = "";
-    };
-
-    programs.niri.enable = true;
-    programs.gdk-pixbuf.modulePackages = [ pkgs.librsvg ];
-    environment.systemPackages = [
-      pkgs.firefox
-      pkgs.nautilus
-      pkgs.aria2
-    ];
-
-    fonts.packages = with pkgs; [
-      noto-fonts
-      noto-fonts-cjk-sans
-      nerd-fonts.fira-code
-    ];
-
-    services.upower.enable = true;
-    hardware.bluetooth.enable = true;
-
     # --- Home Configuration ---
     home-manager.useGlobalPkgs = true;
     home-manager.useUserPackages = true;
-    # I think I can write a module to unify system and home manager config, with username as arg
     home-manager.users.sh1marin = {
       news.display = "silent";
 
@@ -68,8 +62,7 @@
       };
 
       imports = [
-        self.homeModules.default
-        inputs.dms.homeModules.dank-material-shell
+        self.homeModules.coding
       ];
 
       kurisu.coding-env = {
@@ -82,26 +75,11 @@
         ];
       };
 
-      kurisu.desktop = {
-        enable = true;
-      };
-
-      programs.dank-material-shell = {
-        enable = true;
-        systemd = {
-          enable = true;
-          restartIfChanged = true;
-        };
-        # niri = {
-        #   enableKeybinds = true;
-        #   enableSpawn = true;
-        # };
-      };
-
       home.packages = [
         pkgs.ffmpeg
         pkgs.mtr
         pkgs.nexttrace
+        pkgs.aria2
       ];
 
       programs.obs-studio.enable = true;

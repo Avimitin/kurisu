@@ -1,3 +1,4 @@
+# This config is home-manager provided config
 { config }:
 {
   # Read config from dotfile directory and tranform into home-manager configFile attribute
