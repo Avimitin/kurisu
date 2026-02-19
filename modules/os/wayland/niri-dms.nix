@@ -70,6 +70,9 @@ in
               restartIfChanged = true;
             };
           };
+          # Enable the kdeconnect plugin
+          xdg.configFile."DankMaterialShell/plugins/DankKDEConnect".source =
+            "${pkgs.dms-plugins}/DankKDEConnect";
 
           # Application Launcher
           programs.vicinae = {
