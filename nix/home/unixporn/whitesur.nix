@@ -14,7 +14,7 @@ in
   options.kurisu.unixporn.whitesur = { };
 
   config = lib.mkIf (cfg.enable && cfg.style == "whitesur") {
-    kurisu.unixporn.gtk_settings = {
+    gtk = {
       enable = true;
       theme = {
         name = "WhiteSur-Dark";
@@ -30,7 +30,7 @@ in
       };
     };
 
-    kurisu.unixporn.qt_settings = {
+    qt = {
       enable = true;
       platformTheme.name = "qtct";
       style = {

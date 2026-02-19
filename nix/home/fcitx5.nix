@@ -15,7 +15,7 @@ in
     enable = mkEnableOption "Enable Fcitx5 with rime";
 
     themesDir = mkOption {
-      type = lib.types.path;
+      type = lib.types.nullOr lib.types.path;
       default = null;
       description = "Path to theme directory";
     };
