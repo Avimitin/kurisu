@@ -15,9 +15,9 @@
     inputs.home-manager.nixosModules.home-manager
   ];
 
-  config = lib.mkIf (!config.kurisu.thinkbook13.isInstall) {
+  config = lib.mkIf (!config.kurisu.machines.thinkbook13.isInstall) {
     kurisu = {
-      graphic = {
+      os.graphic = {
         enable = true;
         platform = "intel";
       };
@@ -58,10 +58,10 @@
       };
 
       imports = [
-        self.homeModules.coding
+        self.homeModules.tools
       ];
 
-      kurisu.coding-env = {
+      kurisu.hm.tools = {
         enable = true;
         enableLsp = true;
         enableAI = true;
@@ -70,13 +70,6 @@
           inputs.nvim.packages.${pkgs.stdenv.hostPlatform.system}.neovim # my neovim
         ];
       };
-
-      home.packages = [
-        pkgs.ffmpeg
-        pkgs.mtr
-        pkgs.nexttrace
-        pkgs.aria2
-      ];
 
       programs.obs-studio.enable = true;
     };

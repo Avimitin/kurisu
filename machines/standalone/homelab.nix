@@ -11,7 +11,7 @@
   };
 
   kurisu = {
-    coding-env = {
+    hm.tools = {
       enable = true;
       enableLsp = true;
       enableAI = true;
@@ -19,10 +19,6 @@
       extraPackages = [
         inputs.nvim.packages.${pkgs.stdenv.hostPlatform.system}.neovim # my neovim
       ];
-    };
-
-    desktop = {
-      enable = true;
     };
   };
 }

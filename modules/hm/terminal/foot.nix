@@ -5,12 +5,12 @@
   ...
 }:
 let
-  cfg = config.kurisu.terminal;
+  cfg = config.kurisu.hm.terminal;
 in
 {
   imports = [ ];
 
-  options.kurisu.terminal.foot = {
+  options.kurisu.hm.terminal.foot = {
     settingsPath = lib.mkOption {
       type = lib.types.path;
       default = ../../../dotfile/foot/foot.ini;
@@ -21,7 +21,7 @@ in
   };
 
   config = lib.mkIf (cfg.enable && cfg.type == "foot") {
-    kurisu.terminal.package = pkgs.foot;
+    kurisu.hm.terminal.package = pkgs.foot;
 
     xdg.configFile."foot/foot.ini".source = cfg.foot.settingsPath;
 

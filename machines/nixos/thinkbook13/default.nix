@@ -5,7 +5,7 @@
     ./desktop.nix
   ];
 
-  options.kurisu.thinkbook13 = {
+  options.kurisu.machines.thinkbook13 = {
     isInstall = lib.mkOption {
       type = lib.types.bool;
       default = false;

@@ -5,7 +5,7 @@
   ...
 }:
 let
-  cfg = config.kurisu.graphic;
+  cfg = config.kurisu.os.graphic;
 in
 {
   imports = [ ];

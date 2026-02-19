@@ -52,12 +52,12 @@ in
 
     home-manager.users = lib.mkIf (cfg.user != null) {
       "${cfg.user}" = {
-        kurisu.unixporn = {
+        kurisu.hm.unixporn = {
           enable = cfg.unixpornStyle != null;
           style = cfg.unixpornStyle;
         };
 
-        kurisu.fcitx5 = {
+        kurisu.hm.fcitx5 = {
           enable = cfg.enableFcitx5;
           themesDir = ../../../dotfile/fcitx5/themes;
           extraRimeData = [
@@ -65,7 +65,7 @@ in
           ];
         };
 
-        kurisu.terminal = cfg.terminal;
+        kurisu.hm.terminal = cfg.terminal;
       };
     };
   };

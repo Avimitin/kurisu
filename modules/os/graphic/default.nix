@@ -7,7 +7,7 @@ in
 {
   imports = [ ./intel.nix ];
 
-  options.kurisu.graphic = {
+  options.kurisu.os.graphic = {
     enable = lib.mkEnableOption "Enable video card configuration";
 
     platform = lib.mkOption {

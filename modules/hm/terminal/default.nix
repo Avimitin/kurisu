@@ -1,6 +1,6 @@
 { lib, config, ... }:
 let
-  cfg = config.kurisu.terminal;
+  cfg = config.kurisu.hm.terminal;
   allowedType = lib.types.enum [
     "foot"
     "alacritty"
@@ -14,7 +14,7 @@ in
     ./alacritty.nix
   ];
 
-  options.kurisu.terminal = {
+  options.kurisu.hm.terminal = {
     enable = lib.mkEnableOption "Enable Terminal customization";
 
     type = lib.mkOption {

@@ -1,5 +1,5 @@
 {
-  coding = ./coding.nix;
+  tools = ./tools.nix;
   fcitx5 = ./fcitx5.nix;
   terminal = ./terminal;
   unixporn = ./unixporn;

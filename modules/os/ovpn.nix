@@ -4,13 +4,13 @@
   ...
 }:
 let
-  cfg = config.kurisu.openvpn;
+  cfg = config.kurisu.os.openvpn;
 in
 with lib;
 {
   imports = [ ];
 
-  options.kurisu.openvpn = {
+  options.kurisu.os.openvpn = {
     enable = mkEnableOption "Create a OpenVPN instance";
 
     servers = mkOption {

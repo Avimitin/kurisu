@@ -73,7 +73,7 @@
     # plugins = [ pkgs.networkmanager-openvpn ];
   };
 
-  kurisu.openvpn = {
+  kurisu.os.openvpn = {
     enable = true;
     servers = {
       whlab = {

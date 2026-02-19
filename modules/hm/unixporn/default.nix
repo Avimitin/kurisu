@@ -9,7 +9,7 @@ in
     ./whitesur.nix
   ];
 
-  options.kurisu.unixporn = {
+  options.kurisu.hm.unixporn = {
     enable = lib.mkEnableOption "Do ricing";
 
     style = lib.mkOption {
@@ -19,4 +19,3 @@ in
     };
   };
 }
-

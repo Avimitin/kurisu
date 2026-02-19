@@ -5,13 +5,13 @@
   ...
 }:
 let
-  cfg = config.kurisu.unixporn;
+  cfg = config.kurisu.hm.unixporn;
 in
 {
   imports = [ ];
 
   # TODO: support dark/light variant? But I don't need too much skins
-  options.kurisu.unixporn.whitesur = { };
+  options.kurisu.hm.unixporn.whitesur = { };
 
   config = lib.mkIf (cfg.enable && cfg.style == "whitesur") {
     gtk = {

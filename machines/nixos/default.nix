@@ -35,7 +35,7 @@ colmena.lib.makeHive {
 
     imports = [
       # Change to true when installing machine
-      { kurisu.thinkbook13.isInstall = false; }
+      { kurisu.machines.thinkbook13.isInstall = false; }
       ./thinkbook13
     ];
   };

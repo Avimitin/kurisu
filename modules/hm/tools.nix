@@ -7,20 +7,20 @@
 with lib;
 
 let
-  cfg = config.kurisu.coding-env;
+  cfg = config.kurisu.hm.tools;
   myLib = import ../../nix/myLib.nix { inherit config; };
 in
 {
   imports = [ ];
 
-  options.kurisu.coding-env = {
-    enable = mkEnableOption "Configured home as coding env";
+  options.kurisu.hm.tools = {
+    enable = mkEnableOption "Common sets of tools";
 
-    enableLsp = mkEnableOption "Install common used LSP server";
+    enableLsp = mkEnableOption "LSP servers";
 
-    enableAI = mkEnableOption "Install common used AI stuff";
+    enableAI = mkEnableOption "AI editors or CLIs";
 
-    configureBash = mkEnableOption "Configure bash";
+    configureBash = mkEnableOption "Bash with configs";
 
     extraPackages = mkOption {
       type = lib.types.listOf lib.types.package;
@@ -44,6 +44,11 @@ in
         nh # Yet-another-Nix-helper
         nix-output-monitor # Pipe nix output for monitor
         just # Just a command executor
+        ffmpeg # video processor
+        imagemagick # image processor
+        mtr # route tracker
+        nexttrace # route tracker with world map
+        aria2 # better wget
       ]
       ++ cfg.extraPackages
       ++ (lib.optionals cfg.enableLsp [

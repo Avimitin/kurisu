@@ -5,12 +5,12 @@
   ...
 }:
 let
-  cfg = config.kurisu.terminal;
+  cfg = config.kurisu.hm.terminal;
 in
 {
   imports = [ ];
 
-  options.kurisu.terminal.alacritty = {
+  options.kurisu.hm.terminal.alacritty = {
     settingsPath = lib.mkOption {
       type = lib.types.path;
       default = ../../../dotfile/alacritty/alacritty.toml;
@@ -19,7 +19,7 @@ in
   };
 
   config = lib.mkIf (cfg.enable && cfg.type == "alacritty") {
-    kurisu.terminal.package = pkgs.alacritty;
+    kurisu.hm.terminal.package = pkgs.alacritty;
     xdg.configFile."alacritty/alacritty.toml".source = cfg.alacritty.settingsPath;
   };
 }

@@ -6,12 +6,12 @@
 }:
 with lib;
 let
-  cfg = config.kurisu.fcitx5;
+  cfg = config.kurisu.hm.fcitx5;
 in
 {
   imports = [ ];
 
-  options.kurisu.fcitx5 = {
+  options.kurisu.hm.fcitx5 = {
     enable = mkEnableOption "Enable Fcitx5 with rime";
 
     themesDir = mkOption {
