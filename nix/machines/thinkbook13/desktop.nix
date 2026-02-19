@@ -10,6 +10,8 @@
   imports = [
     self.nixosModules.graphic
     self.nixosModules.wayland
+    self.nixosModules.login_manager
+
     inputs.home-manager.nixosModules.home-manager
   ];
 
@@ -19,6 +21,12 @@
         enable = true;
         platform = "intel";
       };
+
+      os.login_manager = {
+        enable = true;
+        profile = "tuigreet";
+      };
+
       os.wayland = {
         enable = true;
         user = "sh1marin";
@@ -33,18 +41,6 @@
           enable = true;
           type = "foot";
           foot.enableServer = true;
-        };
-      };
-    };
-
-    # Greeter should be in a module
-    services.greetd = {
-      enable = true;
-      settings = {
-        terminal.vt = 1;
-        default_session = {
-          command = "${pkgs.tuigreet}/bin/tuigreet --asterisks --remember --remember-session";
-          user = "greeter";
         };
       };
     };
