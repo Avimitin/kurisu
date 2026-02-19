@@ -50,8 +50,8 @@
         systems = inputs.nixpkgs.lib.systems.flakeExposed;
 
         imports = [
-          ./nix/flake/colmenaToNixOS.nix
           ./modules
+
           inputs.treefmt-nix.flakeModule
           inputs.home-manager.flakeModules.home-manager
         ];
