@@ -80,6 +80,10 @@ nix run '.#nh' -- os switch .
 - `enable` (bool): Login Manager.
 - `profile` (enum: `tuigreet`): Profile for login manager.
 
+#### `kurisu.os.canokey`
+- `enableRootlessAccess`: Allow rootless access to Canokey.
+- `accessGroup`: specify which group users in it can access Canokey.
+
 #### `kurisu.machines.thinkbook13`
 - `isInstall` (bool): Enables a minimal NixOS build layer.
 

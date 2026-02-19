@@ -5,4 +5,5 @@
   partitions = ./partitions;
   wayland = ./wayland;
   login_manager = ./login_manager;
+  udev = ./udev;
 }

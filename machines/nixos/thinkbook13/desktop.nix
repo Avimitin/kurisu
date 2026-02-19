@@ -11,6 +11,7 @@
     self.nixosModules.graphic
     self.nixosModules.wayland
     self.nixosModules.login_manager
+    self.nixosModules.udev
 
     inputs.home-manager.nixosModules.home-manager
   ];
@@ -43,6 +44,8 @@
           foot.enableServer = true;
         };
       };
+
+      os.canokey.enableRootlessAccess = true;
     };
 
     # --- Home Configuration ---
@@ -72,6 +75,7 @@
       };
 
       programs.obs-studio.enable = true;
+      programs.chromium.enable = true;
     };
   };
 }
