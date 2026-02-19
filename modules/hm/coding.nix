@@ -8,7 +8,7 @@ with lib;
 
 let
   cfg = config.kurisu.coding-env;
-  myLib = import ../../nix/flake/myLib.nix { inherit config; };
+  myLib = import ../../nix/myLib.nix { inherit config; };
 in
 {
   imports = [ ];

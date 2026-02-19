@@ -12,14 +12,14 @@ colmena.lib.makeHive {
     nodeNixpkgs = {
       thinkbook13 = import nixpkgs {
         system = "x86_64-linux";
-        overlays = [ (import ./flake/overlay.nix) ];
+        overlays = [ (import ../nix/overlay.nix) ];
       };
     };
 
     # Let all modules access flake, flake inputs and my library
     specialArgs = {
       inherit self inputs;
-      myLibBuilder = import ./flake/myLib.nix;
+      myLibBuilder = import ./myLib.nix;
     };
   };
 

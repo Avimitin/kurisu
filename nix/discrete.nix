@@ -8,7 +8,7 @@
   homelab = home-manager.lib.homeManagerConfiguration {
     pkgs = import nixpkgs {
       system = "x86_64-linux";
-      overlays = [ (import ./flake/overlay.nix) ];
+      overlays = [ (import ../nix/overlay.nix) ];
     };
 
     modules = [
