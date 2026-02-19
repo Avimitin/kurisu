@@ -32,8 +32,15 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Automatic disk partition
     disko = {
       url = "github:nix-community/disko?tag=v1.13.0";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # Declarative secrets management
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
