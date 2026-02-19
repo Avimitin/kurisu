@@ -93,9 +93,12 @@ in
           };
 
           xdg.configFile = {
-            # TODO mimeapps = ln "mimeapps.list";
+            mimeapps = myLib.fromDotfile "mimeapps.list";
             xdgPortal = myLib.fromDotfile "xdg-desktop-portal";
           };
+
+          # Home connection
+          services.kdeconnect.enable = true;
         };
     };
   };
