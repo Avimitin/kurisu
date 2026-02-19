@@ -51,14 +51,12 @@
 
         imports = [
           ./nix/flake/colmenaToNixOS.nix
+          ./modules
           inputs.treefmt-nix.flakeModule
           inputs.home-manager.flakeModules.home-manager
         ];
 
         flake = {
-          homeModules = import ./nix/home;
-          nixosModules = import ./nix/system;
-
           # colmenaHive controls how NixOS machine deploy
           colmenaHive = import ./nix/colmena.nix inputs;
 
