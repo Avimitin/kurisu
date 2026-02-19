@@ -58,10 +58,10 @@
 
         flake = {
           # colmenaHive controls how NixOS machine deploy
-          colmenaHive = import ./nix/colmena.nix inputs;
+          colmenaHive = import ./machines/nixos inputs;
 
           # homeConfigurations controls how other distro machine deploy
-          homeConfigurations = import ./nix/discrete.nix inputs;
+          homeConfigurations = import ./machines/standalone inputs;
         };
 
         perSystem =

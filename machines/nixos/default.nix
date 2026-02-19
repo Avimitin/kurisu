@@ -12,14 +12,14 @@ colmena.lib.makeHive {
     nodeNixpkgs = {
       thinkbook13 = import nixpkgs {
         system = "x86_64-linux";
-        overlays = [ (import ../nix/overlay.nix) ];
+        overlays = [ (import ../../nix/overlay.nix) ];
       };
     };
 
     # Let all modules access flake, flake inputs and my library
     specialArgs = {
       inherit self inputs;
-      myLibBuilder = import ./myLib.nix;
+      myLibBuilder = import ../../nix/myLib.nix;
     };
   };
 
@@ -36,7 +36,7 @@ colmena.lib.makeHive {
     imports = [
       # Change to true when installing machine
       { kurisu.thinkbook13.isInstall = false; }
-      ./machines/thinkbook13
+      ./thinkbook13
     ];
   };
 }
