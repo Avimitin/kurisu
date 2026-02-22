@@ -1,5 +1,14 @@
 final: prev: {
-  rime-dict = final.callPackage ./pkgs/rime-dict/package.nix { };
+  rime-dict =
+    let
+      src = final.fetchFromGitHub {
+        repo = "rime-extended-dict";
+        owner = "Avimitin";
+        rev = "e46a1a2c42f00cb08eb797cb426469656e1f661e";
+        hash = "sha256-UfgGvuV7yo3/wOH4/4TCRGqX5nxT5wVsFb4rrdXqYKU=";
+      };
+    in
+    final.callPackage src { };
 
   mkAppleFonts = final.callPackage ./pkgs/make-apple-fonts.nix { };
 
