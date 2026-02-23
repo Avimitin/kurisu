@@ -156,7 +156,6 @@ in
 
         pkgs.tree-sitter-grammars.tree-sitter-lean
       ];
-      neovim-unwrapped = inputs.nvim.packages.${pkgs.stdenv.hostPlatform.system}.neovim-nightly-unwrapped;
     };
   };
 }
