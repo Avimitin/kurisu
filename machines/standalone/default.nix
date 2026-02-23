@@ -12,7 +12,6 @@
     };
 
     modules = [
-      self.homeModules.default
       ./homelab.nix
     ];
 

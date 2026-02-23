@@ -99,7 +99,7 @@ input {
     position x=1280 y=0
 }
 
-output "DP-1" {
+/-output "DP-1" {
     scale 1
 }
 

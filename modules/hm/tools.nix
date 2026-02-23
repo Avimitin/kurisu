@@ -181,5 +181,21 @@ in
         ];
       };
     };
+
+    nix.settings = {
+      # Simplify the Nix command line
+      experimental-features = [
+        "nix-command"
+        "flakes"
+        "pipe-operators"
+      ];
+      auto-optimise-store = true;
+    };
+
+    nix.gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 7d";
+    };
   };
 }

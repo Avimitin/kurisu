@@ -8,7 +8,7 @@ if not status is-interactive
   return
 end
 
-fish_add_path "$HOME/.nix-profile/bin"
+fish_add_path --append "$HOME/.nix-profile/bin"
 
 # ===================================================================
 # hooks
