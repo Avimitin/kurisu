@@ -16,7 +16,7 @@ in
     self.homeModules.fcitx5
     self.homeModules.terminal
 
-    inputs.dms.homeModules.dank-material-shell
+    inputs.nvim.homeModules.nvim
   ];
 
   options = {
@@ -99,8 +99,6 @@ in
     };
     xdg.configFile.vicinae-config = myLib.fromDotfile "vicinae/settings.json";
 
-    # TODO: MPV should be in one directory
-    programs.mpv.enable = true;
     xdg.configFile.mpv = {
       source = pkgs.runCommand "canonize-uosc-mpv-output" { } ''
         mkdir -p $out/fonts $out/scripts
@@ -127,10 +125,33 @@ in
         enableLsp = true;
         enableAI = true;
         configureBash = true;
-        extraPackages = [
-          inputs.nvim.packages.${pkgs.stdenv.hostPlatform.system}.neovim # my neovim
-        ];
       };
+    };
+
+    programs.avimitin-nvim = {
+      enable = true;
+      treesitter-grammars = [
+        # builtins
+        "bash"
+        "cpp"
+        "css"
+        "comment"
+        "diff"
+        "gitcommit"
+        "typst"
+        "llvm"
+        "regex"
+        "ruby"
+        "python"
+        "rust"
+        "scala"
+        "nix"
+        "yaml"
+        "meson"
+
+        pkgs.tree-sitter-grammars.tree-sitter-lean
+      ];
+      neovim-unwrapped = inputs.nvim.packages.${pkgs.stdenv.hostPlatform.system}.neovim-nightly-unwrapped;
     };
   };
 }

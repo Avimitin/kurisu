@@ -15,7 +15,10 @@
     };
 
     # My neovim bundle
-    nvim.url = "github:Avimitin/nvim";
+    nvim = {
+      url = "github:Avimitin/nvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # Nix formatter
     treefmt-nix = {

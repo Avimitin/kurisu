@@ -73,7 +73,7 @@ in
           paths = cfg.rimeData;
           postBuild = lib.optionalString (cfg.extraRimeData != [ ]) (
             lib.concatStringsSep "\n" (
-              map (p: "${pkgs.xorg.lndir}/bin/lndir -silent ${p} $out/share/rime-data") cfg.extraRimeData
+              map (p: "${pkgs.lndir}/bin/lndir -silent ${p} $out/share/rime-data") cfg.extraRimeData
             )
           );
         };
