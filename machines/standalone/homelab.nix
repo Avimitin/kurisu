@@ -116,6 +116,11 @@ in
       xdgPortal = myLib.fromDotfile "xdg-desktop-portal";
     };
 
+    fonts.fontconfig.enable = true;
+    home.packages = [
+      pkgs.nerd-fonts.fira-code
+    ];
+
     # Home connection
     services.kdeconnect.enable = true;
 
