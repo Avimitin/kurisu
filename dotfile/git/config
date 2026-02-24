@@ -30,9 +30,6 @@
 [merge]
     conflictstyle = diff3
 
-[diff]
-    colorMoved = default
-
 # Diff UI stuffs
 [core]
     pager = delta
@@ -40,7 +37,8 @@
     diffFilter = delta --color-only --features=interactive
 [delta]
     syntax-theme = kanagawa
-    features = decorations unobtrusive-line-numbers
+    features = decorations unobtrusive-line-numbers navigate
+    hyperlinks = true
     line-numbers = true
     navigate = true
 
