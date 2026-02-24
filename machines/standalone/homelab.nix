@@ -97,7 +97,6 @@ in
       enable = true;
       systemd.enable = true;
     };
-    xdg.configFile.vicinae-config = myLib.fromDotfile "vicinae/settings.json";
 
     xdg.configFile.mpv = {
       source = pkgs.runCommand "canonize-uosc-mpv-output" { } ''
