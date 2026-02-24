@@ -41,6 +41,11 @@ in
     nixpkgs.config.allowUnfree = true;
 
     nix.package = pkgs.nix;
+    # Simply run nix run k#hello to run temporary programs
+    nix.registry.k.to = {
+      type = "path";
+      path = "${config.home.homeDirectory}/kurisu";
+    };
 
     home = {
       username = "sh1marin";
