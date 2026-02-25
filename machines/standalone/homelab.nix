@@ -126,7 +126,23 @@ in
     ];
 
     # Home connection
-    services.kdeconnect.enable = true;
+    systemd.user.services.kdeconnect = {
+      Unit = {
+        Description = "Adds communication between your desktop and your smartphone";
+        After = [ "graphical-session.target" ];
+        PartOf = [ "graphical-session.target" ];
+      };
+
+      Install = {
+        WantedBy = [ "graphical-session.target" ];
+      };
+
+      Service = {
+        Environment = [ "PATH=/bin:/usr/bin" ];
+        ExecStart = "/usr/bin/kdeconnectd";
+        Restart = "on-abort";
+      };
+    };
 
     kurisu = {
       hm.tools = {
