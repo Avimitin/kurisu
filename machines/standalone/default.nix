@@ -19,4 +19,18 @@
       inherit self inputs;
     };
   };
+
+  biyun = home-manager.lib.homeManagerConfiguration {
+    pkgs = import nixpkgs {
+      system = "x86_64-linux";
+    };
+
+    modules = [
+      ./biyun.nix
+    ];
+
+    extraSpecialArgs = {
+      inherit self inputs;
+    };
+  };
 }
