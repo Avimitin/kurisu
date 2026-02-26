@@ -41,13 +41,6 @@ in
     # Headphone
     hardware.bluetooth.enable = true;
 
-    # Noto fonts is better
-    fonts.packages = with pkgs; [
-      noto-fonts
-      noto-fonts-cjk-sans
-      nerd-fonts.fira-code
-    ];
-
     # --- Home Configurations --- #
     home-manager.sharedModules = [
       inputs.dms.homeModules.dank-material-shell

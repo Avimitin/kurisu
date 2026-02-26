@@ -37,6 +37,8 @@ in
 
     enableFcitx5 = lib.mkEnableOption "Configured Fcitx5";
 
+    enableFontconfig = lib.mkEnableOption "Configured fontconfig with Noto Sans CJK SC for Chinese";
+
     terminal = lib.mkOption {
       type = lib.types.attrs;
       description = "Options to the kurisu.hm.terminal module";
@@ -46,6 +48,7 @@ in
   config = lib.mkIf (cfg.enable) {
     home-manager.sharedModules = [
       self.homeModules.fcitx5
+      self.homeModules.fontconfig
       self.homeModules.terminal
       self.homeModules.unixporn
     ];
@@ -64,6 +67,8 @@ in
             ../../../dotfile/fcitx5/rime
           ];
         };
+
+        kurisu.hm.fontconfig.enable = cfg.enableFontconfig;
 
         kurisu.hm.terminal = cfg.terminal;
       };

@@ -14,6 +14,7 @@ in
     self.homeModules.unixporn
     self.homeModules.tools
     self.homeModules.fcitx5
+    self.homeModules.fontconfig
     self.homeModules.terminal
 
     inputs.nvim.homeModules.nvim
@@ -72,6 +73,8 @@ in
       foot.enableServer = true;
     };
 
+    kurisu.hm.fontconfig.enable = true;
+
     # Configuration for niri
     xdg.configFile.niri = myLib.fromDotfile "niri/config.kdl";
 
@@ -120,7 +123,6 @@ in
       xdgPortal = myLib.fromDotfile "xdg-desktop-portal";
     };
 
-    fonts.fontconfig.enable = true;
     home.packages = [
       pkgs.nerd-fonts.fira-code
     ];
