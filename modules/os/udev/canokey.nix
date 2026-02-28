@@ -17,6 +17,11 @@ in
   };
 
   config = lib.mkIf cfg.enableRootlessAccess {
+    programs.ssh.startAgent = true;
+    services.gnome.gnome-keyring.enable = false;
+
+    users.groups.${cfg.accessGroup} = { };
+
     services.udev.extraRules = ''
       # GnuPG/pcsclite
       SUBSYSTEM!="usb", GOTO="canokeys_rules_end"
