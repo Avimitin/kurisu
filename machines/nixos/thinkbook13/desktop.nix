@@ -37,6 +37,7 @@
         unixpornStyle = "whitesur";
 
         enableFcitx5 = true;
+        enableFontconfig = true;
 
         terminal = {
           enable = true;
@@ -62,6 +63,8 @@
 
       imports = [
         self.homeModules.tools
+
+        inputs.nvim.homeModules.nvim
       ];
 
       kurisu.hm.tools = {
@@ -69,13 +72,34 @@
         enableLsp = true;
         enableAI = true;
         configureBash = true;
-        extraPackages = [
-          inputs.nvim.packages.${pkgs.stdenv.hostPlatform.system}.neovim # my neovim
-        ];
       };
 
       programs.obs-studio.enable = true;
       programs.chromium.enable = true;
+      programs.avimitin-nvim = {
+        enable = true;
+        treesitter-grammars = [
+          # builtins
+          "bash"
+          "cpp"
+          "css"
+          "comment"
+          "diff"
+          "gitcommit"
+          "typst"
+          "llvm"
+          "regex"
+          "ruby"
+          "python"
+          "rust"
+          "scala"
+          "nix"
+          "yaml"
+          "meson"
+
+          pkgs.tree-sitter-grammars.tree-sitter-lean
+        ];
+      };
     };
   };
 }
