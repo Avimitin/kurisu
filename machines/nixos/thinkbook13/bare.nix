@@ -80,23 +80,16 @@
     servers = {
       whlab = {
         config = "config /sonata/whlab.ovpn ";
-        up = ''
-          resolvectl default-route wlp44s0 no
-          resolvectl dns tap0 172.25.15.1
-        '';
-        down = ''
-          resolvectl default-route wlp44s0 yes
-        '';
       };
     };
   };
 
   networking = {
-    nameservers = lib.mkBefore [
+    nameservers = lib.mkForce [
       "172.25.15.1"
+      "114.114.114.114"
     ];
   };
-  services.resolved.enable = true;
 
   networking.firewall.enable = lib.mkDefault false;
 
