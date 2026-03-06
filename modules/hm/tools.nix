@@ -50,6 +50,7 @@ in
         nexttrace # route tracker with world map
         aria2 # better wget
         _7zz # 7z
+        lazygit # git TUI
       ]
       ++ cfg.extraPackages
       ++ (lib.optionals cfg.enableLsp [
