@@ -2,7 +2,7 @@
 [user]
     name = Avimitin
     email = dev@avimit.in
-    signingkey = 0xFF7883E3BF6835DD
+    signingkey = ~/.ssh/id_ed25519.pub
 
 [init]
     defaultBranch = master
@@ -23,6 +23,8 @@
     # Automatically write commit graph on fetch, which can speed up git log/branch...
     writeCommitGraph = true
 
+[gpg]
+    format = ssh
 [push]
     # automatically setup remote branch on push
     autoSetupRemote = true
