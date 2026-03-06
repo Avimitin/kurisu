@@ -51,6 +51,7 @@ in
         aria2 # better wget
         _7zz # 7z
         lazygit # git TUI
+        age # Encryption tool
       ]
       ++ cfg.extraPackages
       ++ (lib.optionals cfg.enableLsp [
