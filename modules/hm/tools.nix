@@ -52,6 +52,7 @@ in
         _7zz # 7z
         lazygit # git TUI
         age # Encryption tool
+        sops # Secret management
       ]
       ++ cfg.extraPackages
       ++ (lib.optionals cfg.enableLsp [
