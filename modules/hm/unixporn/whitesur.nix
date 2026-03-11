@@ -72,7 +72,11 @@ in
       "Kvantum/kvantum.kvconfig".source = (pkgs.formats.ini { }).generate "kvantum.kvconfig" {
         General.theme = "WhiteSurDark";
       };
-      "Kvantum/WhiteSur".source = "${pkgs.whitesur-kde}/share/Kvantum/WhiteSur";
+      "Kvantum/WhiteSur".source = pkgs.runCommand "fixup-whitesur-theme" { } ''
+        cp -rT ${pkgs.whitesur-kde}/share/Kvantum/WhiteSur "$out"
+        chmod -R u+w "$out"
+        sed -i "s/transparent_dolphin_view=true/transparent_dolphin_view=false/" "$out/WhiteSurDark.kvconfig"
+      '';
     };
   };
 }
