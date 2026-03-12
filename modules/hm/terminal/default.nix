@@ -4,6 +4,7 @@ let
   allowedType = lib.types.enum [
     "foot"
     "alacritty"
+    "kitty"
     "ghostty"
   ];
 in
@@ -12,6 +13,7 @@ in
     ./foot.nix
     ./ghostty.nix
     ./alacritty.nix
+    ./kitty.nix
   ];
 
   options.kurisu.hm.terminal = {
@@ -36,6 +38,6 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    home.packages = [ cfg.package ];
+    home.packages = lib.optionals (cfg.package != null) [ cfg.package ];
   };
 }
