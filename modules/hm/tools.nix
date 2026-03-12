@@ -53,6 +53,7 @@ in
         lazygit # git TUI
         age # Encryption tool
         sops # Secret management
+        dufs # File Share
       ]
       ++ cfg.extraPackages
       ++ (lib.optionals cfg.enableLsp [
