@@ -91,6 +91,14 @@ in
       };
     };
 
+    programs = {
+      direnv = {
+        enable = true;
+        enableFishIntegration = true;
+        nix-direnv.enable = true;
+      };
+    };
+
     home.file.bashrc = mkIf cfg.configureBash {
       enable = true;
       source = pkgs.replaceVarsWith {

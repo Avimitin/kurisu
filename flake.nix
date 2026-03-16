@@ -89,6 +89,10 @@
 
             packages.colmena = inputs'.colmena.packages.colmena;
 
+            devShells.default = pkgs.mkShellNoCC {
+              buildInputs = [ ];
+            };
+
             apps.home-manager = {
               type = "app";
               program = inputs'.home-manager.packages.home-manager;
