@@ -54,6 +54,9 @@ in
         age # Encryption tool
         sops # Secret management
         dufs # File Share
+        git # vcs
+        jujutsu # vcs
+        jq # json editor
       ]
       ++ cfg.extraPackages
       ++ (lib.optionals cfg.enableLsp [
