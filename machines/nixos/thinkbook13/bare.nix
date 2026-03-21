@@ -73,6 +73,7 @@
   networking.networkmanager = {
     enable = true;
     # plugins = [ pkgs.networkmanager-openvpn ];
+    dns = "none";
   };
 
   kurisu.os.openvpn = {
@@ -85,7 +86,7 @@
   };
 
   networking = {
-    nameservers = lib.mkForce [
+    nameservers = lib.mkBefore [
       "172.25.15.1"
       "114.114.114.114"
     ];
