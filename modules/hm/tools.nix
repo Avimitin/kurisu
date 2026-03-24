@@ -265,6 +265,7 @@ in
       enable = true;
       includes = [
         { path = "~/kurisu/dotfile/git/config"; }
+        { path = "~/.config/git/local.inc"; }
       ];
     };
     # my git status script

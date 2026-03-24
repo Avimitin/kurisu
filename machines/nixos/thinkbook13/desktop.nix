@@ -80,7 +80,6 @@
         user = {
           name = "Avimitin";
           email = "dev@avimit.in";
-          signingkey = "~/.ssh/id_ed25519_sk.pub";
         };
       };
 
