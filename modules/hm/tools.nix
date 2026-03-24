@@ -173,22 +173,6 @@ in
           # Path
           path+=("$HOME/.nix-profile/bin")
 
-          # SSH Agent
-          export MY_SSH_AGENT_ENV="$HOME/.ssh/agent_env"
-          __start_agent() {
-              (umask 077; ssh-agent -s | sed 's/^echo/#echo/' > "$MY_SSH_AGENT_ENV")
-              source "$MY_SSH_AGENT_ENV" > /dev/null
-          }
-
-          if [[ -f "$MY_SSH_AGENT_ENV" ]]; then
-              source "$MY_SSH_AGENT_ENV" > /dev/null
-              if [[ -z "$SSH_AGENT_PID" ]] || ! kill -0 "$SSH_AGENT_PID" 2>/dev/null; then
-                  __start_agent
-              fi
-          else
-              __start_agent
-          fi
-
           # Editor & Manpager
           if command -v nvim >/dev/null 2>&1; then
               alias vi='nvim'
@@ -224,6 +208,7 @@ in
           export CLICOLOR=1
           export PAGER='less -R'
           export FZF_DEFAULT_OPTS='--height 35% --layout=reverse'
+          export SSH_AUTH_SOCK='/run/user/1000/ssh-agent'
 
           # PS1
           PROMPT='%2~ %(?.%F{green}>.%F{red}>)%f '
