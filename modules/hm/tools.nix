@@ -226,11 +226,7 @@ in
           export FZF_DEFAULT_OPTS='--height 35% --layout=reverse'
 
           # PS1
-          autoload -Uz vcs_info
-          precmd() { vcs_info }
-          zstyle ':vcs_info:git:*' formats ' (%b)'
-          setopt PROMPT_SUBST
-          PROMPT='%B%F{green}%n%b%F{white}@%B%F{blue}%m%b%F{white} %B%F{yellow}%~%B%F{magenta}''${vcs_info_msg_0_} %B%F{red}{%?}%b%F{white}$ %f'
+          PROMPT='%2~ %(?.%F{green}>.%F{red}>)%f '
         '')
       ];
     };
