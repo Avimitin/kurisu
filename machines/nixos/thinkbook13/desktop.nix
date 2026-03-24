@@ -73,6 +73,7 @@
         enableLsp = true;
         enableAI = true;
         configureBash = true;
+        configureZsh = true;
       };
 
       programs.git.settings = {

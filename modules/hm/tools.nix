@@ -22,6 +22,8 @@ in
 
     configureBash = mkEnableOption "Bash with configs";
 
+    configureZsh = mkEnableOption "Zsh with configs";
+
     extraPackages = mkOption {
       type = lib.types.listOf lib.types.package;
       default = [ ];
@@ -39,7 +41,6 @@ in
         fd # find alternative
         fzf # fuzzy finder
         ripgrep # grep alternative
-        zoxide # cd alternative
         gh # github cli
         nh # Yet-another-Nix-helper
         nix-output-monitor # Pipe nix output for monitor
@@ -50,6 +51,7 @@ in
         nexttrace # route tracker with world map
         aria2 # better wget
         _7zz # 7z
+        eza # ls replacement
         lazygit # git TUI
         age # Encryption tool
         sops # Secret management
@@ -98,7 +100,14 @@ in
       direnv = {
         enable = true;
         enableFishIntegration = true;
+        enableZshIntegration = cfg.configureZsh;
         nix-direnv.enable = true;
+      };
+
+      zoxide = {
+        enable = true;
+        enableFishIntegration = false;
+        enableZshIntegration = cfg.configureZsh;
       };
     };
 
@@ -120,6 +129,110 @@ in
         # '';
       };
       target = ".bashrc";
+    };
+
+    programs.zsh = mkIf cfg.configureZsh {
+      enable = true;
+      enableCompletion = true;
+      autosuggestion.enable = true;
+      syntaxHighlighting.enable = true;
+
+      shellAliases = {
+        rm = "rm -i";
+        ll = "eza -alh --color=always --icons=always --hyperlink --group-directories-first";
+        rsyncz = "rsync -aczvhPL";
+        rsynca = "rsync -avhP";
+        ssh = "TERM=xterm-256color ssh";
+        tmuxd = "systemd-run --user --scope tmux new-session";
+        tl = "tmux ls";
+        ta = "tmux attach-session -t";
+        userctl = "systemctl --user";
+        ip = "ip -c";
+      };
+
+      history = {
+        size = 10000;
+        path = "${config.xdg.dataHome}/zsh/zsh_history";
+        ignoreDups = true;
+        share = true;
+      };
+
+      initContent = lib.mkMerge [
+        (lib.mkBefore ''
+          # Ensure history directory exists
+          mkdir -p "${config.xdg.dataHome}/zsh"
+
+          if [[ -o login ]]; then
+            export QT_QPA_PLATFORM="wayland;xcb"
+            export QT_QPA_PLATFORMTHEME="qt6ct"
+            export MOZ_ENABLE_WAYLAND=1
+          fi
+        '')
+
+        (lib.mkOrder 1000 ''
+          # Path
+          path+=("$HOME/.nix-profile/bin")
+
+          # SSH Agent
+          export MY_SSH_AGENT_ENV="$HOME/.ssh/agent_env"
+          __start_agent() {
+              (umask 077; ssh-agent -s | sed 's/^echo/#echo/' > "$MY_SSH_AGENT_ENV")
+              source "$MY_SSH_AGENT_ENV" > /dev/null
+          }
+
+          if [[ -f "$MY_SSH_AGENT_ENV" ]]; then
+              source "$MY_SSH_AGENT_ENV" > /dev/null
+              if [[ -z "$SSH_AGENT_PID" ]] || ! kill -0 "$SSH_AGENT_PID" 2>/dev/null; then
+                  __start_agent
+              fi
+          else
+              __start_agent
+          fi
+
+          # Editor & Manpager
+          if command -v nvim >/dev/null 2>&1; then
+              alias vi='nvim'
+              export EDITOR='nvim'
+              export MANPAGER='nvim +Man!'
+          elif command -v vim >/dev/null 2>&1; then
+              alias vi='vim'
+              export EDITOR='vim'
+              export MANPAGER='vim +Man!'
+          fi
+
+          if [[ -n "$EDITOR" ]]; then
+              export VISUAL="$EDITOR"
+          fi
+          export SYSTEMD_EDITOR="$EDITOR"
+
+          # GPG
+          if command -v gpg >/dev/null 2>&1; then
+              export GPG_TTY=$(tty)
+          fi
+
+          # Locale
+          if [[ -r "${pkgs.glibcLocales}/lib/locale/locale-archive" ]]; then
+              export LOCALE_ARCHIVE="${pkgs.glibcLocales}/lib/locale/locale-archive"
+          elif [[ -r /usr/lib/locale/locale-archive ]]; then
+              export LOCALE_ARCHIVE=/usr/lib/locale/locale-archive
+          fi
+
+          # XDG & Misc
+          export XDG_CONFIG_HOME="$HOME/.config"
+          export XDG_CACHE_HOME="$HOME/.cache"
+          export XDG_DATA_HOME="$HOME/.local/share"
+          export CLICOLOR=1
+          export PAGER='less -R'
+          export FZF_DEFAULT_OPTS='--height 35% --layout=reverse'
+
+          # PS1
+          autoload -Uz vcs_info
+          precmd() { vcs_info }
+          zstyle ':vcs_info:git:*' formats ' (%b)'
+          setopt PROMPT_SUBST
+          PROMPT='%B%F{green}%n%b%F{white}@%B%F{blue}%m%b%F{white} %B%F{yellow}%~%B%F{magenta}''${vcs_info_msg_0_} %B%F{red}{%?}%b%F{white}$ %f'
+        '')
+      ];
     };
 
     programs.fish = {
