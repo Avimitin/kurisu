@@ -154,6 +154,14 @@ in
       };
     };
 
+    programs.git.settings = {
+      user = {
+        name = "Avimitin";
+        email = "dev@avimit.in";
+        signingkey = "~/.ssh/id_ed25519.pub";
+      };
+    };
+
     programs.avimitin-nvim = {
       enable = true;
       treesitter-grammars = [

@@ -74,6 +74,14 @@
         configureBash = true;
       };
 
+      programs.git.settings = {
+        user = {
+          name = "Avimitin";
+          email = "dev@avimit.in";
+          signingkey = "~/.ssh/id_ed25519_sk.pub";
+        };
+      };
+
       programs.obs-studio.enable = true;
       programs.chromium.enable = true;
       programs.avimitin-nvim = {
