@@ -115,4 +115,9 @@
 
   # Provide nh for system switch
   environment.systemPackages = [ pkgs.nh ];
+
+  nix.settings.trusted-users = [
+    "root"
+    "sh1marin"
+  ];
 }
