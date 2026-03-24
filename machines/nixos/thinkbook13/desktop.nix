@@ -41,8 +41,7 @@
 
         terminal = {
           enable = true;
-          type = "foot";
-          foot.enableServer = true;
+          type = "kitty";
         };
       };
 
@@ -66,6 +65,8 @@
 
         inputs.nvim.homeModules.nvim
       ];
+
+      home.packages = [ pkgs.kitty ];
 
       kurisu.hm.tools = {
         enable = true;
