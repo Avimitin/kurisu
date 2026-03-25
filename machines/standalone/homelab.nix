@@ -151,6 +151,7 @@ in
         enableLsp = true;
         enableAI = true;
         configureBash = true;
+        configureZsh = true;
       };
     };
 
