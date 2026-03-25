@@ -80,6 +80,9 @@ in
         claude-code
         gemini-cli
         opencode
+      ])
+      ++ (lib.optionals cfg.configureZsh [
+        pure-prompt
       ]);
 
     home.file.tmux = myLib.fromDotfile ".tmux.conf";
@@ -211,7 +214,9 @@ in
           export SSH_AUTH_SOCK='/run/user/1000/ssh-agent'
 
           # PS1
-          PROMPT='%2~ %(?.%F{green}>.%F{red}>)%f '
+          # PROMPT='%2~ %(?.%F{green}>.%F{red}>)%f '
+          autoload -U promptinit; promptinit
+          prompt pure
         '')
       ];
     };
