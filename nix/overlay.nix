@@ -20,4 +20,14 @@ final: prev: {
     rev = "0de003833c3677abd1c80bd3e200a59756b51590";
     hash = "sha256-t5aqLWTqCW6BGhqmJpQ5MtQVEiUo0lktiTwxEJ3w1mE=";
   };
+
+  pure-prompt = prev.pure-prompt.overrideAttrs {
+    version = "1.27.1";
+    src = final.fetchFromGitHub {
+      owner = "sindresorhus";
+      repo = "pure";
+      rev = "dbefd0dcafaa3ac7d7222ca50890d9d0c97f7ca2";
+      hash = "sha256-Fhk4nlVPS09oh0coLsBnjrKncQGE6cUEynzDO2Skiq8=";
+    };
+  };
 }
