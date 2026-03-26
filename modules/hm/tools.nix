@@ -102,7 +102,7 @@ in
     programs = {
       direnv = {
         enable = true;
-        enableFishIntegration = true;
+        enableFishIntegration = false;
         enableZshIntegration = cfg.configureZsh;
         nix-direnv.enable = true;
       };
@@ -217,36 +217,6 @@ in
           autoload -U promptinit; promptinit
           prompt pure
         '')
-      ];
-    };
-
-    programs.fish = {
-      enable = true;
-      shellInit = builtins.readFile (
-        pkgs.replaceVarsWith {
-          name = "config.fish";
-
-          src = ../../dotfile/fish/config.fish;
-
-          replacements = {
-            nix_locale_archive = "${pkgs.glibcLocales}/lib/locale/locale-archive";
-          };
-
-          postInstall = ''
-            ${pkgs.fish}/bin/fish -n "$target"
-          '';
-        }
-      );
-      plugins = [
-        {
-          name = "fishAutoPair";
-          src = pkgs.fetchFromGitHub {
-            owner = "jorgebucaran";
-            repo = "autopair.fish";
-            rev = "4d1752ff5b39819ab58d7337c69220342e9de0e2";
-            sha256 = "sha256-qt3t1iKRRNuiLWiVoiAYOu+9E7jsyECyIqZJ/oRIT1A=";
-          };
-        }
       ];
     };
 
