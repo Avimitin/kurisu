@@ -4,8 +4,9 @@
   pkgs,
   ...
 }:
-with lib;
 let
+  inherit (lib) mkEnableOption mkIf;
+
   cfg = config.kurisu.hm.fontconfig;
 in
 {
@@ -20,12 +21,12 @@ in
       noto-fonts
       noto-fonts-cjk-sans
       nerd-fonts.fira-code
+      nerd-fonts.im-writing
     ];
 
-    xdg.configFile.kurisu-fontconfig = {
+    xdg.configFile."fontconfig/conf.d" = {
+      source = ../../dotfile/fontconfig/conf.d;
       recursive = true;
-      source = ../../dotfile/fontconfig;
-      target = "fontconfig";
     };
   };
 }

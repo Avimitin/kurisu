@@ -62,6 +62,7 @@
 
       imports = [
         self.homeModules.tools
+        self.homeModules.fontconfig
 
         inputs.nvim.homeModules.nvim
       ];
@@ -75,6 +76,8 @@
         configureBash = true;
         configureZsh = true;
       };
+
+      kurisu.hm.fontconfig.enable = true;
 
       programs.git.settings = {
         user = {
