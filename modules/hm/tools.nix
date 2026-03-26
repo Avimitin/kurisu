@@ -211,7 +211,6 @@ in
           export CLICOLOR=1
           export PAGER='less -R'
           export FZF_DEFAULT_OPTS='--height 35% --layout=reverse'
-          export SSH_AUTH_SOCK='/run/user/1000/ssh-agent'
 
           # PS1
           # PROMPT='%2~ %(?.%F{green}>.%F{red}>)%f '
