@@ -16,8 +16,11 @@ in
     };
   };
 
+  # All FIDO2 SSH key is harden with `-O verify-required` when generate key
+  # using ssh-keygen Thus the ssh agent have nothing to do with caching key,
+  # password is always required at signing and identify.
   config = lib.mkIf cfg.enableRootlessAccess {
-    programs.ssh.startAgent = true;
+    programs.ssh.startAgent = false;
     services.gnome.gnome-keyring.enable = false;
 
     users.groups.${cfg.accessGroup} = { };
