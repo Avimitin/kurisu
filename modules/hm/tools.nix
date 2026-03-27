@@ -176,6 +176,9 @@ in
           # Path
           path+=("$HOME/.nix-profile/bin")
 
+          autoload -U select-word-style
+          select-word-style bash
+
           # Editor & Manpager
           if command -v nvim >/dev/null 2>&1; then
               alias vi='nvim'
