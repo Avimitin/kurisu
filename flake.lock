@@ -334,11 +334,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1774577147,
-        "narHash": "sha256-vWfw+QZaGqCnRyorpU9GIY3t3Peugk2jpEgu4hm69i0=",
+        "lastModified": 1774582406,
+        "narHash": "sha256-CDCsEeKijTRIcz13OaoB6L+oPwBrMue7AlncJCKZX9M=",
         "owner": "Avimitin",
         "repo": "nvim",
-        "rev": "3064ccfdc719f3a0f04b58499493df685f8cb238",
+        "rev": "e0ae4fc76672538d0fc43cef9db72ecb7798b1f6",
         "type": "github"
       },
       "original": {
