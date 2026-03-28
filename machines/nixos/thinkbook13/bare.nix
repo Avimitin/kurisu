@@ -58,6 +58,7 @@
     "sdhci_pci"
   ];
   boot.initrd.kernelModules = [ ];
+  boot.kernelParams = [ "zfs.zfs_arc_max=4294967296" ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
