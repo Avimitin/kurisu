@@ -78,7 +78,7 @@
   };
 
   kurisu.os.openvpn = {
-    enable = true;
+    enable = false;
     servers = {
       whlab = {
         config = "config /sonata/whlab.ovpn ";

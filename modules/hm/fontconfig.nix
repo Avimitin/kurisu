@@ -24,9 +24,29 @@ in
       nerd-fonts.im-writing
     ];
 
-    xdg.configFile."fontconfig/conf.d" = {
-      source = ../../dotfile/fontconfig/conf.d;
-      recursive = true;
+    fonts.fontconfig.hinting = "slight";
+    fonts.fontconfig.subpixelRendering = "rgb";
+    fonts.fontconfig.antialiasing = true;
+
+    fonts.fontconfig.defaultFonts = {
+      serif = [
+        "Noto Serif CJK SC"
+        "Noto Serif"
+      ];
+      sansSerif = [
+        "Noto Sans CJK SC"
+        "Noto Sans"
+      ];
+      monospace = [
+        "iMWritingMono Nerd Font Mono"
+        "FiraCode Nerd Font Mono"
+        "Noto Sans Mono CJK SC"
+        "Noto Sans Mono"
+      ];
+      emoji = [
+        "Noto Color Emoji"
+      ];
     };
+
   };
 }
