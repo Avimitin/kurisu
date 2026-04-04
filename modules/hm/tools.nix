@@ -59,6 +59,7 @@ in
         git # vcs
         jujutsu # vcs
         jq # json editor
+        fping # ping with parallel
       ]
       ++ cfg.extraPackages
       ++ (lib.optionals cfg.enableLsp [
