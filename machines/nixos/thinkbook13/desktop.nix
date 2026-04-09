@@ -69,7 +69,10 @@
         inputs.nvim.homeModules.nvim
       ];
 
-      home.packages = [ pkgs.kitty ];
+      home.packages = [
+        pkgs.kitty
+        pkgs.telegram-desktop
+      ];
 
       kurisu.hm.tools = {
         enable = true;
