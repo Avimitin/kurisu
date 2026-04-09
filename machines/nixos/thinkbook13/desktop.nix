@@ -72,6 +72,7 @@
       home.packages = [
         pkgs.kitty
         pkgs.telegram-desktop
+        pkgs.zathura
       ];
 
       kurisu.hm.tools = {
