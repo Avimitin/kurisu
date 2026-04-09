@@ -48,6 +48,8 @@
       os.canokey.enableRootlessAccess = true;
     };
 
+    services.udisks2.enable = true;
+
     # --- Home Configuration ---
     home-manager.useGlobalPkgs = true;
     home-manager.useUserPackages = true;
