@@ -8,7 +8,7 @@
 }:
 
 {
-  system.stateVersion = "25.11";
+  system.stateVersion = "26.05";
 
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")

@@ -59,7 +59,7 @@
       home = {
         username = "sh1marin";
         homeDirectory = "/home/sh1marin";
-        stateVersion = "25.11";
+        stateVersion = "26.05";
       };
 
       imports = [
