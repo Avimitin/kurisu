@@ -78,7 +78,7 @@ in
       ])
       ++ (lib.optionals cfg.enableAI [
         # AI stuff
-        claude-code
+        codex
         gemini-cli
         opencode
       ])
@@ -138,8 +138,19 @@ in
     programs.zsh = mkIf cfg.configureZsh {
       enable = true;
       enableCompletion = true;
+      defaultKeymap = "emacs";
       autosuggestion.enable = true;
       syntaxHighlighting.enable = true;
+      completionInit = lib.mkOrder 550 ''
+        autoload -U compinit
+        zmodload zsh/complist
+        compinit
+
+        zstyle ':completion:*' menu select
+        zstyle ':completion:*' group-name ""
+        zstyle ':completion:*:descriptions' format "[%d]"
+        zstyle ':completion:*' list-colors "''${(s.:.)LS_COLORS}" "ma=48;5;239;38;5;230"
+      '';
 
       shellAliases = {
         rm = "rm -i";
@@ -176,6 +187,7 @@ in
         (lib.mkOrder 1000 ''
           # Path
           path+=("$HOME/.nix-profile/bin")
+          bindkey -e
 
           autoload -U select-word-style
           select-word-style bash
