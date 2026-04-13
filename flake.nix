@@ -67,6 +67,8 @@
         ];
 
         flake = {
+          inherit inputs;
+
           # colmenaHive controls how NixOS machine deploy
           colmenaHive = import ./machines/nixos inputs;
 
