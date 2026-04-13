@@ -101,8 +101,8 @@ in
 
     # Application Launcher
     programs.vicinae = {
-      enable = true;
-      systemd.enable = true;
+      enable = false;
+      systemd.enable = false;
     };
 
     xdg.configFile.mpv = {
