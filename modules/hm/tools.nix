@@ -60,6 +60,7 @@ in
         jujutsu # vcs
         jq # json editor
         fping # ping with parallel
+        gnumake # make
       ]
       ++ cfg.extraPackages
       ++ (lib.optionals cfg.enableLsp [
