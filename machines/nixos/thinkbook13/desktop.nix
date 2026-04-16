@@ -50,7 +50,7 @@
 
     services.udisks2.enable = true;
     services.nginx = {
-      enable = false;
+      enable = true;
 
       # Pull in the RTMP module natively
       additionalModules = [ pkgs.nginxModules.rtmp ];
