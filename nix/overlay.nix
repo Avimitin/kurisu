@@ -30,4 +30,30 @@ final: prev: {
       hash = "sha256-Fhk4nlVPS09oh0coLsBnjrKncQGE6cUEynzDO2Skiq8=";
     };
   };
+
+  niri = prev.niri.overrideAttrs (oldAttrs: rec {
+    version = "unstable-2026-04-16";
+    src = final.fetchFromGitHub {
+      owner = "niri-wm";
+      repo = "niri";
+      rev = "71d7fa9a61ef56d2afa1fd5523089b96c1c5fc0f";
+      hash = "sha256-D5ME/gcvzCqr2pqd8iw3Nx7v31CBdQLt5iFfF0PZKDw=";
+    };
+
+    env = oldAttrs.env // {
+      NIRI_BUILD_VERSION_STRING = version;
+    };
+
+    postPatch = ''
+      patchShebangs resources/niri-session
+      substituteInPlace resources/niri.service \
+        --replace-fail 'ExecStart=niri --session' "ExecStart=$out/bin/niri --session"
+    '';
+
+    cargoDeps = final.rustPlatform.fetchCargoVendor {
+      name = oldAttrs.pname + "-cargo-vendor";
+      inherit src;
+      hash = "sha256-XbKhPJ/VxcLf4J2I6dekKnUvCnmoXndvQsLx2B04ihE=";
+    };
+  });
 }
