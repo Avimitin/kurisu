@@ -31,7 +31,7 @@
 
     # System widgets for Niri
     dms = {
-      url = "github:AvengeMedia/DankMaterialShell/stable";
+      url = "github:AvengeMedia/DankMaterialShell/blur";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
