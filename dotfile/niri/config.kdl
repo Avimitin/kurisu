@@ -692,6 +692,14 @@ binds {
     Mod+Shift+P { spawn-sh "dms ipc lock lock && sleep 5s && niri msg action power-off-monitors"; }
 }
 
+blur {
+    // off
+    passes 3
+    offset 3
+    noise 0.05
+    saturation 1.5
+}
+
 debug {
     disable-direct-scanout
     honor-xdg-activation-with-invalid-serial
