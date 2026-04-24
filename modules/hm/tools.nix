@@ -61,6 +61,8 @@ in
         jq # json editor
         fping # ping with parallel
         gnumake # make
+
+        exfat # mkfs.exfat
       ]
       ++ cfg.extraPackages
       ++ (lib.optionals cfg.enableLsp [
