@@ -5,6 +5,8 @@
     # Unstable nixpkgs for latest packages
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
+    nixpkgs-master.url = "github:NixOS/nixpkgs/master";
+
     # Configure flake as module
     flake-parts.url = "github:hercules-ci/flake-parts";
 

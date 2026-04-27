@@ -1,3 +1,5 @@
+{ inputs }:
+
 final: prev: {
   rime-dict =
     let
@@ -56,4 +58,6 @@ final: prev: {
       hash = "sha256-XbKhPJ/VxcLf4J2I6dekKnUvCnmoXndvQsLx2B04ihE=";
     };
   });
+
+  codex = (import inputs.nixpkgs-master { system = final.stdenv.hostPlatform.system; }).codex;
 }
