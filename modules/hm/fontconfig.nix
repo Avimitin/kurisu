@@ -17,13 +17,22 @@ in
   config = mkIf cfg.enable {
     fonts.fontconfig.enable = true;
 
-    home.packages = with pkgs; [
-      noto-fonts
-      noto-fonts-cjk-sans
-      noto-fonts-color-emoji
-      nerd-fonts.fira-code
-      nerd-fonts.im-writing
-    ];
+    home.packages =
+      with pkgs;
+      let
+        apple-sf-mono = mkAppleFonts {
+          fontName = "SF-Mono";
+          hash = "sha256-bUoLeOOqzQb5E/ZCzq0cfbSvNO1IhW1xcaLgtV2aeUU=";
+        };
+      in
+      [
+        noto-fonts
+        noto-fonts-cjk-sans
+        noto-fonts-color-emoji
+        nerd-fonts.fira-code
+        nerd-fonts.im-writing
+        apple-sf-mono
+      ];
 
     fonts.fontconfig.hinting = "slight";
     fonts.fontconfig.subpixelRendering = "rgb";
@@ -39,6 +48,7 @@ in
         "Noto Sans"
       ];
       monospace = [
+        "SF Mono"
         "iMWritingMono Nerd Font Mono"
         "FiraCode Nerd Font Mono"
         "Noto Sans Mono CJK SC"
