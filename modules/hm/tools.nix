@@ -84,6 +84,7 @@ in
         codex
         gemini-cli
         opencode
+        claude-code
       ])
       ++ (lib.optionals cfg.configureZsh [
         pure-prompt
