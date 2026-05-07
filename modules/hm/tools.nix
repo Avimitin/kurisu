@@ -63,6 +63,7 @@ in
         gnumake # make
 
         exfat # mkfs.exfat
+        websocat # web over socket
       ]
       ++ cfg.extraPackages
       ++ (lib.optionals cfg.enableLsp [
