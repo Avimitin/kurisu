@@ -64,6 +64,8 @@ in
 
         exfat # mkfs.exfat
         websocat # web over socket
+
+        python3
       ]
       ++ cfg.extraPackages
       ++ (lib.optionals cfg.enableLsp [
