@@ -24,6 +24,14 @@ in
           fontName = "SF-Mono";
           hash = "sha256-bUoLeOOqzQb5E/ZCzq0cfbSvNO1IhW1xcaLgtV2aeUU=";
         };
+        apple-sf-pro = mkAppleFonts {
+          fontName = "SF-Pro";
+          hash = "sha256-W0sZkipBtrduInk0oocbFAXX1qy0Z+yk2xUyFfDWx4s=";
+        };
+        apple-newyork = mkAppleFonts {
+          fontName = "NY";
+          hash = "sha256-HC7ttFJswPMm+Lfql49aQzdWR2osjFYHJTdgjtuI+PQ=";
+        };
       in
       [
         noto-fonts
@@ -32,6 +40,8 @@ in
         nerd-fonts.fira-code
         nerd-fonts.im-writing
         apple-sf-mono
+        apple-sf-pro
+        apple-newyork
       ];
 
     fonts.fontconfig.hinting = "slight";
@@ -40,10 +50,12 @@ in
 
     fonts.fontconfig.defaultFonts = {
       serif = [
+        "New York"
         "Noto Serif CJK SC"
         "Noto Serif"
       ];
       sansSerif = [
+        "SF Pro"
         "Noto Sans CJK SC"
         "Noto Sans"
       ];
