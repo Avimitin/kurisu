@@ -22,7 +22,7 @@ in
 
     configureBash = mkEnableOption "Bash with configs";
 
-    configureZsh = mkEnableOption "Zsh with configs";
+    configureFish = mkEnableOption "Fish with configs";
 
     extraPackages = mkOption {
       type = lib.types.listOf lib.types.package;
@@ -90,8 +90,8 @@ in
         opencode
         claude-code
       ])
-      ++ (lib.optionals cfg.configureZsh [
-        pure-prompt
+      ++ (lib.optionals cfg.configureFish [
+        fish
       ]);
 
     home.file.tmux = myLib.fromDotfile ".tmux.conf";
@@ -111,15 +111,13 @@ in
     programs = {
       direnv = {
         enable = true;
-        enableFishIntegration = false;
-        enableZshIntegration = cfg.configureZsh;
+        enableFishIntegration = cfg.configureFish;
         nix-direnv.enable = true;
       };
 
       zoxide = {
         enable = true;
-        enableFishIntegration = false;
-        enableZshIntegration = cfg.configureZsh;
+        enableFishIntegration = cfg.configureFish;
       };
     };
 
@@ -143,105 +141,14 @@ in
       target = ".bashrc";
     };
 
-    programs.zsh = mkIf cfg.configureZsh {
-      enable = true;
-      enableCompletion = true;
-      defaultKeymap = "emacs";
-      autosuggestion.enable = true;
-      syntaxHighlighting.enable = true;
-      completionInit = lib.mkOrder 550 ''
-        autoload -U compinit
-        zmodload zsh/complist
-        compinit
-
-        zstyle ':completion:*' menu select
-        zstyle ':completion:*' group-name ""
-        zstyle ':completion:*:descriptions' format "[%d]"
-        zstyle ':completion:*' list-colors "''${(s.:.)LS_COLORS}" "ma=48;5;239;38;5;230"
-      '';
-
-      shellAliases = {
-        rm = "rm -i";
-        ll = "eza -alh --color=always --icons=always --hyperlink --group-directories-first";
-        rsyncz = "rsync -aczvhPL";
-        rsynca = "rsync -avhP";
-        ssh = "TERM=xterm-256color ssh";
-        tmuxd = "systemd-run --user --scope tmux new-session";
-        tl = "tmux ls";
-        ta = "tmux attach-session -t";
-        userctl = "systemctl --user";
-        ip = "ip -c";
+    xdg.configFile."fish/config.fish" = mkIf cfg.configureFish {
+      source = pkgs.replaceVarsWith {
+        name = "config.fish";
+        src = ../../dotfile/fish/config.fish;
+        replacements = {
+          nix_locale_archive = "${pkgs.glibcLocales}/lib/locale/locale-archive";
+        };
       };
-
-      history = {
-        size = 10000;
-        path = "${config.xdg.dataHome}/zsh/zsh_history";
-        ignoreDups = true;
-        share = true;
-      };
-
-      initContent = lib.mkMerge [
-        (lib.mkBefore ''
-          # Ensure history directory exists
-          mkdir -p "${config.xdg.dataHome}/zsh"
-
-          if [[ -o login ]]; then
-            export QT_QPA_PLATFORM="wayland;xcb"
-            export QT_QPA_PLATFORMTHEME="qt6ct"
-            export MOZ_ENABLE_WAYLAND=1
-          fi
-        '')
-
-        (lib.mkOrder 1000 ''
-          # Path
-          path+=("$HOME/.nix-profile/bin")
-          bindkey -e
-
-          autoload -U select-word-style
-          select-word-style bash
-
-          # Editor & Manpager
-          if command -v nvim >/dev/null 2>&1; then
-              alias vi='nvim'
-              export EDITOR='nvim'
-              export MANPAGER='nvim +Man!'
-          elif command -v vim >/dev/null 2>&1; then
-              alias vi='vim'
-              export EDITOR='vim'
-              export MANPAGER='vim +Man!'
-          fi
-
-          if [[ -n "$EDITOR" ]]; then
-              export VISUAL="$EDITOR"
-          fi
-          export SYSTEMD_EDITOR="$EDITOR"
-
-          # GPG
-          if command -v gpg >/dev/null 2>&1; then
-              export GPG_TTY=$(tty)
-          fi
-
-          # Locale
-          if [[ -r "${pkgs.glibcLocales}/lib/locale/locale-archive" ]]; then
-              export LOCALE_ARCHIVE="${pkgs.glibcLocales}/lib/locale/locale-archive"
-          elif [[ -r /usr/lib/locale/locale-archive ]]; then
-              export LOCALE_ARCHIVE=/usr/lib/locale/locale-archive
-          fi
-
-          # XDG & Misc
-          export XDG_CONFIG_HOME="$HOME/.config"
-          export XDG_CACHE_HOME="$HOME/.cache"
-          export XDG_DATA_HOME="$HOME/.local/share"
-          export CLICOLOR=1
-          export PAGER='less -R'
-          export FZF_DEFAULT_OPTS='--height 35% --layout=reverse'
-
-          # PS1
-          # PROMPT='%2~ %(?.%F{green}>.%F{red}>)%f '
-          autoload -U promptinit; promptinit
-          prompt pure
-        '')
-      ];
     };
 
     programs.git = {

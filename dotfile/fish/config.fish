@@ -65,27 +65,6 @@ end
 if command -q ssh
     # this fix tmux color
     alias ssh "TERM=xterm-256color command ssh"
-
-    set -g MY_SSH_AGENT_ENV "$HOME/.ssh/agent_env"
-
-    function __start_agent
-        touch "$MY_SSH_AGENT_ENV"
-        chmod 600 "$MY_SSH_AGENT_ENV"
-        ssh-agent -c | sed 's/^echo/#echo/' > "$MY_SSH_AGENT_ENV"
-        source "$MY_SSH_AGENT_ENV" > /dev/null
-    end
-
-    # Check if the environment file exists
-    if test -f "$MY_SSH_AGENT_ENV"
-        source "$MY_SSH_AGENT_ENV" > /dev/null
-
-        # Check if the PID variable is set AND the process is actually running
-        if not set -q SSH_AGENT_PID; or not kill -0 $SSH_AGENT_PID 2>/dev/null
-            __start_agent
-        end
-    else
-        __start_agent
-    end
 end
 
 if command -q tmux
@@ -106,8 +85,6 @@ end
 
 alias userctl "command systemctl --user"
 alias ip "ip -c"
-
-alias web-open "firefox --new-window --kiosk"
 
 if command -q git
     alias g git

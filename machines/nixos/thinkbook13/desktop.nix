@@ -101,7 +101,7 @@
         enableLsp = true;
         enableAI = true;
         configureBash = true;
-        configureZsh = true;
+        configureFish = true;
       };
 
       kurisu.hm.fontconfig.enable = true;

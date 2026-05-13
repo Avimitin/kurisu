@@ -94,7 +94,7 @@ nix run '.#nh' -- os switch .
 - `enableLsp` (bool): LSP servers.
 - `enableAI` (bool): AI editors or CLIs.
 - `configureBash` (bool): Bash with configs.
-- `configureZsh` (bool): ZSH with configs.
+- `configureFish` (bool): Fish with configs.
 - `extraPackages` (list of package): Additional packages to install.
 
 #### `kurisu.hm.fcitx5`

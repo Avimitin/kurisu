@@ -102,7 +102,7 @@
   i18n.defaultLocale = "en_US.UTF-8";
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  programs.zsh.enable = true;
+  programs.fish.enable = true;
   users.users.sh1marin = {
     isNormalUser = true;
     description = "sh1marin";
@@ -111,7 +111,7 @@
       "wheel"
       "plugdev"
     ];
-    shell = pkgs.zsh;
+    shell = pkgs.fish;
   };
 
   # Provide nh for system switch
