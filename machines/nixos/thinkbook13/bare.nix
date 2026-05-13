@@ -73,7 +73,7 @@
   # Enable networking
   networking.networkmanager = {
     enable = true;
-    # plugins = [ pkgs.networkmanager-openvpn ];
+    plugins = [ pkgs.networkmanager-openvpn ];
     dns = "none";
   };
 
