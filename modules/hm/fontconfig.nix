@@ -50,7 +50,7 @@ in
 
     fonts.fontconfig.defaultFonts = {
       serif = [
-        "New York"
+        "New York Medium"
         "Noto Serif CJK SC"
         "Noto Serif"
       ];
