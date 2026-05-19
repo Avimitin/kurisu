@@ -41,7 +41,7 @@
 
         terminal = {
           enable = true;
-          type = "kitty";
+          type = "foot";
         };
       };
 
