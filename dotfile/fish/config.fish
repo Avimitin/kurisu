@@ -52,7 +52,12 @@ if command -q nix
 end
 
 
-alias ll "command ls -alh --color --hyperlink --group-directories-first"
+if command -q eza
+    alias ll "command eza --long --color --color-scale --icons --hyperlink --smart-group --header --group-directories-first"
+    alias tree "command eza --long --color --color-scale --icons --hyperlink --smart-group --header --group-directories-first --tree"
+else
+    alias ll "command ls -alh --color --hyperlink --group-directories-first"
+end
 
 if command -q rsync
     # Transfer file in [a]rchive (-a == -rlptgoD: recursive, copy symlihnk as symlink, preserve permission, mod time, group, owner, copy device)
@@ -60,11 +65,6 @@ if command -q rsync
     # Skip based-on [c]hecksum instead of mod-time & size.
     alias rsyncz "command rsync -aczvhPL"
     alias rsynca "command rsync -avhP"
-end
-
-if command -q ssh
-    # this fix tmux color
-    alias ssh "TERM=xterm-256color command ssh"
 end
 
 if command -q tmux
