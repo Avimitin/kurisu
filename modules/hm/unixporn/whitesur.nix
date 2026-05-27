@@ -41,10 +41,10 @@ in
           style = "kvantum";
           icon_theme = "WhiteSur-dark";
           custom_palette = true;
-          color_scheme_path = toString ../../../dotfile/qt6ct/style-colors.conf;
+          color_scheme_path = "${config.xdg.configHome}/qt5ct/style-colors.conf";
           standard_dialogs = "default";
         };
-        Font = {
+        Fonts = {
           fixed = "SF Mono,12,-1,5,400,0,0,0,0,0,0,0,0,0,0,1,Regular,0,0";
           general = "SF Pro,12,-1,5,400,0,0,0,0,0,0,0,0,0,0,1,,0,0";
         };
@@ -73,10 +73,10 @@ in
           style = "kvantum";
           icon_theme = "WhiteSur-dark";
           custom_palette = true;
-          color_scheme_path = toString ../../../dotfile/qt6ct/style-colors.conf;
+          color_scheme_path = "${config.xdg.configHome}/qt6ct/style-colors.conf";
           standard_dialogs = "default";
         };
-        Font = {
+        Fonts = {
           fixed = "SF Mono,12,-1,5,400,0,0,0,0,0,0,0,0,0,0,1,Regular,0,0";
           general = "SF Pro,12,-1,5,400,0,0,0,0,0,0,0,0,0,0,1,,0,0";
         };
@@ -111,6 +111,8 @@ in
         chmod -R u+w "$out"
         sed -i "s/transparent_dolphin_view=true/transparent_dolphin_view=false/" "$out/WhiteSurDark.kvconfig"
       '';
+      "qt5ct/style-colors.conf".source = ../../../dotfile/qt6ct/style-colors.conf;
+      "qt6ct/style-colors.conf".source = ../../../dotfile/qt6ct/style-colors.conf;
     };
   };
 }
