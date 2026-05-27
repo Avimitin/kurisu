@@ -94,7 +94,7 @@
         pkgs.kitty
         pkgs.telegram-desktop
         pkgs.zathura
-        pkgs.kdePackages.gwenview
+        pkgs.loupe
       ];
 
       kurisu.hm.tools = {
