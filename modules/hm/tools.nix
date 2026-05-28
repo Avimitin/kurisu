@@ -77,7 +77,7 @@ in
         ccls # c/cpp LSP
         lua-language-server # Lua LSP
         stylua # Lua formatter
-        pyright # Python LSP
+        ty # Python LSP
         ruff # Python fmt
         uv # Python package manager
         tinymist # Typst LSP w/ preview
