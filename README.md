@@ -5,12 +5,12 @@ This is my NixOS configuration, named by Makise Kurisu.
 
 ## Overview
 
-This is a comprehensive NixOS and Home Manager configuration project, structured as a Nix Flake using `flake-parts`. It manages both full NixOS system configurations (deployed via Colmena) and standalone Home Manager environments.
+This is a comprehensive NixOS and Home Manager configuration project, structured as a Nix Flake using `flake-parts`. It manages both full NixOS system configurations and standalone Home Manager environments.
 
 ### Project Structure
 
-*   **`flake.nix`**: The entry point. It defines inputs (nixpkgs, home-manager, colmena, etc.) and outputs. It uses `flake-parts` to organize the configuration.
-    *   **`colmenaHive`**: Defines NixOS machine deployments (imported from `machines/nixos`).
+*   **`flake.nix`**: The entry point. It defines inputs (nixpkgs, home-manager, etc.) and outputs. It uses `flake-parts` to organize the configuration.
+    *   **`nixosConfigurations`**: Defines NixOS machine configurations (imported from `machines/nixos`).
     *   **`homeConfigurations`**: Defines standalone home-manager setups (imported from `machines/standalone`).
     *   **`flake.nixosModules` / `flake.homeModules`**: Exports reusable modules from `modules/`.
 
@@ -30,7 +30,7 @@ The core logic resides here, split into OS-level and Home-level modules. They ar
 This directory defines the actual hosts and how they compose the modules.
 
 *   **`machines/nixos/` (NixOS Hosts)**:
-    *   Managed via **Colmena**.
+    *   Managed via standard **NixOS configurations**.
     *   **`thinkbook13`**: A specific machine configuration.
         *   **`bare.nix`**: The base system (bootloader, ZFS partitions, networking). Imports `self.nixosModules.common-config`, `partitions`, `ovpn`.
         *   **`desktop.nix`**: The graphical environment. Imports `self.nixosModules.wayland`, `graphic`, `login_manager`. It also configures the user `sh1marin` via the embedded `home-manager` module, importing `self.homeModules.tools`.

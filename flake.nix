@@ -28,9 +28,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Nix Devops for machine nix configuration deployment
-    colmena.url = "github:zhaofengli/colmena";
-
     # System widgets for Niri
     dms = {
       url = "github:AvengeMedia/DankMaterialShell/stable";
@@ -71,8 +68,8 @@
         flake = {
           inherit inputs;
 
-          # colmenaHive controls how NixOS machine deploy
-          colmenaHive = import ./machines/nixos inputs;
+          # nixosConfigurations for NixOS machine deploy
+          nixosConfigurations = import ./machines/nixos inputs;
 
           # homeConfigurations controls how other distro machine deploy
           homeConfigurations = import ./machines/standalone inputs;
@@ -90,8 +87,6 @@
             # This work as same as `specialArgs`
             _module.args.pkgs = pkgs;
             legacyPackages = pkgs;
-
-            packages.colmena = inputs'.colmena.packages.colmena;
 
             devShells.default = pkgs.mkShellNoCC {
               buildInputs = [ ];
