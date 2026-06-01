@@ -1,6 +1,6 @@
 { nixpkgs, self, ... }@inputs:
-{
-  thinkbook13 = nixpkgs.lib.nixosSystem {
+let
+  mkHost = modules: nixpkgs.lib.nixosSystem {
     system = "x86_64-linux";
     pkgs = import nixpkgs {
       system = "x86_64-linux";
@@ -10,9 +10,10 @@
       inherit self inputs;
       myLibBuilder = import ../../nix/myLib.nix;
     };
-    modules = [
-      { kurisu.machines.thinkbook13.isInstall = false; }
-      ./thinkbook13
-    ];
+    inherit modules;
   };
+in
+{
+  thinkbook13 = mkHost [ ./thinkbook13 ];
+  thinkbook13-bootstrap = mkHost [ ./thinkbook13/bare.nix ];
 }
