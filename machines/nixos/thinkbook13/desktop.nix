@@ -2,6 +2,7 @@
   self,
   inputs,
   pkgs,
+  config,
   ...
 }:
 {
@@ -85,6 +86,7 @@
       self.homeModules.fontconfig
 
       inputs.nvim.homeModules.nvim
+      inputs.sops-nix.homeManagerModules.sops
     ];
 
     home.packages = [
@@ -137,5 +139,17 @@
         pkgs.tree-sitter-grammars.tree-sitter-lean
       ];
     };
+
+    sops = {
+      age.keyFile = "${config.home-manager.users.sh1marin.home.homeDirectory}/.config/sops/age/keys.txt";
+
+      secrets."nix_access_tokens" = {
+        sopsFile = ../../../secrets/tokens.yaml;
+      };
+    };
+
+    nix.extraOptions = ''
+      !include ${config.home-manager.users.sh1marin.sops.secrets."nix_access_tokens".path}
+    '';
   };
 }

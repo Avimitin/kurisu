@@ -12,9 +12,6 @@
     curl
   ];
 
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
-
   nix.settings = {
     # Simplify the Nix command line
     experimental-features = [
@@ -23,11 +20,5 @@
       "pipe-operators"
     ];
     auto-optimise-store = true;
-  };
-
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 7d";
   };
 }

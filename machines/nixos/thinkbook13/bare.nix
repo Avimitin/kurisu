@@ -2,7 +2,6 @@
   lib,
   pkgs,
   self,
-  inputs,
   modulesPath,
   ...
 }:
@@ -15,7 +14,6 @@
     self.nixosModules.common-config
     self.nixosModules.partitions
     self.nixosModules.ovpn
-    inputs.sops-nix.nixosModules.sops
   ];
 
   kurisu.partitions = {

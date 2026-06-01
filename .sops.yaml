@@ -1,0 +1,7 @@
+keys:
+  - &thinkbook age1pehlv5avrwhnxyhhl0vw56j0etr7emuu423ux3rcl05yy4p0wshqzrjc9f
+creation_rules:
+  - path_regex: secrets/[^/]+\.yaml$
+    key_groups:
+    - age:
+      - *thinkbook
