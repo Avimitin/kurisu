@@ -3,8 +3,7 @@
   imports = [ ];
 
   environment.systemPackages = with pkgs; [
-    # dufs is a simple http server for me to upload credential and secrets
-    dufs
+    python3
     # editor
     vim
     # Download stuff
