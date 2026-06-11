@@ -94,6 +94,8 @@
       pkgs.telegram-desktop
       pkgs.zathura
       pkgs.loupe
+      pkgs.tigervnc
+      pkgs.thunderbird
     ];
 
     kurisu.hm.tools = {

@@ -24,6 +24,7 @@ in
     environment.systemPackages = [
       pkgs.firefox
       pkgs.nautilus
+      pkgs.xwayland-satellite
     ];
 
     # Fix GTK icons
