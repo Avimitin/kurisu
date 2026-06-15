@@ -69,6 +69,8 @@
     '';
   };
 
+  services.gnome.gnome-keyring.enable = true;
+
   # --- Home Configuration ---
   home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;

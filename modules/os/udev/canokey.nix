@@ -21,7 +21,6 @@ in
   # password is always required at signing and identify.
   config = lib.mkIf cfg.enableRootlessAccess {
     programs.ssh.startAgent = false;
-    services.gnome.gnome-keyring.enable = false;
 
     users.groups.${cfg.accessGroup} = { };
 
