@@ -197,6 +197,9 @@ in
     };
 
     nix.settings = {
+      extra-substituters = [
+        "http://simisear.felixc.at:19090/nix?trusted=true"
+      ];
       # Simplify the Nix command line
       experimental-features = [
         "nix-command"
