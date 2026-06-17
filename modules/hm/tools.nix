@@ -81,7 +81,6 @@ in
         ruff # Python fmt
         uv # Python package manager
         tinymist # Typst LSP w/ preview
-        zed-editor
       ])
       ++ (lib.optionals cfg.enableAI [
         # AI stuff
