@@ -70,6 +70,7 @@
   };
 
   services.gnome.gnome-keyring.enable = true;
+  programs.seahorse.enable = true;
 
   # --- Home Configuration ---
   home-manager.useGlobalPkgs = true;

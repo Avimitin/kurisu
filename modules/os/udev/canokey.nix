@@ -1,4 +1,8 @@
-{ lib, config, ... }:
+{
+  lib,
+  config,
+  ...
+}:
 let
   cfg = config.kurisu.os.canokey;
 in
