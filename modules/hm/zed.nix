@@ -85,6 +85,81 @@ in
         ui_font_size = 15.0;
         theme = "Fleet Dark Purple";
       };
+
+      userKeymaps = [
+        {
+          bindings = {
+            "; y" = "editor::CopyFileLocation";
+          };
+        }
+        {
+          # `:write` from normal mode
+          context = "vim_mode == normal && !menu";
+          bindings = {
+            "; w" = "workspace::Save";
+          };
+        }
+        {
+          # act as Vim ESC (leave insert mode)
+          context = "vim_mode == insert && !menu";
+          bindings = {
+            "alt-;" = "vim::NormalBefore";
+          };
+        }
+        {
+          # bash/readline-style movement in insert mode
+          context = "vim_mode == insert && !menu";
+          bindings = {
+            "ctrl-a" = [
+              "editor::MoveToBeginningOfLine"
+              { stop_at_indent = true; }
+            ];
+            "ctrl-e" = "editor::MoveToEndOfLine";
+            "alt-b" = "editor::MoveToPreviousWordStart";
+            "alt-f" = "editor::MoveToNextWordEnd";
+            "ctrl-d" = "editor::Delete";
+            "alt-d" = "editor::DeleteToNextWordEnd";
+          };
+        }
+        {
+          context = "(VimControl && vim_mode == normal) || Dock";
+          bindings = {
+            "alt-k" = "workspace::ActivatePaneUp";
+          };
+        }
+        {
+          context = "(VimControl && vim_mode == normal) || Dock";
+          bindings = {
+            "alt-j" = "workspace::ActivatePaneDown";
+          };
+        }
+        {
+          context = "(VimControl && vim_mode == normal) || Workspace || Dock";
+          bindings = {
+            "alt-l" = "workspace::ActivatePaneRight";
+          };
+        }
+        {
+          context = "(VimControl && vim_mode == normal) || Workspace || Dock";
+          bindings = {
+            "alt-h" = "workspace::ActivatePaneLeft";
+          };
+        }
+        {
+          # next/previous tab, like gt / gT
+          context = "(VimControl && vim_mode == normal) || Workspace || Dock";
+          bindings = {
+            "alt-n" = "vim::GoToTab";
+            "alt-p" = "vim::GoToPreviousTab";
+          };
+        }
+        {
+          context = "(vim_mode == normal || vim_mode == visual) && !menu";
+          bindings = {
+            "s" = "vim::HelixJumpToWord";
+          };
+        }
+      ];
     };
   };
 }
