@@ -29,8 +29,8 @@ in
           };
           default_profile = "write";
           default_model = {
-            provider = "mimo";
-            model = "mimo-v2.5-pro";
+            provider = "z.ai";
+            model = "glm-5.2";
             enable_thinking = false;
           };
           favorite_models = [ ];
@@ -46,6 +46,7 @@ in
         };
         vim_mode = true;
         terminal = {
+          dock = "left";
           env = {
             TERM = "alacritty";
           };
@@ -53,6 +54,25 @@ in
 
         language_models = {
           openai_compatible = {
+            "z.ai" = {
+              api_url = "https://api.z.ai/api/coding/paas/v4";
+              available_models = [
+                {
+                  name = "glm-5.2";
+                  max_tokens = 1000000;
+                  max_output_tokens = 32000;
+                  max_completion_tokens = 200000;
+                  capabilities = {
+                    tools = true;
+                    images = false;
+                    parallel_tool_calls = false;
+                    prompt_cache_key = false;
+                    chat_completions = true;
+                    interleaved_reasoning = false;
+                  };
+                }
+              ];
+            };
             mimo = {
               api_url = "https://token-plan-cn.xiaomimimo.com/v1";
               available_models = [
@@ -92,6 +112,22 @@ in
               "!nixd"
             ];
           };
+        };
+
+        debugger = {
+          dock = "left";
+        };
+        outline_panel = {
+          dock = "left";
+        };
+        collaboration_panel = {
+          button = false;
+        };
+        git_panel = {
+          dock = "left";
+        };
+        project_panel = {
+          dock = "left";
         };
       };
 
