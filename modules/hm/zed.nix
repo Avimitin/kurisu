@@ -84,6 +84,15 @@ in
         ui_font_family = ".ZedSans";
         ui_font_size = 15.0;
         theme = "Fleet Dark Purple";
+
+        languages = {
+          Nix = {
+            language_servers = [
+              "nil"
+              "!nixd"
+            ];
+          };
+        };
       };
 
       userKeymaps = [
