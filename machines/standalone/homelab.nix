@@ -16,6 +16,7 @@ in
     self.homeModules.fcitx5
     self.homeModules.fontconfig
     self.homeModules.terminal
+    self.homeModules.zed
 
     inputs.nvim.homeModules.nvim
   ];
@@ -53,6 +54,8 @@ in
       homeDirectory = "/home/sh1marin";
       stateVersion = "25.11";
     };
+
+    kurisu.hm.zed.enable = true;
 
     kurisu.hm.unixporn = {
       enable = true;
