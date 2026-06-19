@@ -19,6 +19,8 @@ in
     self.homeModules.zed
 
     inputs.nvim.homeModules.nvim
+    inputs.cybergroupmate.homeModules.default
+    inputs.sops-nix.homeManagerModules.sops
   ];
 
   options = {
@@ -190,6 +192,21 @@ in
 
         pkgs.tree-sitter-grammars.tree-sitter-lean
       ];
+    };
+
+    sops = {
+      age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
+
+      secrets."data" = {
+        sopsFile = ../../secrets/cyber-group-mate.yaml;
+      };
+    };
+
+    services.cybergroupmate = {
+      enable = true;
+      configFile = config.sops.secrets."data".path;
+
+      extraSystemdService.Service.RestartSec = 10;
     };
   };
 }

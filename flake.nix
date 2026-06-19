@@ -45,6 +45,11 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    cybergroupmate = {
+      url = "github:Avimitin/CyberGroupmate/nixify";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
