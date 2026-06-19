@@ -30,6 +30,7 @@ in
             "qt6ct"
             "qtstyleplugin-kvantum"
             "fcitx5"
+            "zed-editor"
           ];
         in
         with builtins;
