@@ -45,6 +45,8 @@ in
           metrics = false;
         };
         vim_mode = true;
+        relative_line_numbers = true;
+        load_direnv = "shell_hook";
         terminal = {
           dock = "left";
           env = {
@@ -114,6 +116,19 @@ in
           };
         };
 
+        lsp = {
+          tinymist = {
+            initialization_options = {
+              preview.background.enabled = true;
+            };
+            settings = {
+              exportPdf = "onSave";
+              outputPath = "$root/$name";
+              formatterMode = "typstyle";
+            };
+          };
+        };
+
         debugger = {
           dock = "left";
         };
@@ -133,27 +148,28 @@ in
 
       userKeymaps = [
         {
+          context = "(VimControl && (vim_mode == normal || vim_mode == visual)) && !menu";
           bindings = {
             "; y" = "editor::CopyFileLocation";
           };
         }
         {
           # `:write` from normal mode
-          context = "vim_mode == normal && !menu";
+          context = "(VimControl && vim_mode == normal) && !menu";
           bindings = {
             "; w" = "workspace::Save";
           };
         }
         {
           # act as Vim ESC (leave insert mode)
-          context = "vim_mode == insert && !menu";
+          context = "(VimControl && vim_mode == insert) && !menu";
           bindings = {
             "alt-;" = "vim::NormalBefore";
           };
         }
         {
           # bash/readline-style movement in insert mode
-          context = "vim_mode == insert && !menu";
+          context = "(VimControl && vim_mode == insert) && !menu";
           bindings = {
             "ctrl-a" = [
               "editor::MoveToBeginningOfLine"
