@@ -204,6 +204,30 @@ in
             "s" = "vim::HelixJumpToWord";
           };
         }
+        {
+          context = "vim_mode == visual && !menu";
+          bindings = {
+            "g s" = "vim::PushAddSurrounds";
+          };
+        }
+        {
+          context = "VimControl && vim_mode == normal && !menu";
+          bindings = {
+            "shift-l" = [
+              "vim::EndOfLine"
+              { display_lines = true; }
+            ];
+          };
+        }
+        {
+          context = "(VimControl && vim_mode == normal) && !menu";
+          bindings = {
+            "shift-h" = [
+              "vim::FirstNonWhitespace"
+              { display_lines = true; }
+            ];
+          };
+        }
       ];
     };
   };
