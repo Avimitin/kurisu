@@ -45,7 +45,7 @@ in
           metrics = false;
         };
         vim_mode = true;
-        relative_line_numbers = true;
+        relative_line_numbers = "wrapped";
         load_direnv = "shell_hook";
         terminal = {
           dock = "left";
