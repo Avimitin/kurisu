@@ -24,7 +24,6 @@ final: prev: {
   };
 
   inherit (import inputs.nixpkgs-master { system = final.stdenv.hostPlatform.system; })
-    codex
     opencode
     ;
 }

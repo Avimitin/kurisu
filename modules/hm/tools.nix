@@ -84,10 +84,7 @@ in
       ])
       ++ (lib.optionals cfg.enableAI [
         # AI stuff
-        codex
-        gemini-cli
         opencode
-        claude-code
       ])
       ++ (lib.optionals cfg.configureFish [
         fish
