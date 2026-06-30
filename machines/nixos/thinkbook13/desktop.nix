@@ -157,6 +157,7 @@
 
     nix.extraOptions = ''
       !include ${config.home-manager.users.sh1marin.sops.secrets."nix_access_tokens".path}
+      !include ${config.home-manager.users.sh1marin.xdg.configHome}/nix/substituter.conf
     '';
   };
 }
