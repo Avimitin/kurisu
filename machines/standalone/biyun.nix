@@ -1,5 +1,4 @@
 {
-  inputs,
   pkgs,
   self,
   config,
@@ -9,7 +8,6 @@
   imports = [
     self.homeModules.tools
 
-    inputs.nvim.homeModules.nvim
   ];
 
   config = {
@@ -39,29 +37,5 @@
       };
     };
 
-    programs.avimitin-nvim = {
-      enable = true;
-      treesitter-grammars = [
-        # builtins
-        "bash"
-        "cpp"
-        "css"
-        "comment"
-        "diff"
-        "gitcommit"
-        "typst"
-        "llvm"
-        "regex"
-        "ruby"
-        "python"
-        "rust"
-        "scala"
-        "nix"
-        "yaml"
-        "meson"
-
-        pkgs.tree-sitter-grammars.tree-sitter-lean
-      ];
-    };
   };
 }

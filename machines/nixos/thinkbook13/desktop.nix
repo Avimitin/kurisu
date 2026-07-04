@@ -89,7 +89,6 @@
       self.homeModules.fontconfig
       self.homeModules.zed
 
-      inputs.nvim.homeModules.nvim
       inputs.sops-nix.homeManagerModules.sops
     ];
 
@@ -122,30 +121,6 @@
 
     programs.obs-studio.enable = true;
     programs.chromium.enable = true;
-    programs.avimitin-nvim = {
-      enable = true;
-      treesitter-grammars = [
-        # builtins
-        "bash"
-        "cpp"
-        "css"
-        "comment"
-        "diff"
-        "gitcommit"
-        "typst"
-        "llvm"
-        "regex"
-        "ruby"
-        "python"
-        "rust"
-        "scala"
-        "nix"
-        "yaml"
-        "meson"
-
-        pkgs.tree-sitter-grammars.tree-sitter-lean
-      ];
-    };
 
     sops = {
       age.keyFile = "${config.home-manager.users.sh1marin.home.homeDirectory}/.config/sops/age/keys.txt";

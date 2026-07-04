@@ -10,7 +10,6 @@
       system = "x86_64-linux";
       overlays = [
         (import ../../nix/overlay.nix { inherit inputs; })
-        self.inputs.cybergroupmate.overlays.default
       ];
     };
 

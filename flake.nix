@@ -16,12 +16,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # My neovim bundle
-    nvim = {
-      url = "github:Avimitin/nvim";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     # Nix formatter
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
@@ -43,11 +37,6 @@
     # Declarative secrets management
     sops-nix = {
       url = "github:Mic92/sops-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    cybergroupmate = {
-      url = "github:Avimitin/CyberGroupmate/nixify";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

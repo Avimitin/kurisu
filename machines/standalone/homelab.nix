@@ -1,6 +1,5 @@
 {
   lib,
-  inputs,
   pkgs,
   self,
   config,
@@ -18,9 +17,6 @@ in
     self.homeModules.terminal
     self.homeModules.zed
 
-    inputs.nvim.homeModules.nvim
-    inputs.cybergroupmate.homeModules.default
-    inputs.sops-nix.homeManagerModules.sops
   ];
 
   options = {
@@ -167,46 +163,6 @@ in
         email = "dev@avimit.in";
         signingkey = "~/.ssh/id_ed25519.pub";
       };
-    };
-
-    programs.avimitin-nvim = {
-      enable = true;
-      treesitter-grammars = [
-        # builtins
-        "bash"
-        "cpp"
-        "css"
-        "comment"
-        "diff"
-        "gitcommit"
-        "typst"
-        "llvm"
-        "regex"
-        "ruby"
-        "python"
-        "rust"
-        "scala"
-        "nix"
-        "yaml"
-        "meson"
-
-        pkgs.tree-sitter-grammars.tree-sitter-lean
-      ];
-    };
-
-    sops = {
-      age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
-
-      secrets."data" = {
-        sopsFile = ../../secrets/cyber-group-mate.yaml;
-      };
-    };
-
-    services.cybergroupmate = {
-      enable = true;
-      configFile = config.sops.secrets."data".path;
-
-      extraSystemdService.Service.RestartSec = 10;
     };
   };
 }
