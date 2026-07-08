@@ -44,9 +44,6 @@
   boot.loader.systemd-boot.configurationLimit = 10;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # Use latest kernel.
-  boot.kernelPackages = pkgs.linuxPackages_6_18;
-
   boot.initrd.availableKernelModules = [
     "xhci_pci"
     "thunderbolt"
