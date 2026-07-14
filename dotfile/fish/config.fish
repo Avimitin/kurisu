@@ -83,6 +83,13 @@ else if command -q vim
     set -gx MANPAGER 'vim +Man!'
 end
 
+if command -q zeditor
+    alias ze zeditor
+    if test -n "$WAYLAND_DISPLAY"
+        set -gx EDITOR 'zeditor'
+    end
+end
+
 alias userctl "command systemctl --user"
 alias ip "ip -c"
 
