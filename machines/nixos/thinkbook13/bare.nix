@@ -109,6 +109,8 @@
     shell = pkgs.fish;
   };
 
+  security.sudo.wheelNeedsPassword = false;
+
   # Provide nh for system switch
   environment.systemPackages = [ pkgs.nh ];
 
