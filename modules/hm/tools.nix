@@ -76,6 +76,7 @@ in
         metals # Scala LSP
         ccls # c/cpp LSP
         lua-language-server # Lua LSP
+        rust-analyzer # Rust LSP
         stylua # Lua formatter
         ty # Python LSP
         ruff # Python fmt

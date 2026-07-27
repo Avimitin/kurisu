@@ -17,6 +17,97 @@ let
   jsonFormat = pkgs.formats.json { };
   json5 = pkgs.python3Packages.toPythonApplication pkgs.python3Packages.json5;
 
+  mkExtensionTree =
+    extensions:
+    pkgs.runCommand "gram-extensions"
+      {
+        nativeBuildInputs = [ pkgs.python3 ];
+        extensionPackages = builtins.toJSON (map (package: toString package) extensions);
+        passAsFile = [ "extensionPackages" ];
+      }
+      ''
+        python3 <<'PY'
+        import json
+        import os
+        from pathlib import Path
+        import re
+        import sys
+        import tomllib
+
+        packages = json.loads(Path(os.environ["extensionPackagesPath"]).read_text())
+        output = Path(os.environ["out"])
+        output.mkdir()
+        installed = {}
+
+        def fail(message):
+            print(f"gram extension validation failed: {message}", file=sys.stderr)
+            raise SystemExit(1)
+
+        def api_version(value, manifest_path):
+            if not isinstance(value, str):
+                fail(f"{manifest_path}: lib.version must be a semantic-version string")
+            match = re.fullmatch(r"(\d+)\.(\d+)\.(\d+)(?:[-+][0-9A-Za-z.-]+)?", value)
+            if match is None:
+                fail(f"{manifest_path}: invalid lib.version {value!r}")
+            return tuple(map(int, match.groups()))
+
+        for package in packages:
+            extensions_dir = Path(package) / "share" / "zed" / "extensions"
+            if not extensions_dir.is_dir():
+                fail(f"{package} does not contain share/zed/extensions")
+
+            extension_dirs = sorted(extensions_dir.iterdir())
+            if not extension_dirs:
+                fail(f"{extensions_dir} contains no extensions")
+
+            for extension_dir in extension_dirs:
+                if not extension_dir.is_dir():
+                    fail(f"{extension_dir} is not an extension directory")
+
+                manifest_path = extension_dir / "extension.toml"
+                if not manifest_path.is_file():
+                    fail(f"{extension_dir} does not contain extension.toml")
+
+                try:
+                    with manifest_path.open("rb") as manifest_file:
+                        manifest = tomllib.load(manifest_file)
+                except (OSError, tomllib.TOMLDecodeError) as error:
+                    fail(f"could not parse {manifest_path}: {error}")
+
+                extension_id = manifest.get("id")
+                if not isinstance(extension_id, str) or not extension_id:
+                    fail(f"{manifest_path}: id must be a non-empty string")
+                if extension_id != extension_dir.name:
+                    fail(
+                        f"{manifest_path}: manifest id {extension_id!r} does not match "
+                        f"directory name {extension_dir.name!r}"
+                    )
+
+                schema_version = manifest.get("schema_version")
+                if (
+                    isinstance(schema_version, bool)
+                    or not isinstance(schema_version, int)
+                    or not 0 <= schema_version <= 1
+                ):
+                    fail(f"{manifest_path}: schema_version must be an integer from 0 through 1")
+
+                wasm_path = extension_dir / "extension.wasm"
+                if wasm_path.is_file():
+                    lib = manifest.get("lib")
+                    if not isinstance(lib, dict) or "version" not in lib:
+                        fail(f"{manifest_path}: extension.wasm requires lib.version")
+                    version = api_version(lib["version"], manifest_path)
+                    if version > (0, 7, 0):
+                        fail(f"{manifest_path}: unsupported lib.version {lib['version']!r}; Gram 3.2 supports up to 0.7.0")
+
+                previous = installed.get(extension_id)
+                if previous is not None:
+                    fail(f"duplicate extension id {extension_id!r}: {previous} and {extension_dir}")
+                installed[extension_id] = extension_dir
+                os.symlink(extension_dir, output / extension_id)
+        PY
+      '';
+
   impureConfigMerger = empty: jqOperation: path: staticSettings: ''
     mkdir -p "$(dirname ${lib.escapeShellArg path})"
     if [ ! -e ${lib.escapeShellArg path} ]; then
@@ -41,11 +132,14 @@ in
 
     package = lib.mkPackageOption pkgs "gram" { nullable = true; };
 
-    extraPackages = mkOption {
+    extensions = mkOption {
       type = types.listOf types.package;
       default = [ ];
-      example = literalExpression "[ pkgs.nil ]";
-      description = "Extra packages available to Gram.";
+      example = literalExpression "[ pkgs.zed-extensions.nix ]";
+      description = ''
+        Extension packages to install. Each package may provide one or more
+        extensions below share/zed/extensions/<extension-id>.
+      '';
     };
 
     mutableUserSettings = mkOption {
@@ -168,10 +262,6 @@ in
   config = mkIf cfg.enable {
     assertions = [
       {
-        assertion = cfg.extraPackages != [ ] -> cfg.package != null;
-        message = "programs.gram.extraPackages requires a non-null programs.gram.package";
-      }
-      {
         assertion = cfg.defaultEditor -> cfg.package != null;
         message = "programs.gram.defaultEditor requires a non-null programs.gram.package";
       }
@@ -186,23 +276,9 @@ in
       }
     ];
 
-    home.packages = mkIf (cfg.package != null) (
-      if cfg.extraPackages != [ ] then
-        [
-          (pkgs.symlinkJoin {
-            name = "${lib.getName cfg.package}-wrapped-${lib.getVersion cfg.package}";
-            paths = [ cfg.package ];
-            preferLocalBuild = true;
-            nativeBuildInputs = [ pkgs.makeWrapper ];
-            postBuild = ''
-              wrapProgram $out/bin/${cfg.package.meta.mainProgram or "gram"} \
-                --suffix PATH : ${lib.makeBinPath cfg.extraPackages}
-            '';
-          })
-        ]
-      else
-        [ cfg.package ]
-    );
+    # Keep Gram's PATH untouched: language servers come from the launching
+    # environment (including a project's direnv/devShell), never its package.
+    home.packages = mkIf (cfg.package != null) [ cfg.package ];
 
     home.file =
       mkIf
@@ -282,6 +358,13 @@ in
         "gram/debug.jsonc".source = jsonFormat.generate "gram-user-debug" cfg.userDebug;
       })
     ];
+
+    xdg.dataFile = mkIf (cfg.extensions != [ ]) {
+      "gram/extensions/installed" = {
+        source = mkExtensionTree cfg.extensions;
+        recursive = true;
+      };
+    };
 
     home.sessionVariables = mkIf (cfg.defaultEditor && cfg.package != null) editorEnv;
   };

@@ -7,6 +7,17 @@
 
     nixpkgs-master.url = "github:NixOS/nixpkgs/master";
 
+    rust-overlay = {
+      url = "github:oxalica/rust-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nix-zed-extensions = {
+      url = "github:DuskSystems/nix-zed-extensions";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.rust-overlay.follows = "rust-overlay";
+    };
+
     # Configure flake as module
     flake-parts.url = "github:hercules-ci/flake-parts";
 
@@ -74,7 +85,10 @@
           let
             pkgs = import inputs.nixpkgs {
               inherit system;
-              overlays = [ (import ./nix/overlay.nix { inherit inputs; }) ];
+              overlays = [
+                inputs.nix-zed-extensions.overlays.default
+                (import ./nix/overlay.nix { inherit inputs; })
+              ];
             };
           in
           {

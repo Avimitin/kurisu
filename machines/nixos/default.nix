@@ -7,7 +7,10 @@ let
       pkgs = import nixpkgs {
         system = "x86_64-linux";
         config.allowUnfree = true;
-        overlays = [ (import ../../nix/overlay.nix { inherit inputs; }) ];
+        overlays = [
+          inputs.nix-zed-extensions.overlays.default
+          (import ../../nix/overlay.nix { inherit inputs; })
+        ];
       };
       specialArgs = {
         inherit self inputs;

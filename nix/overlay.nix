@@ -16,6 +16,8 @@ final: prev: {
 
   gram = final.callPackage ./pkgs/gram.nix { };
 
+  gram-extensions = final.lib.recurseIntoAttrs (final.callPackage ./pkgs/gram-extensions.nix { });
+
   qbitorrent-cli = final.callPackage ./pkgs/qbittorrent-cli.nix { };
 
   dms-plugins = final.fetchFromGitHub {

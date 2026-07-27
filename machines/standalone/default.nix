@@ -9,6 +9,7 @@
     pkgs = import nixpkgs {
       system = "x86_64-linux";
       overlays = [
+        inputs.nix-zed-extensions.overlays.default
         (import ../../nix/overlay.nix { inherit inputs; })
       ];
     };

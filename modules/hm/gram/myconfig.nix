@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }:
 let
@@ -18,6 +19,12 @@ in
 
       # Regenerate this from Gram's live settings with ./sync.sh.
       userSettings = import ./settings.nix;
+
+      extensions = with pkgs.gram-extensions; [
+        fish
+        scala
+        typst
+      ];
 
       userKeymaps = [
         {

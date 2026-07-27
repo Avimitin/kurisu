@@ -96,6 +96,29 @@
         "type": "github"
       }
     },
+    "nix-zed-extensions": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "rust-overlay": [
+          "rust-overlay"
+        ]
+      },
+      "locked": {
+        "lastModified": 1784958178,
+        "narHash": "sha256-tBszM4+4R9u9K8F6kHFqiCZbOoi61adVoR8CUibfxZQ=",
+        "owner": "DuskSystems",
+        "repo": "nix-zed-extensions",
+        "rev": "fd7e0edbc9c364987d3cfa0bf9459b6ae99fccc0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "DuskSystems",
+        "repo": "nix-zed-extensions",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1785110946,
@@ -149,10 +172,32 @@
         "dms": "dms",
         "flake-parts": "flake-parts",
         "home-manager": "home-manager",
+        "nix-zed-extensions": "nix-zed-extensions",
         "nixpkgs": "nixpkgs",
         "nixpkgs-master": "nixpkgs-master",
+        "rust-overlay": "rust-overlay",
         "sops-nix": "sops-nix",
         "treefmt-nix": "treefmt-nix"
+      }
+    },
+    "rust-overlay": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1785131767,
+        "narHash": "sha256-VNbQv2P0zgaNh96mT4LrnX7hdXgiC5nBH+uvyrrVX7U=",
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "rev": "c67ce00525464a710971351c183ce67acb6ca827",
+        "type": "github"
+      },
+      "original": {
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "type": "github"
       }
     },
     "sops-nix": {

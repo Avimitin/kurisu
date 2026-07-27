@@ -1,10 +1,13 @@
 {
+  # Extensions are Nix-managed; language servers are resolved from PATH.
+  auto_install_extensions = { };
   buffer_font_size = 13;
   debugger.dock = "left";
   diagnostics.inline.enabled = true;
   format_on_save = "on";
   git.inline_blame.enabled = false;
   git_panel.dock = "left";
+  granted_extension_capabilities = [ ];
   icon_theme = "Gram (Default)";
   indent_guides.background_coloring = "disabled";
   inlay_hints.enabled = true;
