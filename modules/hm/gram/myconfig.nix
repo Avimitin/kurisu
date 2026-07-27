@@ -21,6 +21,7 @@ in
       userSettings = import ./settings.nix;
 
       extensions = with pkgs.gram-extensions; [
+        catppuccin-icons
         fish
         scala
         typst
