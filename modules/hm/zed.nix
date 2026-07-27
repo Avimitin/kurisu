@@ -104,7 +104,7 @@ in
           };
         }
         {
-          context = "VimControl && vim_mode == normal && !menu";
+          context = "VimControl && (vim_mode == normal || vim_mode == visual) && !menu";
           bindings = {
             "shift-l" = [
               "vim::EndOfLine"
@@ -113,7 +113,7 @@ in
           };
         }
         {
-          context = "(VimControl && vim_mode == normal) && !menu";
+          context = "VimControl && (vim_mode == normal || vim_mode == visual) && !menu";
           bindings = {
             "shift-h" = [
               "vim::FirstNonWhitespace"
