@@ -83,10 +83,10 @@ else if command -q vim
     set -gx MANPAGER 'vim +Man!'
 end
 
-if command -q zeditor
-    alias ze zeditor
+if command -q gram
+    alias gm gram
     if test -n "$WAYLAND_DISPLAY"
-        set -gx EDITOR 'zeditor'
+        set -gx EDITOR 'gram'
     end
 end
 

@@ -4,5 +4,6 @@
   fontconfig = ./fontconfig.nix;
   terminal = ./terminal;
   unixporn = ./unixporn;
+  gram = ./gram/myconfig.nix;
   zed = ./zed.nix;
 }

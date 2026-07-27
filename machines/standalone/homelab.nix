@@ -15,7 +15,7 @@ in
     self.homeModules.fcitx5
     self.homeModules.fontconfig
     self.homeModules.terminal
-    self.homeModules.zed
+    self.homeModules.gram
 
   ];
 
@@ -28,7 +28,6 @@ in
             "qt6ct"
             "qtstyleplugin-kvantum"
             "fcitx5"
-            "zed-editor"
           ];
         in
         with builtins;
@@ -54,7 +53,7 @@ in
       stateVersion = "25.11";
     };
 
-    kurisu.hm.zed.enable = true;
+    kurisu.hm.gram.enable = true;
 
     kurisu.hm.unixporn = {
       enable = true;

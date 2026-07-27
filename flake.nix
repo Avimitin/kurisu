@@ -74,6 +74,7 @@
           let
             pkgs = import inputs.nixpkgs {
               inherit system;
+              overlays = [ (import ./nix/overlay.nix { inherit inputs; }) ];
             };
           in
           {

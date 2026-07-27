@@ -14,6 +14,8 @@ final: prev: {
 
   mkAppleFonts = final.callPackage ./pkgs/make-apple-fonts.nix { };
 
+  gram = final.callPackage ./pkgs/gram.nix { };
+
   qbitorrent-cli = final.callPackage ./pkgs/qbittorrent-cli.nix { };
 
   dms-plugins = final.fetchFromGitHub {

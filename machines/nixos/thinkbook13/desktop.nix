@@ -87,7 +87,7 @@
     imports = [
       self.homeModules.tools
       self.homeModules.fontconfig
-      self.homeModules.zed
+      self.homeModules.gram
 
       inputs.sops-nix.homeManagerModules.sops
     ];
@@ -110,7 +110,7 @@
     };
 
     kurisu.hm.fontconfig.enable = true;
-    kurisu.hm.zed.enable = true;
+    kurisu.hm.gram.enable = true;
 
     programs.git.settings = {
       user = {
