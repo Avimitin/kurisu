@@ -25,5 +25,6 @@ final: prev: {
 
   inherit (import inputs.nixpkgs-master { system = final.stdenv.hostPlatform.system; })
     opencode
+    niri
     ;
 }
