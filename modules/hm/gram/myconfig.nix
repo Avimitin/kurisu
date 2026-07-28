@@ -33,6 +33,21 @@ in
           bindings."; y" = "editor::CopyFileLocation";
         }
         {
+          context = "Terminal";
+          bindings =
+            let
+              kmap = k: [
+                "terminal::SendKeystroke"
+                k
+              ];
+              bypass = ks: ks |> map (k: lib.nameValuePair k (kmap k)) |> lib.listToAttrs;
+            in
+            bypass [
+              "ctrl-p"
+              "ctrl-n"
+            ];
+        }
+        {
           # `:write` from normal mode.
           context = "(VimControl && vim_mode == normal) && !menu";
           bindings."; w" = "workspace::Save";
