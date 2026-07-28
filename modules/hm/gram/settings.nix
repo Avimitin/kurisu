@@ -4,7 +4,8 @@
   };
   buffer_font_family = "SF Mono";
   buffer_font_size = 13;
-  buffer_line_height = "comfortable";
+  buffer_font_weight = 400;
+  buffer_line_height = "standard";
   debugger = {
     dock = "left";
   };
@@ -35,6 +36,15 @@
         "nil"
         "!nixd"
       ];
+    };
+    Python = {
+      language_servers = [
+        "ty"
+        "!basedpyright"
+      ];
+    };
+    Json = {
+      enable_language_server = false;
     };
   };
   load_direnv = "shell_hook";
