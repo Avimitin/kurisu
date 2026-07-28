@@ -46,6 +46,9 @@
     Json = {
       enable_language_server = false;
     };
+    Bash = {
+      enable_language_server = false;
+    };
   };
   load_direnv = "shell_hook";
   lsp = {
