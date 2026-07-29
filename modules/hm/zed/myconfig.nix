@@ -48,7 +48,7 @@ in
 
         userKeymaps = [
           {
-            context = "(VimControl && (vim_mode == normal || vim_mode == visual)) && !menu";
+            context = "VimControl && (vim_mode == normal || vim_mode == visual) && !menu";
             bindings."; y" = "editor::CopyFileLocation";
           }
           {
@@ -68,7 +68,7 @@ in
           }
           {
             # `:write` from normal mode.
-            context = "(VimControl && vim_mode == normal) && !menu";
+            context = "VimControl && vim_mode == normal && !menu";
             bindings."; w" = "workspace::Save";
           }
           {
