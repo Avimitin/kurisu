@@ -1,4 +1,7 @@
 {
+  active_pane_modifiers = {
+    inactive_opacity = 0.7;
+  };
   agent = {
     default_model = {
       effort = "xhigh";
@@ -13,7 +16,10 @@
     model_parameters = [ ];
   };
   auto_update = false;
+  buffer_font_family = "SF Mono";
   buffer_font_size = 13;
+  buffer_font_weight = 400;
+  buffer_line_height = "standard";
   cli_default_open_behavior = "existing_window";
   collaboration_panel = {
     button = false;
@@ -44,7 +50,7 @@
   git_panel = {
     dock = "left";
   };
-  icon_theme = "Zed (Default)";
+  icon_theme = "Catppuccin Macchiato";
   indent_guides = {
     background_coloring = "disabled";
   };
@@ -94,10 +100,22 @@
     };
   };
   languages = {
+    Bash = {
+      enable_language_server = false;
+    };
+    Json = {
+      enable_language_server = false;
+    };
     Nix = {
       language_servers = [
         "nil"
         "!nixd"
+      ];
+    };
+    Python = {
+      language_servers = [
+        "ty"
+        "!basedpyright"
       ];
     };
   };
@@ -126,13 +144,23 @@
   };
   project_panel = {
     dock = "left";
+    file_icons = true;
+    folder_icons = true;
   };
   proxy = "";
   relative_line_numbers = "wrapped";
   semantic_tokens = "combined";
   show_whitespaces = "trailing";
   soft_wrap = "prefer_line";
+  status_bar = {
+    icon_size = "default";
+    show = true;
+  };
   tab_size = 2;
+  tabs = {
+    file_icons = true;
+    git_status = true;
+  };
   telemetry = {
     diagnostics = false;
     metrics = false;
@@ -146,11 +174,12 @@
   text_rendering_mode = "platform_default";
   theme = "Fleet Dark Purple";
   title_bar = {
+    show = false;
     show_sign_in = false;
     show_user_menu = false;
     show_user_picture = false;
   };
-  ui_font_family = ".ZedSans";
+  ui_font_family = "SF Pro Rounded";
   ui_font_size = 15;
   vim_mode = true;
   which_key = {

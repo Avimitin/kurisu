@@ -1,5 +1,5 @@
-{ ... }:
+{ inputs, ... }:
 {
-  flake.homeModules = import ./hm;
+  flake.homeModules = import ./hm { inherit inputs; };
   flake.nixosModules = import ./os;
 }

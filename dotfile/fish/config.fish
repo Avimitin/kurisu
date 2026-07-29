@@ -85,8 +85,12 @@ end
 
 if command -q gram
     alias gm gram
+end
+
+if command -q zeditor
+    alias ze zeditor
     if test -n "$WAYLAND_DISPLAY"
-        set -gx EDITOR 'gram'
+        set -gx EDITOR 'zeditor'
     end
 end
 
@@ -121,9 +125,9 @@ set -gx XDG_CACHE_HOME $HOME/.cache
 set -gx XDG_DATA_HOME $HOME/.local/share
 set -gx CLICOLOR 1
 if test -n "$EDITOR"
-    set -gx VISUAL "$EDITOR "
+    set -gx VISUAL "$EDITOR"
+    set -gx SYSTEMD_EDITOR "$EDITOR"
 end
-set -gx SYSTEMD_EDITOR $EDITOR
 set -gx PAGER 'less -R'
 set -gx FZF_DEFAULT_OPTS '--height 35% --layout=reverse'
 

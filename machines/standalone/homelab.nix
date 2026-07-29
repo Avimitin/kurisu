@@ -16,7 +16,7 @@ in
     self.homeModules.fontconfig
     self.homeModules.terminal
     self.homeModules.gram
-
+    self.homeModules.zed
   ];
 
   options = {
@@ -54,6 +54,7 @@ in
     };
 
     kurisu.hm.gram.enable = true;
+    kurisu.hm.zed.enable = true;
 
     kurisu.hm.unixporn = {
       enable = true;

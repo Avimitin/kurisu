@@ -41,7 +41,7 @@
 
     # Automatic disk partition
     disko = {
-      url = "github:nix-community/disko?tag=v1.13.0";
+      url = "github:nix-community/disko/v1.13.0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

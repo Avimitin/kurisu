@@ -20,8 +20,8 @@
 #   ./modules/hm/zed/sync.sh --src FILE            # alias of --from-json
 #   ZED_SETTINGS_SRC=... ./modules/hm/zed/sync.sh  # override source via env
 #
-# Then in modules/hm/zed.nix:
-#   userSettings = import ./zed/settings.nix;
+# Then in modules/hm/zed/myconfig.nix the generated settings are imported and
+# merged with the immutable download policy.
 
 set -euo pipefail
 

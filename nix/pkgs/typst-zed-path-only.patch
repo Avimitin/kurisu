@@ -11,7 +11,7 @@ diff --git a/src/typst.rs b/src/typst.rs
 +            .and_then(|settings| settings.binary)
 +            .and_then(|binary| binary.arguments);
 +        let tinymist_path = worktree.which("tinymist").ok_or_else(|| {
-+            "`tinymist` was not found in PATH; install it declaratively and restart Gram"
++            "`tinymist` was not found in PATH; install it declaratively and restart the editor"
 +                .to_string()
 +        })?;
 -

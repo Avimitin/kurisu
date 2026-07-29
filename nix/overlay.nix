@@ -18,6 +18,14 @@ final: prev: {
 
   gram-extensions = final.lib.recurseIntoAttrs (final.callPackage ./pkgs/gram-extensions.nix { });
 
+  zed-editor = final.callPackage ./pkgs/zed-editor.nix {
+    unpatchedZedEditor = prev.zed-editor;
+  };
+
+  zed-extensions-path-only = final.lib.recurseIntoAttrs (
+    final.callPackage ./pkgs/zed-extensions-path-only.nix { }
+  );
+
   qbitorrent-cli = final.callPackage ./pkgs/qbittorrent-cli.nix { };
 
   dms-plugins = final.fetchFromGitHub {
