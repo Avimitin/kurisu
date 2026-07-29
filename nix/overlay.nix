@@ -14,10 +14,6 @@ final: prev: {
 
   mkAppleFonts = final.callPackage ./pkgs/make-apple-fonts.nix { };
 
-  gram = final.callPackage ./pkgs/gram.nix { };
-
-  gram-extensions = final.lib.recurseIntoAttrs (final.callPackage ./pkgs/gram-extensions.nix { });
-
   zed-editor = final.callPackage ./pkgs/zed-editor.nix {
     unpatchedZedEditor = prev.zed-editor;
   };
