@@ -1,6 +1,31 @@
 { inputs }:
 
-final: prev: {
+final: prev:
+let
+  # The stock nixpkgs build compiles remote_server in the GUI invocation and
+  # produces a dynamically linked binary. Build it separately below so it can
+  # be a portable musl executable and so the editor does not build it twice.
+  unpatchedZedEditor = prev.zed-editor.override {
+    buildRemoteServer = false;
+  };
+
+  unprocessedZedRemoteServer =
+    if final.stdenv.hostPlatform.system == "x86_64-linux" then
+      final.callPackage ./pkgs/zed-remote-server.nix {
+        inherit unpatchedZedEditor;
+      }
+    else
+      null;
+
+  zedRemoteServer =
+    if unprocessedZedRemoteServer != null then
+      final.callPackage ./pkgs/zed-remote-server-package.nix {
+        unprocessedRemoteServer = unprocessedZedRemoteServer;
+      }
+    else
+      null;
+in
+{
   rime-dict =
     let
       src = final.fetchFromGitHub {
@@ -15,8 +40,11 @@ final: prev: {
   mkAppleFonts = final.callPackage ./pkgs/make-apple-fonts.nix { };
 
   zed-editor = final.callPackage ./pkgs/zed-editor.nix {
-    unpatchedZedEditor = prev.zed-editor;
+    inherit unpatchedZedEditor;
+    inherit zedRemoteServer;
   };
+
+  zed-remote-server = zedRemoteServer;
 
   zed-extensions-path-only = final.lib.recurseIntoAttrs (
     final.callPackage ./pkgs/zed-extensions-path-only.nix { }
