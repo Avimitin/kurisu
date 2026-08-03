@@ -15,7 +15,18 @@
     favorite_models = [ ];
     model_parameters = [ ];
   };
+  auto_install_extensions = {
+    html = false;
+  };
   auto_update = false;
+  auto_update_extensions = {
+    catppuccin-icons = false;
+    fish = false;
+    fleet-themes = false;
+    nix = false;
+    scala = false;
+    typst = false;
+  };
   buffer_font_family = "SF Mono";
   buffer_font_size = 13;
   buffer_font_weight = 400;
@@ -50,6 +61,13 @@
   git_panel = {
     dock = "left";
   };
+  granted_extension_capabilities = [
+    {
+      args = [ "**" ];
+      command = "*";
+      kind = "process:exec";
+    }
+  ];
   icon_theme = "Catppuccin Macchiato";
   indent_guides = {
     background_coloring = "disabled";
@@ -103,6 +121,9 @@
     Bash = {
       enable_language_server = false;
     };
+    CSS = {
+      enable_language_server = false;
+    };
     Json = {
       enable_language_server = false;
     };
@@ -117,6 +138,9 @@
         "ty"
         "!basedpyright"
       ];
+    };
+    YAML = {
+      enable_language_server = false;
     };
   };
   load_direnv = "shell_hook";
@@ -147,7 +171,6 @@
     file_icons = true;
     folder_icons = true;
   };
-  proxy = "";
   relative_line_numbers = "wrapped";
   semantic_tokens = "combined";
   show_whitespaces = "trailing";

@@ -66,6 +66,9 @@ in
         websocat # web over socket
 
         python3
+
+        htop
+        btop
       ]
       ++ cfg.extraPackages
       ++ (lib.optionals cfg.enableLsp [
