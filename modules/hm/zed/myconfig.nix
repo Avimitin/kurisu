@@ -149,6 +149,7 @@ in
           nix
           scala
           typst
+          make
         ];
       };
     };

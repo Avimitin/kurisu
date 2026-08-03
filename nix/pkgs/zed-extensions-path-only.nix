@@ -7,6 +7,7 @@
     fish
     nix
     scala
+    make
     ;
 
   typst = zed-extensions.typst.overrideAttrs (oldAttrs: {
