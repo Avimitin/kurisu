@@ -48,6 +48,43 @@ in
 
         userKeymaps = [
           {
+            # Reset the layout to the editor with only the file tree dock open,
+            # or open the Agent panel full-screen. The F23/F24 bindings are
+            # internal steps used by SendKeystrokes so focus settles before zoom.
+            context = "Workspace";
+            bindings = {
+              f23 = "agent::FocusAgent";
+              f24 = "workspace::ToggleZoom";
+              "ctrl-alt-1" = [
+                "action::Sequence"
+                [
+                  "workspace::CloseAllDocks"
+                  "project_panel::ToggleFocus"
+                ]
+              ];
+              "ctrl-alt-2" = [
+                "workspace::SendKeystrokes"
+                "f23 f24"
+              ];
+            };
+          }
+          {
+            # A hidden panel retains its zoom state, so leave full-screen Agent
+            # mode before closing it. Repeated Ctrl-Alt-2 stays full-screen.
+            context = "AgentPanel";
+            bindings = {
+              "ctrl-alt-1" = [
+                "action::Sequence"
+                [
+                  "workspace::ToggleZoom"
+                  "workspace::CloseAllDocks"
+                  "project_panel::ToggleFocus"
+                ]
+              ];
+              "ctrl-alt-2" = "agent::FocusAgent";
+            };
+          }
+          {
             context = "VimControl && (vim_mode == normal || vim_mode == visual) && !menu";
             bindings."; y" = "editor::CopyFileLocation";
           }
