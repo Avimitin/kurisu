@@ -13,7 +13,7 @@
     };
 
     nix-zed-extensions = {
-      url = "github:DuskSystems/nix-zed-extensions";
+      url = "github:Avimitin/nix-zed-extensions/builder-phase-hooks";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.rust-overlay.follows = "rust-overlay";
     };

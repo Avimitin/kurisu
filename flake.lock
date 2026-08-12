@@ -107,15 +107,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1785689518,
-        "narHash": "sha256-e/qAkWM76mFcm3ddUg5Y+W1XibD8g7CcArXSy/SLTR4=",
-        "owner": "DuskSystems",
+        "lastModified": 1786526262,
+        "narHash": "sha256-sPGhCnslUG04EyHB7Q+RW00oh8eS9B6FIihqRWgFMdA=",
+        "owner": "Avimitin",
         "repo": "nix-zed-extensions",
-        "rev": "a9b5d4350e293381ebe415d00096879d331ff540",
+        "rev": "d0e85732de8970b23ac81946fd8cb8ddc2408b30",
         "type": "github"
       },
       "original": {
-        "owner": "DuskSystems",
+        "owner": "Avimitin",
+        "ref": "builder-phase-hooks",
         "repo": "nix-zed-extensions",
         "type": "github"
       }

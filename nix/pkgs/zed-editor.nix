@@ -6,9 +6,9 @@
 }:
 
 assert lib.assertMsg (unpatchedZedEditor.version == "1.12.0") ''
-  The Zed download-policy patch was audited against zed-editor 1.12.0, but
+  The Zed patches were audited against zed-editor 1.12.0, but
   nixpkgs now provides ${unpatchedZedEditor.version}. Rebase and re-audit
-  nix/pkgs/zed-no-automatic-downloads.patch before updating this assertion.
+  nix/pkgs/zed-*.patch before updating this assertion.
 '';
 assert lib.assertMsg
   (zedRemoteServer == null || zedRemoteServer.version == unpatchedZedEditor.version)
@@ -19,7 +19,10 @@ assert lib.assertMsg
 unpatchedZedEditor.overrideAttrs (oldAttrs: {
   patches =
     (oldAttrs.patches or [ ])
-    ++ [ ./zed-no-automatic-downloads.patch ]
+    ++ [
+      ./zed-no-automatic-downloads.patch
+      ./zed-extension-checksums.patch
+    ]
     ++ lib.optional (zedRemoteServer != null) ./zed-local-remote-server.patch;
 
   env =

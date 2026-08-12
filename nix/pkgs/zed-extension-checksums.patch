@@ -1,0 +1,144 @@
+diff --git a/crates/extension_host/Cargo.toml b/crates/extension_host/Cargo.toml
+--- a/crates/extension_host/Cargo.toml
++++ b/crates/extension_host/Cargo.toml
+@@ -43,6 +43,7 @@
+ serde.workspace = true
+ serde_json.workspace = true
+ serde_json_lenient.workspace = true
++sha2.workspace = true
+ settings.workspace = true
+ task.workspace = true
+ telemetry.workspace = true
+diff --git a/crates/extension_host/src/extension_host.rs b/crates/extension_host/src/extension_host.rs
+--- a/crates/extension_host/src/extension_host.rs
++++ b/crates/extension_host/src/extension_host.rs
+@@ -45,6 +45,7 @@
+ use remote::RemoteClient;
+ use semver::Version;
+ use serde::{Deserialize, Serialize};
++use sha2::{Digest, Sha256};
+ use settings::{SemanticTokenRules, Settings, SettingsStore};
+ use std::ops::RangeInclusive;
+ use std::str::FromStr;
+@@ -70,6 +71,7 @@
+ 
+ pub const RELOAD_DEBOUNCE_DURATION: Duration = Duration::from_millis(200);
+ const FS_WATCH_LATENCY: Duration = Duration::from_millis(100);
++const EXTENSION_CHECKSUM_FILE: &str = ".zed-extension-checksum";
+ 
+ /// The current extension [`SchemaVersion`] supported by Zed.
+ const CURRENT_SCHEMA_VERSION: SchemaVersion = SchemaVersion(1);
+@@ -301,6 +303,29 @@
+         cx.global::<GlobalExtensionStore>().0.clone()
+     }
+ 
++    async fn has_valid_extension_checksum(fs: &dyn Fs, extension_dir: &Path) -> bool {
++        let Ok(checksum) = fs.load(&extension_dir.join(EXTENSION_CHECKSUM_FILE)).await else {
++            return false;
++        };
++        let checksum = checksum.trim();
++        checksum.len() == 64 && checksum.bytes().all(|byte| byte.is_ascii_hexdigit())
++    }
++
++    async fn is_dev_extension(fs: &dyn Fs, extension_dir: &Path) -> Result<bool> {
++        if Self::has_valid_extension_checksum(fs, extension_dir).await {
++            return Ok(false);
++        }
++
++        // Keep compatibility with normal extensions installed before Zed
++        // started writing checksum receipts. Development extensions are
++        // symlinks, so an unmarked symlink is still classified as development.
++        Ok(fs
++            .metadata(extension_dir)
++            .await?
++            .with_context(|| format!("missing extension directory {extension_dir:?}"))?
++            .is_symlink)
++    }
++
+     pub fn new(
+         extensions_dir: PathBuf,
+         build_dir: Option<PathBuf>,
+@@ -365,16 +390,32 @@
+         // is invalid or is out-of-date according to the filesystem mtimes, then
+         // it must be asynchronously rebuilt.
+         let mut extension_index = ExtensionIndex::default();
++        let mut cached_dev_classification_changed = false;
+         let mut extension_index_needs_rebuild = true;
+         if let Ok(index_content) = index_content
+             && let Some(index) = serde_json::from_str(&index_content).log_err()
+         {
+             extension_index = index;
++            // Reclassify cached entries so adding or removing a package-manager
++            // checksum receipt takes effect without waiting for another change
++            // to the installed extensions directory.
++            for (extension_id, entry) in &mut extension_index.extensions {
++                let extension_dir = this.installed_dir.join(extension_id.as_ref());
++                let is_dev = cx
++                    .foreground_executor()
++                    .block_on(Self::is_dev_extension(this.fs.as_ref(), &extension_dir))
++                    .unwrap_or(entry.dev);
++                if entry.dev != is_dev {
++                    entry.dev = is_dev;
++                    cached_dev_classification_changed = true;
++                }
++            }
+             if let (Ok(Some(index_metadata)), Ok(Some(extensions_metadata))) =
+                 (index_metadata, extensions_metadata)
+                 && index_metadata
+                     .mtime
+                     .bad_is_greater_than(extensions_metadata.mtime)
++                && !cached_dev_classification_changed
+             {
+                 extension_index_needs_rebuild = false;
+             }
+@@ -823,6 +864,7 @@
+                     }
+                 }
+ 
++                let extension_checksum = format!("{:x}", Sha256::digest(&tar_gz_bytes));
+                 let decompressed_bytes = GzipDecoder::new(BufReader::new(tar_gz_bytes.as_slice()));
+                 let archive = Archive::new(decompressed_bytes);
+ 
+@@ -844,6 +886,12 @@
+                 match temp_dir {
+                     Ok(temp_dir) => {
+                         archive.unpack(temp_dir.path()).await?;
++                        fs.save(
++                            &temp_dir.path().join(EXTENSION_CHECKSUM_FILE),
++                            &extension_checksum.as_str().into(),
++                            Default::default(),
++                        )
++                        .await?;
+                         remove_dir().await?;
+                         fs.rename(
+                             temp_dir.path(),
+@@ -858,7 +906,13 @@
+                     }
+                     Err(_) => {
+                         remove_dir().await?;
+-                        archive.unpack(extension_dir).await.map_err(Into::into)
++                        archive.unpack(&extension_dir).await?;
++                        fs.save(
++                            &extension_dir.join(EXTENSION_CHECKSUM_FILE),
++                            &extension_checksum.as_str().into(),
++                            Default::default(),
++                        )
++                        .await
+                     }
+                 }
+             })
+@@ -1646,13 +1700,7 @@
+         let mut extension_manifest = ExtensionManifest::load(fs.clone(), &extension_dir).await?;
+         let extension_id = extension_manifest.id.clone();
+ 
+-        // TODO: distinguish dev extensions more explicitly, by the absence
+-        // of a checksum file that we'll create when downloading normal extensions.
+-        let is_dev = fs
+-            .metadata(&extension_dir)
+-            .await?
+-            .with_context(|| format!("missing extension directory {extension_dir:?}"))?
+-            .is_symlink;
++        let is_dev = Self::is_dev_extension(fs.as_ref(), &extension_dir).await?;
+ 
+         let language_dir = extension_dir.join("languages");
+         if let Ok(mut language_paths) = fs.read_dir(&language_dir).await {
