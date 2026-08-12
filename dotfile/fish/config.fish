@@ -80,7 +80,7 @@ if command -q nvim
 else if command -q vim
     alias vi "vim"
     set -gx EDITOR 'vim'
-    set -gx MANPAGER 'vim +Man!'
+    set -gx MANPAGER="vim -M +MANPAGER -c 'set ft=man ts=8 nomod nolist nonu noma' -c 'map q :q<CR>' -"
 end
 
 if command -q zeditor
