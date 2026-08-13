@@ -203,6 +203,11 @@
   };
   text_rendering_mode = "platform_default";
   theme = "Fleet Dark Purple";
+  theme_overrides = {
+    "Fleet Dark Purple" = {
+      hint = "#808080";
+    };
+  };
   title_bar = {
     show = false;
     show_sign_in = false;
