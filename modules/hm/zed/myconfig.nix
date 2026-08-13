@@ -174,6 +174,16 @@ in
               { display_lines = true; }
             ];
           }
+          {
+            context = "Workspace";
+            bindings."alt-g g" = [
+              "task::Spawn"
+              {
+                task_name = "Lazygit";
+                reveal_target = "center";
+              }
+            ];
+          }
         ];
       };
 

@@ -121,6 +121,13 @@
     Bash = {
       enable_language_server = false;
     };
+    "C++" = {
+      document_symbols = "on";
+      inlay_hints = {
+        enabled = true;
+        show_background = false;
+      };
+    };
     CSS = {
       enable_language_server = false;
     };
