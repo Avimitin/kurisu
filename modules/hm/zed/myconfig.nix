@@ -12,6 +12,7 @@ let
   downloadPolicy = {
     auto_install_extensions = {
       html = false;
+      pathy = false;
     };
 
     auto_update_extensions = {
@@ -21,6 +22,7 @@ let
       nix = false;
       scala = false;
       typst = false;
+      pathy = false;
     };
 
     granted_extension_capabilities = [
@@ -30,6 +32,41 @@ let
         args = [ "**" ];
       }
     ];
+  };
+
+  # Pathy is installed declaratively from the nix store; never let Zed
+  # download/update the extension or fetch its sidecar server from GitHub
+  # at runtime. `server_path` takes precedence over any download logic.
+  syncedSettings = import ./settings.nix;
+
+  # Insert pathy right after the primary server of a language whose
+  # `language_servers` list is pinned in settings.nix. Languages without an
+  # explicit list pick pathy up automatically: the extension manifest
+  # registers it for them and Zed's default `["..."]` enables all
+  # registered servers.
+  withPathy =
+    servers:
+    let
+      without = builtins.filter (name: name != "pathy") servers;
+    in
+    if without == [ ] then
+      [
+        "..."
+        "pathy"
+      ]
+    else
+      lib.take 1 without ++ [ "pathy" ] ++ lib.drop 1 without;
+
+  pathySettings = {
+    languages = {
+      Python.language_servers = withPathy (syncedSettings.languages.Python.language_servers or [ ]);
+      Nix.language_servers = withPathy (syncedSettings.languages.Nix.language_servers or [ ]);
+    };
+
+    lsp.pathy.settings = {
+      auto_download = false;
+      server_path = lib.getExe' pkgs.pathy-server "pathy-server";
+    };
   };
 in
 {
@@ -44,7 +81,7 @@ in
         # Regenerate the synchronized portion from Zed's live settings with
         # ./sync.sh. The download policy above always wins over synchronized
         # values and over mutable settings already present on the machine.
-        userSettings = (import ./settings.nix) // downloadPolicy;
+        userSettings = lib.recursiveUpdate (syncedSettings // downloadPolicy) pathySettings;
 
         userKeymaps = [
           {
@@ -197,6 +234,7 @@ in
           scala
           typst
           make
+          pathy
         ];
       };
     };

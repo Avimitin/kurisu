@@ -46,6 +46,8 @@ in
 
   zed-remote-server = zedRemoteServer;
 
+  pathy-server = final.callPackage ./pkgs/pathy-server.nix { };
+
   zed-extensions-path-only = final.lib.recurseIntoAttrs (
     final.callPackage ./pkgs/zed-extensions-path-only.nix { }
   );

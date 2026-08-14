@@ -1,5 +1,6 @@
 {
   buildZedExtension,
+  buildZedRustExtension,
   fetchFromGitHub,
   zed-extensions,
 }:
@@ -36,6 +37,23 @@ let
       scala
       make
       ;
+
+    # The pathy fork turns the Python-only completion server into a generic
+    # one. Built from the fork so the manifest ships the full language list.
+    # Keep the rev in sync with pkgs/pathy-server.nix.
+    pathy = buildZedRustExtension {
+      name = "pathy";
+      version = "0.2.0";
+
+      src = fetchFromGitHub {
+        owner = "Avimitin";
+        repo = "pathy";
+        rev = "f7d7c8f6887fcc50b6bb933be55426439a766455";
+        hash = "sha256-O+Me1nVOj5n71HKXx/yNhGH24NBV6bvOqHNoSHfrrxA=";
+      };
+
+      cargoHash = "sha256-A3QKWGCGog7U1LcO5SAN7Av0QJzIXtiOS6x32Fywp0M=";
+    };
 
     fleet-themes = buildZedExtension {
       name = "fleet-themes";
