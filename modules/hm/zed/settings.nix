@@ -68,7 +68,11 @@
       kind = "process:exec";
     }
   ];
-  icon_theme = "Catppuccin Macchiato";
+  icon_theme = {
+    dark = "Catppuccin Macchiato";
+    light = "Catppuccin Macchiato";
+    mode = "dark";
+  };
   indent_guides = {
     background_coloring = "disabled";
   };
@@ -202,11 +206,10 @@
     };
   };
   text_rendering_mode = "platform_default";
-  theme = "Fleet Dark Purple";
-  theme_overrides = {
-    "Fleet Dark Purple" = {
-      hint = "#808080";
-    };
+  theme = {
+    dark = "Fleet Dark Purple";
+    light = "One Light";
+    mode = "dark";
   };
   title_bar = {
     show = false;

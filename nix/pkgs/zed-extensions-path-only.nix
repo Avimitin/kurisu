@@ -1,4 +1,8 @@
-{ zed-extensions }:
+{
+  buildZedExtension,
+  fetchFromGitHub,
+  zed-extensions,
+}:
 
 let
   # The forked builders run postInstall after nix-zed-extensions has assembled
@@ -27,12 +31,23 @@ let
   extensions = {
     inherit (zed-extensions)
       catppuccin-icons
-      fleet-themes
       fish
       nix
       scala
       make
       ;
+
+    fleet-themes = buildZedExtension {
+      name = "fleet-themes";
+      version = "1.2.1";
+
+      src = fetchFromGitHub {
+        owner = "Avimitin";
+        repo = "zed-fleet-themes";
+        rev = "2705eaf8cdf1e46d7adb8f513825cc4b3ff3a3f5";
+        hash = "sha256-C8V3xRatSNR9pygvyBi6Gip8GT3ETicwXrqvK+MNNHY=";
+      };
+    };
 
     typst = zed-extensions.typst.overrideAttrs (oldAttrs: {
       patches = (oldAttrs.patches or [ ]) ++ [ ./typst-zed-path-only.patch ];
