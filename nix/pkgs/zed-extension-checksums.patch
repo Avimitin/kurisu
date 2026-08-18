@@ -91,7 +91,7 @@ diff --git a/crates/extension_host/src/extension_host.rs b/crates/extension_host
              {
                  extension_index_needs_rebuild = false;
              }
-@@ -823,6 +864,7 @@
+@@ -820,6 +861,7 @@
                      }
                  }
  
@@ -99,7 +99,7 @@ diff --git a/crates/extension_host/src/extension_host.rs b/crates/extension_host
                  let decompressed_bytes = GzipDecoder::new(BufReader::new(tar_gz_bytes.as_slice()));
                  let archive = Archive::new(decompressed_bytes);
  
-@@ -844,6 +886,12 @@
+@@ -841,6 +883,12 @@
                  match temp_dir {
                      Ok(temp_dir) => {
                          archive.unpack(temp_dir.path()).await?;
@@ -112,7 +112,7 @@ diff --git a/crates/extension_host/src/extension_host.rs b/crates/extension_host
                          remove_dir().await?;
                          fs.rename(
                              temp_dir.path(),
-@@ -858,7 +906,13 @@
+@@ -855,7 +903,13 @@
                      }
                      Err(_) => {
                          remove_dir().await?;
@@ -127,7 +127,7 @@ diff --git a/crates/extension_host/src/extension_host.rs b/crates/extension_host
                      }
                  }
              })
-@@ -1646,13 +1700,7 @@
+@@ -1643,13 +1697,7 @@
          let mut extension_manifest = ExtensionManifest::load(fs.clone(), &extension_dir).await?;
          let extension_id = extension_manifest.id.clone();
  

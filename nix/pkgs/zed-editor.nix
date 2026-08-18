@@ -5,8 +5,8 @@
   zedRemoteServer ? null,
 }:
 
-assert lib.assertMsg (unpatchedZedEditor.version == "1.12.0") ''
-  The Zed patches were audited against zed-editor 1.12.0, but
+assert lib.assertMsg (unpatchedZedEditor.version == "1.15.0") ''
+  The Zed patches were audited against zed-editor 1.15.0, but
   nixpkgs now provides ${unpatchedZedEditor.version}. Rebase and re-audit
   nix/pkgs/zed-*.patch before updating this assertion.
 '';
@@ -22,6 +22,7 @@ unpatchedZedEditor.overrideAttrs (oldAttrs: {
     ++ [
       ./zed-no-automatic-downloads.patch
       ./zed-extension-checksums.patch
+      ./zed-linux-system-notifications.patch
     ]
     ++ lib.optional (zedRemoteServer != null) ./zed-local-remote-server.patch;
 
