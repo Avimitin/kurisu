@@ -62,8 +62,8 @@ let
       src = fetchFromGitHub {
         owner = "Avimitin";
         repo = "zed-fleet-themes";
-        rev = "2705eaf8cdf1e46d7adb8f513825cc4b3ff3a3f5";
-        hash = "sha256-C8V3xRatSNR9pygvyBi6Gip8GT3ETicwXrqvK+MNNHY=";
+        rev = "81d741bd0ac7f7f8483ff25b2e67464092cba7cb";
+        hash = "sha256-z0IgmNWDMlpNA0QhEp42d++nZ4quNxJyh10dvIK2cL8=";
       };
     };
 
