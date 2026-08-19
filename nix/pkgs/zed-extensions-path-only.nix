@@ -48,8 +48,8 @@ let
       src = fetchFromGitHub {
         owner = "Avimitin";
         repo = "pathy";
-        rev = "f7d7c8f6887fcc50b6bb933be55426439a766455";
-        hash = "sha256-O+Me1nVOj5n71HKXx/yNhGH24NBV6bvOqHNoSHfrrxA=";
+        rev = "584d6f753262f0b1b6a68d10ae0165347e5dd911";
+        hash = "sha256-KOKpxgNP0J22ju/XTjCpOSnz9+Qgl/8qWX6UMPmz+EU=";
       };
 
       cargoHash = "sha256-A3QKWGCGog7U1LcO5SAN7Av0QJzIXtiOS6x32Fywp0M=";
