@@ -39,7 +39,7 @@
 
       terminal = {
         enable = true;
-        type = "foot";
+        type = "kitty";
       };
     };
 
@@ -71,6 +71,7 @@
 
   services.gnome.gnome-keyring.enable = true;
   programs.seahorse.enable = true;
+  environment.systemPackages = [ pkgs.moonlight-qt ];
 
   # --- Home Configuration ---
   home-manager.useGlobalPkgs = true;
