@@ -103,6 +103,70 @@ nix run '.#nh' -- os switch .
 - `rimeData` (list of package): List of rime scheme/dictionary to set in user data directory.
 - `extraRimeData` (list of path): List of directory to append into user data directory.
 
+#### `kurisu.hm.home-assistant`
+
+- `enable` (bool): Run Home Assistant as a hardened systemd user service.
+- `configDir` (string): Mutable state directory; defaults to `$XDG_STATE_HOME/home-assistant`.
+- `config` (YAML attribute set, nullable): Declarative `configuration.yaml`, or `null` for UI-managed configuration.
+- `extraComponents` (list of string): Built-in integrations whose Python dependencies are included.
+- `customComponents` (list of package): Custom integrations linked into `custom_components`.
+- `extraPackages` (function): Additional Python packages available to Home Assistant.
+- `runtimePackages` (list of package): Additional executables available to integrations.
+- `writablePaths` (list of string): Additional paths writable through the service sandbox.
+
+This module is a Home Manager adaptation of nixpkgs' NixOS Home Assistant module.
+System-level setup such as firewall rules, device permissions, mDNS, and user lingering
+must still be configured on the host.
+
+The Windows screen-light automation can be installed from an elevated PowerShell
+session with `scripts/install-home-assistant-screen-light.ps1`. It stores the local-only
+webhook ID under an ACL-restricted ProgramData directory and starts a heartbeat task in
+the selected user's session at logon. Home Assistant should use each heartbeat as a
+restartable 90-second lease, so the light turns off after logout, sleep, shutdown, a
+crash, or power loss without relying on a final Windows shutdown request.
+
+Configure the existing Home Assistant webhook automation like this, retaining its
+private webhook ID and replacing `light.screen_light` with the actual entity ID:
+
+```yaml
+alias: Windows screen-light lease
+triggers:
+  - trigger: webhook
+    webhook_id: REPLACE_WITH_THE_EXISTING_PRIVATE_ID
+    allowed_methods:
+      - POST
+    local_only: true
+conditions:
+  - condition: template
+    value_template: "{{ trigger.json.state | default('') in ['on', 'off'] }}"
+actions:
+  - choose:
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.json.state == 'on' }}"
+        sequence:
+          - if:
+              - condition: template
+                value_template: >-
+                  {{ not is_state('light.screen_light', 'on') }}
+            then:
+              - action: light.turn_on
+                target:
+                  entity_id: light.screen_light
+          - delay: "00:01:30"
+          - action: light.turn_off
+            target:
+              entity_id: light.screen_light
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.json.state == 'off' }}"
+        sequence:
+          - action: light.turn_off
+            target:
+              entity_id: light.screen_light
+mode: restart
+```
+
 #### `kurisu.hm.terminal`
 - `enable` (bool): Enable Terminal customization.
 - `type` (enum: `foot`, `alacritty`, `ghostty`, nullable): Select an terminal option to enable.

@@ -14,6 +14,7 @@ in
     self.homeModules.tools
     self.homeModules.fcitx5
     self.homeModules.fontconfig
+    self.homeModules.home-assistant
     self.homeModules.terminal
     self.homeModules.zed
   ];
@@ -74,6 +75,31 @@ in
     };
 
     kurisu.hm.fontconfig.enable = true;
+
+    kurisu.hm.home-assistant = {
+      enable = true;
+
+      # Keep configuration.yaml and UI-created state mutable. The state directory
+      # contains plaintext authentication and integration tokens; keep its mode
+      # private and include it only in encrypted backups.
+      config = null;
+      configDir = "${config.xdg.stateHome}/home-assistant";
+
+      # Xiaomi Home's OAuth callback is fixed to http://homeassistant.local:8123.
+      # DNS or mDNS for that name and the host firewall are system-level settings
+      # and cannot be managed by this standalone Home Manager configuration.
+      extraComponents = [
+        "default_config"
+        "met"
+        "esphome"
+        "ffmpeg"
+        "upnp"
+        "zeroconf"
+      ];
+      customComponents = [
+        pkgs.home-assistant-custom-components.xiaomi_home
+      ];
+    };
 
     # Configuration for niri
     xdg.configFile.niri = myLib.fromDotfile "niri/config.kdl";
