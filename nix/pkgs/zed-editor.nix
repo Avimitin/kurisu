@@ -5,8 +5,8 @@
   zedRemoteServer ? null,
 }:
 
-assert lib.assertMsg (unpatchedZedEditor.version == "1.15.0") ''
-  The Zed patches were audited against zed-editor 1.15.0, but
+assert lib.assertMsg (unpatchedZedEditor.version == "1.16.1") ''
+  The Zed patches were audited against zed-editor 1.16.1, but
   nixpkgs now provides ${unpatchedZedEditor.version}. Rebase and re-audit
   nix/pkgs/zed-*.patch before updating this assertion.
 '';

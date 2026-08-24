@@ -12,14 +12,14 @@ diff --git a/crates/extension_host/Cargo.toml b/crates/extension_host/Cargo.toml
 diff --git a/crates/extension_host/src/extension_host.rs b/crates/extension_host/src/extension_host.rs
 --- a/crates/extension_host/src/extension_host.rs
 +++ b/crates/extension_host/src/extension_host.rs
-@@ -45,6 +45,7 @@
- use remote::RemoteClient;
+@@ -46,6 +46,7 @@
  use semver::Version;
  use serde::{Deserialize, Serialize};
-+use sha2::{Digest, Sha256};
  use settings::{SemanticTokenRules, Settings, SettingsStore};
++use sha2::{Digest, Sha256};
  use std::ops::RangeInclusive;
  use std::str::FromStr;
+ use std::sync::LazyLock;
 @@ -70,6 +71,7 @@
  
  pub const RELOAD_DEBOUNCE_DURATION: Duration = Duration::from_millis(200);
