@@ -93,7 +93,7 @@ end
 alias userctl "command systemctl --user"
 alias ip "ip -c"
 
-if test "$TERM" = "xterm-kitty"
+if test "$TERM" = "xterm-kitty" && test -z "$SSH_TTY"
   alias ssh "command kitty +kitten ssh"
 else
   alias ssh "TERM=xterm-256color command ssh"
