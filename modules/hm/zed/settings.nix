@@ -3,12 +3,6 @@
     inactive_opacity = 0.7;
   };
   agent = {
-    default_model = {
-      effort = "xhigh";
-      enable_thinking = false;
-      model = "glm-5.2";
-      provider = "z.ai";
-    };
     default_profile = "write";
     dock = "right";
     enable_feedback = false;
@@ -17,6 +11,7 @@
   };
   auto_install_extensions = {
     html = false;
+    pathy = false;
   };
   auto_update = false;
   auto_update_extensions = {
@@ -24,9 +19,11 @@
     fish = false;
     fleet-themes = false;
     nix = false;
+    pathy = false;
     scala = false;
     typst = false;
   };
+  buffer_font_fallbacks = [ "Noto Sans Mono CJK SC" ];
   buffer_font_family = "IoskeleyMono Nerd Font";
   buffer_font_size = 13;
   buffer_font_weight = 400;
@@ -42,15 +39,6 @@
     inline = {
       enabled = true;
     };
-  };
-  edit_predictions = {
-    mode = "subtle";
-    open_ai_compatible_api = {
-      api_url = "https://token-plan-cn.xiaomimimo.com/v1";
-      model = "glm-4.7";
-      prompt_format = "glm";
-    };
-    provider = "open_ai_compatible_api";
   };
   format_on_save = "on";
   git = {
@@ -79,48 +67,6 @@
   inlay_hints = {
     enabled = true;
   };
-  language_models = {
-    openai_compatible = {
-      mimo = {
-        api_url = "https://token-plan-cn.xiaomimimo.com/v1";
-        available_models = [
-          {
-            capabilities = {
-              chat_completions = true;
-              images = false;
-              interleaved_reasoning = false;
-              parallel_tool_calls = false;
-              prompt_cache_key = false;
-              tools = true;
-            };
-            max_completion_tokens = 200000;
-            max_output_tokens = 131072;
-            max_tokens = 1048576;
-            name = "mimo-v2.5-pro";
-          }
-        ];
-      };
-      "z.ai" = {
-        api_url = "https://api.z.ai/api/coding/paas/v4";
-        available_models = [
-          {
-            capabilities = {
-              chat_completions = true;
-              images = false;
-              interleaved_reasoning = false;
-              parallel_tool_calls = false;
-              prompt_cache_key = false;
-              tools = true;
-            };
-            max_completion_tokens = 200000;
-            max_output_tokens = 32000;
-            max_tokens = 1000000;
-            name = "glm-5.2";
-          }
-        ];
-      };
-    };
-  };
   languages = {
     Bash = {
       enable_language_server = false;
@@ -141,12 +87,14 @@
     Nix = {
       language_servers = [
         "nil"
+        "pathy"
         "!nixd"
       ];
     };
     Python = {
       language_servers = [
         "ty"
+        "pathy"
         "!basedpyright"
       ];
     };
@@ -156,6 +104,12 @@
   };
   load_direnv = "shell_hook";
   lsp = {
+    pathy = {
+      settings = {
+        auto_download = false;
+        server_path = "/nix/store/vgdjf6gsyahfx26amsrr77gkakfqmk96-pathy-server-0.2.0/bin/pathy-server";
+      };
+    };
     tinymist = {
       initialization_options = {
         preview = {
