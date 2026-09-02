@@ -39,6 +39,7 @@ in
         noto-fonts-color-emoji
         nerd-fonts.fira-code
         nerd-fonts.im-writing
+        ioskeley-mono.normal-NF
         apple-sf-mono
         apple-sf-pro
         apple-newyork
@@ -61,8 +62,6 @@ in
       ];
       monospace = [
         "SF Mono"
-        "iMWritingMono Nerd Font Mono"
-        "FiraCode Nerd Font Mono"
         "Noto Sans Mono CJK SC"
         "Noto Sans Mono"
       ];

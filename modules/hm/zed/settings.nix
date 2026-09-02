@@ -27,7 +27,7 @@
     scala = false;
     typst = false;
   };
-  buffer_font_family = "SF Mono";
+  buffer_font_family = "IoskeleyMono Nerd Font";
   buffer_font_size = 13;
   buffer_font_weight = 400;
   buffer_line_height = "standard";
