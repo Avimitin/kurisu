@@ -94,10 +94,10 @@ alias userctl "command systemctl --user"
 alias ip "ip -c"
 
 if test "$TERM" = "xterm-kitty" && test -z "$SSH_TTY"
-  alias ssh "command kitty +kitten ssh"
-else
-  alias ssh "TERM=xterm-256color command ssh"
+  alias kssh "command kitty +kitten ssh"
 end
+
+alias ssh "TERM=xterm-256color command ssh"
 
 if command -q git
     alias g git
