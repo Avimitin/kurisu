@@ -71,6 +71,7 @@
 
   services.gnome.gnome-keyring.enable = true;
   programs.seahorse.enable = true;
+  programs.vim.package = pkgs.vim-full;
   environment.systemPackages = [ pkgs.moonlight-qt ];
 
   # --- Home Configuration ---
@@ -83,6 +84,8 @@
       username = "sh1marin";
       homeDirectory = "/home/sh1marin";
       stateVersion = "26.05";
+
+      file.".vimrc".source = ../../../dotfile/vim/.vimrc;
     };
 
     imports = [

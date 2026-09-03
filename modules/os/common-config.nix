@@ -4,12 +4,12 @@
 
   environment.systemPackages = with pkgs; [
     python3
-    # editor
-    vim
     # Download stuff
     git
     curl
   ];
+
+  programs.vim.enable = true;
 
   nix.settings = {
     # Simplify the Nix command line

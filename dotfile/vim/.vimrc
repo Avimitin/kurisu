@@ -1,3 +1,8 @@
+" Prefer the native clipboard and fall back to OSC 52 (for example over SSH).
+set clipboard^=unnamedplus
+packadd osc52
+set clipmethod+=osc52
+
 set number
 
 set rnu
