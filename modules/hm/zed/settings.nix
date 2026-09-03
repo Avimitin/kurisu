@@ -155,6 +155,7 @@
   };
   terminal = {
     dock = "left";
+    pixel_scroll = true;
     env = {
       TERM = "alacritty";
     };

@@ -23,6 +23,7 @@ unpatchedZedEditor.overrideAttrs (oldAttrs: {
       ./zed-no-automatic-downloads.patch
       ./zed-extension-checksums.patch
       ./zed-linux-system-notifications.patch
+      ./zed-pixel-scroll.patch
     ]
     ++ lib.optional (zedRemoteServer != null) ./zed-local-remote-server.patch;
 
