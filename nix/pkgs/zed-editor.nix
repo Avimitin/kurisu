@@ -24,6 +24,9 @@ unpatchedZedEditor.overrideAttrs (oldAttrs: {
       ./zed-extension-checksums.patch
       ./zed-linux-system-notifications.patch
       ./zed-pixel-scroll.patch
+      # Zed PR #59188 at 4a8dd70244839745e665b5e4055cb53ba07024c0,
+      # plus a rustfmt-only indentation fix.
+      ./zed-flash-jump.patch
     ]
     ++ lib.optional (zedRemoteServer != null) ./zed-local-remote-server.patch;
 

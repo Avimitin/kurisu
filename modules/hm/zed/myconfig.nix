@@ -191,7 +191,7 @@ in
           }
           {
             context = "(vim_mode == normal || vim_mode == visual) && !menu";
-            bindings.s = "vim::HelixJumpToWord";
+            bindings.s = "vim::PushFlash";
           }
           {
             context = "vim_mode == visual && !menu";
