@@ -88,7 +88,7 @@ in
       ])
       ++ (lib.optionals cfg.enableAI [
         # AI stuff
-        opencode
+        codex
       ])
       ++ (lib.optionals cfg.configureFish [
         fish
