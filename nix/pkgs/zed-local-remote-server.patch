@@ -1,33 +1,27 @@
 diff --git a/crates/auto_update/src/auto_update.rs b/crates/auto_update/src/auto_update.rs
+index 0d86651c00..e23f9e6518 100644
 --- a/crates/auto_update/src/auto_update.rs
 +++ b/crates/auto_update/src/auto_update.rs
-@@ -565,2 +565,2 @@
+@@ -590,81 +590,43 @@ impl AutoUpdater {
+     // you can override this function. You should also update get_remote_server_release_url to return
+     // Ok(None).
+     pub async fn download_remote_server_release(
 -        release_channel: ReleaseChannel,
 -        version: Option<Version>,
 +        _release_channel: ReleaseChannel,
 +        _version: Option<Version>,
-@@ -572,6 +572,14 @@
+         os: &str,
+         arch: &str,
+         set_status: impl Fn(&str, &mut AsyncApp) + Send + 'static,
+         cx: &mut AsyncApp,
+     ) -> Result<PathBuf> {
 -        let this = cx.update(|cx| {
 -            cx.default_global::<GlobalAutoUpdate>()
 -                .0
 -                .clone()
 -                .context("auto-update not initialized")
 -        })?;
-+        anyhow::ensure!(
-+            os == env!("ZED_BUNDLED_REMOTE_SERVER_OS")
-+                && arch == env!("ZED_BUNDLED_REMOTE_SERVER_ARCH"),
-+            "this Nix build only contains a remote server for {}-{}; the SSH host is {os}-{arch}",
-+            env!("ZED_BUNDLED_REMOTE_SERVER_OS"),
-+            env!("ZED_BUNDLED_REMOTE_SERVER_ARCH"),
-+        );
-+
-+        let path = PathBuf::from(env!("ZED_BUNDLED_REMOTE_SERVER"));
-+        anyhow::ensure!(
-+            smol::fs::metadata(&path).await.is_ok(),
-+            "the Nix-built remote server is missing at {}",
-+            path.display(),
-+        );
-@@ -579,40 +587,2 @@
+-
 -        set_status("Fetching remote server release", cx);
 -        let release = Self::get_release_asset(
 -            &this,
@@ -56,7 +50,14 @@ diff --git a/crates/auto_update/src/auto_update.rs b/crates/auto_update/src/auto
 -            set_status("Downloading remote server", cx);
 -            download_remote_server_binary(&version_path, release, client).await?;
 -        }
--
++        anyhow::ensure!(
++            os == env!("ZED_BUNDLED_REMOTE_SERVER_OS")
++                && arch == env!("ZED_BUNDLED_REMOTE_SERVER_ARCH"),
++            "this Nix build only contains a remote server for {}-{}; the SSH host is {os}-{arch}",
++            env!("ZED_BUNDLED_REMOTE_SERVER_OS"),
++            env!("ZED_BUNDLED_REMOTE_SERVER_ARCH"),
++        );
+ 
 -        if let Err(error) =
 -            cleanup_remote_server_cache(&platform_dir, &version_path, REMOTE_SERVER_CACHE_LIMIT)
 -                .await
@@ -66,11 +67,19 @@ diff --git a/crates/auto_update/src/auto_update.rs b/crates/auto_update/src/auto
 -                platform_dir
 -            );
 -        }
--
++        let path = PathBuf::from(env!("ZED_BUNDLED_REMOTE_SERVER"));
++        anyhow::ensure!(
++            smol::fs::metadata(&path).await.is_ok(),
++            "the Nix-built remote server is missing at {}",
++            path.display(),
++        );
+ 
 -        Ok(version_path)
 +        set_status("Using Nix-built remote development server", cx);
 +        Ok(path)
-@@ -622,5 +592,5 @@
+     }
+ 
+     pub async fn get_remote_server_release_url(
 -        channel: ReleaseChannel,
 -        version: Option<Version>,
 -        os: &str,
@@ -81,7 +90,7 @@ diff --git a/crates/auto_update/src/auto_update.rs b/crates/auto_update/src/auto
 +        _os: &str,
 +        _arch: &str,
 +        _cx: &mut AsyncApp,
-@@ -628,12 +598,4 @@
+     ) -> Result<Option<String>> {
 -        let this = cx.update(|cx| {
 -            cx.default_global::<GlobalAutoUpdate>()
 -                .0
@@ -98,3 +107,7 @@ diff --git a/crates/auto_update/src/auto_update.rs b/crates/auto_update/src/auto
 +        // the SSH transport falls through to download_remote_server_release,
 +        // which returns the binary compiled and pinned by Nix above.
 +        Ok(None)
+     }
+ 
+     async fn get_release_asset(
+
