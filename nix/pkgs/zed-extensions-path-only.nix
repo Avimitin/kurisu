@@ -36,6 +36,7 @@ let
       nix
       scala
       make
+      elixir
       ;
 
     # The pathy fork turns the Python-only completion server into a generic

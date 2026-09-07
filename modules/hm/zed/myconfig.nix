@@ -141,31 +141,6 @@ in
               ];
           }
           {
-            # `:write` from normal mode.
-            context = "VimControl && vim_mode == normal && !menu";
-            bindings."; w" = "workspace::Save";
-          }
-          {
-            # Act as Vim ESC (leave insert mode).
-            context = "(VimControl && vim_mode == insert) && !menu";
-            bindings."alt-;" = "vim::NormalBefore";
-          }
-          {
-            # Bash/readline-style movement in insert mode.
-            context = "(VimControl && vim_mode == insert) && !menu";
-            bindings = {
-              "ctrl-a" = [
-                "editor::MoveToBeginningOfLine"
-                { stop_at_indent = true; }
-              ];
-              "ctrl-e" = "editor::MoveToEndOfLine";
-              "alt-b" = "editor::MoveToPreviousWordStart";
-              "alt-f" = "editor::MoveToNextWordEnd";
-              "ctrl-d" = "editor::Delete";
-              "alt-d" = "editor::DeleteToNextWordEnd";
-            };
-          }
-          {
             context = "(VimControl && vim_mode == normal) || Dock";
             bindings."alt-k" = "workspace::ActivatePaneUp";
           }
@@ -235,6 +210,7 @@ in
           typst
           make
           pathy
+          elixir
         ];
       };
     };
