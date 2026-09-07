@@ -71,6 +71,7 @@
 
   services.gnome.gnome-keyring.enable = true;
   programs.seahorse.enable = true;
+  programs.ssh.enableAskPassword = true;
   programs.vim.package = pkgs.vim-full;
   environment.systemPackages = [ pkgs.moonlight-qt ];
 
