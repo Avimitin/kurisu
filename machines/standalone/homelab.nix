@@ -71,7 +71,7 @@ in
 
     kurisu.hm.terminal = {
       enable = true;
-      type = "foot";
+      type = "kitty";
     };
 
     kurisu.hm.fontconfig.enable = true;

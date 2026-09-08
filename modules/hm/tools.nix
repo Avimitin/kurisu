@@ -95,6 +95,8 @@ in
       ]);
 
     home.file.tmux = myLib.fromDotfile ".tmux.conf";
+    programs.zellij.enable = true;
+    xdg.configFile."zellij/config.kdl".source = ../../dotfile/zellij/config.kdl;
 
     programs.bat = {
       enable = true;
