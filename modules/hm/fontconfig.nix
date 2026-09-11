@@ -37,9 +37,8 @@ in
         noto-fonts
         noto-fonts-cjk-sans
         noto-fonts-color-emoji
-        nerd-fonts.fira-code
-        nerd-fonts.im-writing
         ioskeley-mono.normal-NF
+        ioskeley-mono.normal-term
         apple-sf-mono
         apple-sf-pro
         apple-newyork

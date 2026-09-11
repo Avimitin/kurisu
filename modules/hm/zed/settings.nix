@@ -8,6 +8,14 @@
     enable_feedback = false;
     favorite_models = [ ];
     model_parameters = [ ];
+    sandbox_permissions = {
+      allow_unsandboxed = true;
+      network_hosts = [
+        "github.com"
+        "raw.githubusercontent.com"
+        "api.github.com"
+      ];
+    };
   };
   auto_install_extensions = {
     html = false;
@@ -29,6 +37,7 @@
   buffer_font_weight = 400;
   buffer_line_height = "standard";
   cli_default_open_behavior = "existing_window";
+  close_on_file_delete = true;
   collaboration_panel = {
     button = false;
   };
@@ -107,7 +116,7 @@
     pathy = {
       settings = {
         auto_download = false;
-        server_path = "/nix/store/vgdjf6gsyahfx26amsrr77gkakfqmk96-pathy-server-0.2.0/bin/pathy-server";
+        server_path = "/nix/store/a615415qvcb3vwlgvk9a3y363r0k4n37-pathy-server-0.2.0/bin/pathy-server";
       };
     };
     tinymist = {
@@ -154,17 +163,20 @@
     metrics = false;
   };
   terminal = {
-    dock = "left";
-    pixel_scroll = true;
+    dock = "right";
     env = {
       TERM = "alacritty";
     };
+    font_fallbacks = [ "IoskeleyMono Nerd Font" ];
+    font_family = "Ioskeley Mono Term";
+    pixel_scroll = true;
+    scroll_multiplier = 0.7;
   };
   text_rendering_mode = "platform_default";
   theme = {
     dark = "Fleet Dark Purple";
-    light = "One Light";
-    mode = "dark";
+    light = "Fleet Light";
+    mode = "light";
   };
   title_bar = {
     show = false;
