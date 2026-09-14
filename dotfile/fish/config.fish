@@ -67,6 +67,10 @@ if command -q rsync
     alias rsynca "command rsync -avhP"
 end
 
+if command -q zellij
+    alias zj "command zellij"
+end
+
 if command -q tmux
     alias tmuxd "systemd-run --user --scope tmux new-session"
     alias tl "tmux ls"
