@@ -80,6 +80,21 @@
   };
   programs.vim.package = pkgs.vim-full;
   environment.systemPackages = [ pkgs.moonlight-qt ];
+  nix.distributedBuilds = true;
+nix.buildMachines = [
+  {
+    hostName = "10.x.y.z";                       # the IP, not an alias
+    protocol = "ssh-ng";
+    sshUser = "root";
+    sshKey = "/root/.ssh/id_ed25519_henan_builder";
+    system = "x86_64-linux";
+    maxJobs = 16;                                # see sizing below
+    speedFactor = 1;
+    supportedFeatures = [ "big-parallel" "kvm" "nixos-test" "benchmark" ];
+    publicHostKey = "<base64 -w0 of the builder's /etc/ssh/ssh_host_ed25519_key.pub>";
+  }
+];
+
 
   # --- Home Configuration ---
   home-manager.useGlobalPkgs = true;

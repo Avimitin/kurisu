@@ -40,6 +40,17 @@ index 7ac398295f..b5fa5a44cf 100644
      /// Toolbar related settings
      pub toolbar: Option<TerminalToolbarContent>,
      /// Scrollbar-related settings
+@@ -201,8 +206,8 @@ crate::fallible_options::flattened_deserialize!(TerminalSettingsContent {
+         font_size, font_family, font_fallbacks, line_height, font_features, font_weight,
+         cursor_shape, blinking, alternate_scroll, option_as_meta, copy_on_select,
+         keep_selection_on_copy, open_links_in_mouse_mode, button, dock, starts_open, flexible,
+-        default_width, default_height, max_scroll_history_lines, scroll_multiplier, toolbar,
+-        scrollbar, minimum_contrast, show_count_badge, bell,
++        default_width, default_height, max_scroll_history_lines, scroll_multiplier, pixel_scroll,
++        toolbar, scrollbar, minimum_contrast, show_count_badge, bell,
+     },
+     defaults: {},
+ });
 diff --git a/crates/terminal/src/alacritty.rs b/crates/terminal/src/alacritty.rs
 index b94e42f12e..e26126ac17 100644
 --- a/crates/terminal/src/alacritty.rs
