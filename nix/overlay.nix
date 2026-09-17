@@ -39,6 +39,8 @@ in
 
   mkAppleFonts = final.callPackage ./pkgs/make-apple-fonts.nix { };
 
+  ioskeley-mono = final.lib.recurseIntoAttrs (final.callPackage ./pkgs/ioskeley-mono.nix { });
+
   zed-editor = final.callPackage ./pkgs/zed-editor.nix {
     inherit unpatchedZedEditor;
     inherit zedRemoteServer;

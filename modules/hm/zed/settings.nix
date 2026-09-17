@@ -32,7 +32,7 @@
     typst = false;
   };
   buffer_font_fallbacks = [ "Noto Sans Mono CJK SC" ];
-  buffer_font_family = "IoskeleyMono Nerd Font";
+  buffer_font_family = "IoskeleyMono Nerd Font Mono";
   buffer_font_size = 13;
   buffer_font_weight = 400;
   buffer_line_height = "standard";
@@ -167,7 +167,7 @@
     env = {
       TERM = "alacritty";
     };
-    font_fallbacks = [ "IoskeleyMono Nerd Font" ];
+    font_fallbacks = [ "IoskeleyMono Nerd Font Mono" ];
     font_family = "Ioskeley Mono Term";
     pixel_scroll = true;
     scroll_multiplier = 0.7;
