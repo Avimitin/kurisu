@@ -1,5 +1,5 @@
 diff --git a/assets/keymaps/vim.json b/assets/keymaps/vim.json
-index 6948cce31334b4..e28530a896ba9a 100644
+index f2d7b2626152d8..20861dae34e3ee 100644
 --- a/assets/keymaps/vim.json
 +++ b/assets/keymaps/vim.json
 @@ -648,6 +648,12 @@
@@ -16,7 +16,7 @@ index 6948cce31334b4..e28530a896ba9a 100644
      "context": "vim_mode == operator",
      "bindings": {
 diff --git a/crates/editor/src/display_map.rs b/crates/editor/src/display_map.rs
-index 1d937ad0578835..884d2a36a57c79 100644
+index c6c19d57c87143..ecac65f66fe5ec 100644
 --- a/crates/editor/src/display_map.rs
 +++ b/crates/editor/src/display_map.rs
 @@ -188,6 +188,7 @@ pub enum HighlightKey {
@@ -28,10 +28,10 @@ index 1d937ad0578835..884d2a36a57c79 100644
  
  pub trait ToDisplayPoint {
 diff --git a/crates/editor/src/editor.rs b/crates/editor/src/editor.rs
-index f5b485141af466..8b77eaf045e56d 100644
+index 339593ab601757..58aa299a5fdc1a 100644
 --- a/crates/editor/src/editor.rs
 +++ b/crates/editor/src/editor.rs
-@@ -3882,7 +3882,10 @@ impl Editor {
+@@ -4091,7 +4091,10 @@ impl Editor {
  
          visible_start.to_point(display_snapshot)
              ..display_snapshot
@@ -1708,7 +1708,7 @@ index c76579311ec056..ca1a74d0f2a3b3 100644
      }
  }
 diff --git a/crates/vim/src/vim.rs b/crates/vim/src/vim.rs
-index 6a0ebce1d7a8ea..e86bcb51f73df0 100644
+index c016bd6d415575..1244100b019e15 100644
 --- a/crates/vim/src/vim.rs
 +++ b/crates/vim/src/vim.rs
 @@ -6,6 +6,7 @@ mod test;
@@ -1832,7 +1832,7 @@ index 6a0ebce1d7a8ea..e86bcb51f73df0 100644
                  }
              } else if matches!(
                  active_operator,
-@@ -1779,7 +1810,7 @@ impl Vim {
+@@ -1785,7 +1816,7 @@ impl Vim {
              self.selected_register
                  .replace(register.chars().next().unwrap());
          }
@@ -1841,7 +1841,7 @@ index 6a0ebce1d7a8ea..e86bcb51f73df0 100644
          self.sync_vim_settings(window, cx);
      }
  
-@@ -1794,14 +1825,38 @@ impl Vim {
+@@ -1800,14 +1831,38 @@ impl Vim {
          popped_operator
      }
  
@@ -1883,7 +1883,7 @@ index 6a0ebce1d7a8ea..e86bcb51f73df0 100644
          self.sync_vim_settings(window, cx);
      }
  
-@@ -2048,6 +2103,20 @@ impl Vim {
+@@ -2054,6 +2109,20 @@ impl Vim {
              return;
          }
  
@@ -1905,10 +1905,10 @@ index 6a0ebce1d7a8ea..e86bcb51f73df0 100644
              Some(Operator::FindForward { before, multiline }) => {
                  let find = Motion::FindForward {
 diff --git a/docs/src/vim.md b/docs/src/vim.md
-index db8bc03d40eef4..033a0e244417b1 100644
+index 6604529a575523..8f7bed2adad438 100644
 --- a/docs/src/vim.md
 +++ b/docs/src/vim.md
-@@ -551,6 +551,32 @@ The Helix-style jump-to-word action shows jump labels at visible word starts. It
+@@ -552,6 +552,32 @@ The Helix-style jump-to-word action shows jump labels at visible word starts. It
  }
  ```
  

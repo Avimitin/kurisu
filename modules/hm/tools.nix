@@ -57,7 +57,6 @@ in
         sops # Secret management
         dufs # File Share
         git # vcs
-        jujutsu # vcs
         jq # json editor
         fping # ping with parallel
         gnumake # make
@@ -69,6 +68,8 @@ in
 
         htop
         btop
+
+        qsoc
       ]
       ++ cfg.extraPackages
       ++ (lib.optionals cfg.enableLsp [
@@ -85,10 +86,6 @@ in
         ruff # Python fmt
         uv # Python package manager
         tinymist # Typst LSP w/ preview
-      ])
-      ++ (lib.optionals cfg.enableAI [
-        # AI stuff
-        codex
       ])
       ++ (lib.optionals cfg.configureFish [
         fish

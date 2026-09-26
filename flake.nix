@@ -50,6 +50,8 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    qsoc.url = "git+https://github.com/vowstar/qsoc?ref=main&submodules=1";
   };
 
   outputs =

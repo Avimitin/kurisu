@@ -1,7 +1,7 @@
 diff --git a/crates/project/src/lsp_store.rs b/crates/project/src/lsp_store.rs
 --- a/crates/project/src/lsp_store.rs
 +++ b/crates/project/src/lsp_store.rs
-@@ -485,7 +485,7 @@ impl LocalLspStore {
+@@ -506,7 +506,7 @@ impl LocalLspStore {
              settings,
              toolchain.clone(),
              delegate.clone(),
@@ -13,7 +13,7 @@ diff --git a/crates/project/src/lsp_store.rs b/crates/project/src/lsp_store.rs
 diff --git a/crates/zed/src/main.rs b/crates/zed/src/main.rs
 --- a/crates/zed/src/main.rs
 +++ b/crates/zed/src/main.rs
-@@ -531,7 +531,7 @@ fn main() {
+@@ -535,7 +535,7 @@ fn main() {
              let options = NodeBinaryOptions {
                  allow_path_lookup: !settings.ignore_system_version,
                  // TODO: Expose this setting
@@ -37,7 +37,7 @@ diff --git a/crates/remote_server/src/server.rs b/crates/remote_server/src/serve
 diff --git a/crates/edit_prediction_cli/src/headless.rs b/crates/edit_prediction_cli/src/headless.rs
 --- a/crates/edit_prediction_cli/src/headless.rs
 +++ b/crates/edit_prediction_cli/src/headless.rs
-@@ -84,7 +84,7 @@ pub fn init(cx: &mut App) -> EpAppState {
+@@ -81,7 +81,7 @@ pub fn init(cx: &mut App) -> EpAppState {
          let settings = &ProjectSettings::get_global(cx).node;
          let options = NodeBinaryOptions {
              allow_path_lookup: !settings.ignore_system_version,
@@ -49,7 +49,7 @@ diff --git a/crates/edit_prediction_cli/src/headless.rs b/crates/edit_prediction
 diff --git a/crates/eval_cli/src/headless.rs b/crates/eval_cli/src/headless.rs
 --- a/crates/eval_cli/src/headless.rs
 +++ b/crates/eval_cli/src/headless.rs
-@@ -86,7 +86,7 @@ pub fn init(cx: &mut App) -> Arc<AgentCliAppState> {
+@@ -83,7 +83,7 @@ pub fn init(cx: &mut App) -> Arc<AgentCliAppState> {
          let settings = &ProjectSettings::get_global(cx).node;
          let options = NodeBinaryOptions {
              allow_path_lookup: !settings.ignore_system_version,

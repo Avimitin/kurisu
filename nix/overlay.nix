@@ -63,6 +63,8 @@ in
     hash = "sha256-QgeeB6Ix8L5oaqTUCopPvGu6vr0ECsF+jO3mQIxPKIw=";
   };
 
+  inherit (inputs.qsoc.packages."${final.stdenv.hostPlatform.system}") qsoc;
+
   inherit (import inputs.nixpkgs-master { system = final.stdenv.hostPlatform.system; })
     niri
     ;

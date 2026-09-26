@@ -1,7 +1,7 @@
 diff --git a/crates/agent_ui/src/agent_panel.rs b/crates/agent_ui/src/agent_panel.rs
 --- a/crates/agent_ui/src/agent_panel.rs
 +++ b/crates/agent_ui/src/agent_panel.rs
-@@ -2653,6 +2653,23 @@ impl AgentPanel {
+@@ -2687,6 +2687,23 @@ impl AgentPanel {
              return;
          }
          let settings = AgentSettings::get_global(cx);
@@ -28,7 +28,7 @@ diff --git a/crates/agent_ui/src/agent_panel.rs b/crates/agent_ui/src/agent_pane
 diff --git a/crates/agent_ui/src/conversation_view.rs b/crates/agent_ui/src/conversation_view.rs
 --- a/crates/agent_ui/src/conversation_view.rs
 +++ b/crates/agent_ui/src/conversation_view.rs
-@@ -2909,13 +2909,34 @@ impl ConversationView {
+@@ -2939,6 +2939,7 @@ impl ConversationView {
          };
          let root_thread = root_thread.read(cx).thread.read(cx);
          let root_thread_id = self.thread_id;
@@ -36,7 +36,7 @@ diff --git a/crates/agent_ui/src/conversation_view.rs b/crates/agent_ui/src/conv
          let root_work_dirs = root_thread.work_dirs().cloned();
          let root_title = root_thread.title();
 
-         let title = root_title
+@@ -2946,6 +2947,26 @@ impl ConversationView {
              .clone()
              .unwrap_or_else(|| self.agent.agent_id().0);
 
@@ -66,7 +66,7 @@ diff --git a/crates/agent_ui/src/conversation_view.rs b/crates/agent_ui/src/conv
 diff --git a/crates/zed/src/main.rs b/crates/zed/src/main.rs
 --- a/crates/zed/src/main.rs
 +++ b/crates/zed/src/main.rs
-@@ -489,6 +489,8 @@ fn main() {
+@@ -490,6 +490,8 @@ fn main() {
          zed_actions::init();
 
          release_channel::init(app_version, cx);

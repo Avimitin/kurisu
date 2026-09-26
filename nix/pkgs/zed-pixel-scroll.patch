@@ -1,8 +1,8 @@
 diff --git a/assets/settings/default.json b/assets/settings/default.json
-index b5bc4ce26f..29ed7e3e4d 100644
+index d669b19fe4..d367da8198 100644
 --- a/assets/settings/default.json
 +++ b/assets/settings/default.json
-@@ -2049,6 +2049,9 @@
+@@ -2156,6 +2156,9 @@
      "max_scroll_history_lines": 10000,
      // The multiplier for scrolling speed in the terminal.
      "scroll_multiplier": 1.0,
@@ -13,10 +13,10 @@ index b5bc4ce26f..29ed7e3e4d 100644
      // APCA (Accessible Perceptual Contrast Algorithm) is more accurate than WCAG 2.x,
      // especially for dark mode. Values range from 0 to 106.
 diff --git a/crates/settings/src/vscode_import.rs b/crates/settings/src/vscode_import.rs
-index f662654a7b..1b95317873 100644
+index 60836aaee8..04ca80543f 100644
 --- a/crates/settings/src/vscode_import.rs
 +++ b/crates/settings/src/vscode_import.rs
-@@ -942,6 +942,7 @@ impl VsCodeSettings {
+@@ -968,6 +968,7 @@ impl VsCodeSettings {
              project: self.project_terminal_settings_content(),
              scrollbar: None,
              scroll_multiplier: None,
@@ -25,7 +25,7 @@ index f662654a7b..1b95317873 100644
              show_count_badge: None,
              flexible: None,
 diff --git a/crates/settings_content/src/terminal.rs b/crates/settings_content/src/terminal.rs
-index 7ac398295f..b5fa5a44cf 100644
+index 86b9557639..11b1399410 100644
 --- a/crates/settings_content/src/terminal.rs
 +++ b/crates/settings_content/src/terminal.rs
 @@ -165,6 +165,11 @@ pub struct TerminalSettingsContent {
@@ -81,7 +81,7 @@ index b94e42f12e..e26126ac17 100644
      let start = AlacPoint::new(term.topmost_line(), Column(0));
      let end = AlacPoint::new(term.bottommost_line(), term.last_column());
 diff --git a/crates/terminal/src/terminal.rs b/crates/terminal/src/terminal.rs
-index 47732f5a71..39f0169e04 100644
+index 37c32e9f97..9ef7a77960 100644
 --- a/crates/terminal/src/terminal.rs
 +++ b/crates/terminal/src/terminal.rs
 @@ -64,14 +64,14 @@ use crate::alacritty::current_child_signal_mask;
@@ -178,7 +178,7 @@ index 47732f5a71..39f0169e04 100644
      ScrollToPoint(Point),
      SetSelection(Option<Selection>),
      UpdateSelection(GpuiPoint<Pixels>),
-@@ -993,6 +1050,7 @@ impl TerminalBuilder {
+@@ -1033,6 +1090,7 @@ impl TerminalBuilder {
              selection_head: None,
              breadcrumb_text: String::new(),
              scroll_px: px(0.),
@@ -186,7 +186,7 @@ index 47732f5a71..39f0169e04 100644
              next_link_id: 0,
              selection_phase: SelectionPhase::Ended,
              hyperlink_regex_searches: RegexSearches::default(),
-@@ -1267,6 +1325,7 @@ impl TerminalBuilder {
+@@ -1317,6 +1375,7 @@ impl TerminalBuilder {
                  selection_head: None,
                  breadcrumb_text: String::new(),
                  scroll_px: px(0.),
@@ -194,7 +194,7 @@ index 47732f5a71..39f0169e04 100644
                  next_link_id: 0,
                  selection_phase: SelectionPhase::Ended,
                  hyperlink_regex_searches: RegexSearches::new(
-@@ -1463,6 +1522,7 @@ pub struct Terminal {
+@@ -1520,6 +1579,7 @@ pub struct Terminal {
      pub breadcrumb_text: String,
      title_override: Option<String>,
      scroll_px: Pixels,
@@ -202,7 +202,7 @@ index 47732f5a71..39f0169e04 100644
      next_link_id: usize,
      selection_phase: SelectionPhase,
      hyperlink_regex_searches: RegexSearches,
-@@ -1652,6 +1712,7 @@ impl Terminal {
+@@ -1712,6 +1772,7 @@ impl Terminal {
      ) {
          match event {
              &InternalEvent::Resize(new_bounds) => {
@@ -210,7 +210,7 @@ index 47732f5a71..39f0169e04 100644
                  let new_bounds = normalize_terminal_bounds(new_bounds);
                  trace!("Resizing: new_bounds={new_bounds:?}");
  
-@@ -1675,12 +1736,16 @@ impl Terminal {
+@@ -1739,12 +1800,16 @@ impl Terminal {
                  }
              }
              InternalEvent::Clear => {
@@ -228,7 +228,7 @@ index 47732f5a71..39f0169e04 100644
                  trace!("Scrolling: scroll={scroll:?}");
                  scroll_display(term, *scroll);
                  self.refresh_hovered_word(window, cx);
-@@ -1714,11 +1779,8 @@ impl Terminal {
+@@ -1778,11 +1843,8 @@ impl Terminal {
              }
              InternalEvent::UpdateSelection(position) => {
                  trace!("Updating selection: position={position:?}");
@@ -242,7 +242,7 @@ index 47732f5a71..39f0169e04 100644
  
                  if update_term_selection(term, point, side) {
                      #[cfg(any(target_os = "linux", target_os = "freebsd"))]
-@@ -1744,11 +1806,13 @@ impl Terminal {
+@@ -1808,11 +1870,13 @@ impl Terminal {
                  }
              }
              InternalEvent::ScrollToPoint(point) => {
@@ -256,7 +256,7 @@ index 47732f5a71..39f0169e04 100644
                  trace!("Move vi cursor to point: point={point:?}");
                  vi_goto_point(term, *point);
                  self.refresh_hovered_word(window, cx);
-@@ -1759,17 +1823,14 @@ impl Terminal {
+@@ -1823,17 +1887,14 @@ impl Terminal {
                  toggle_term_vi_mode(term);
              }
              InternalEvent::ViMotion(motion) => {
@@ -276,7 +276,7 @@ index 47732f5a71..39f0169e04 100644
  
                  match find_from_terminal_point(
                      term,
-@@ -2340,6 +2401,20 @@ impl Terminal {
+@@ -2417,6 +2478,20 @@ impl Terminal {
          }
  
          self.last_content = make_content(&terminal, &self.last_content);
@@ -297,7 +297,7 @@ index 47732f5a71..39f0169e04 100644
          if self.last_content.grid_lines_change == GridLinesChange::Changed {
              debug_assert!(self.last_content.last_hovered_word.is_none());
              self.refresh_hovered_word(window, cx);
-@@ -2352,6 +2427,24 @@ impl Terminal {
+@@ -2429,6 +2504,24 @@ impl Terminal {
          }
      }
  
@@ -322,7 +322,7 @@ index 47732f5a71..39f0169e04 100644
      pub fn with_renderable_cells<R>(&self, f: impl for<'a> FnOnce(RenderableCells<'a>) -> R) -> R {
          let term = self.term.lock_unfair();
          let content = term.renderable_content();
-@@ -2401,8 +2494,19 @@ impl Terminal {
+@@ -2478,8 +2571,19 @@ impl Terminal {
          self.last_content.mode.intersects(Modes::MOUSE_MODE) && !shift
      }
  
@@ -343,7 +343,7 @@ index 47732f5a71..39f0169e04 100644
          if self.mouse_mode(e.modifiers.shift) {
              // A ctrl/cmd press on a link suppressed its button-press report in
              // `mouse_down`. Since the app never saw the press, we must swallow
-@@ -2413,7 +2517,7 @@ impl Terminal {
+@@ -2490,7 +2594,7 @@ impl Terminal {
              if self.mouse_down_hyperlink.is_none() {
                  let (point, side) = grid_point_and_side(
                      position,
@@ -352,7 +352,7 @@ index 47732f5a71..39f0169e04 100644
                      self.last_content.display_offset,
                  );
  
-@@ -2442,6 +2546,7 @@ impl Terminal {
+@@ -2519,6 +2623,7 @@ impl Terminal {
          position: GpuiPoint<Pixels>,
          cx: &mut Context<Self>,
      ) {
@@ -360,7 +360,7 @@ index 47732f5a71..39f0169e04 100644
          if self.selection_phase == SelectionPhase::Selecting
              || !modifiers.secondary()
              || !self.last_content.terminal_bounds.bounds.contains(&position)
-@@ -2479,19 +2584,17 @@ impl Terminal {
+@@ -2556,19 +2661,17 @@ impl Terminal {
          self.last_mouse_move_time = now;
          self.last_hyperlink_search_position = Some(position);
          self.events.push_back(InternalEvent::FindHyperlink(
@@ -385,7 +385,7 @@ index 47732f5a71..39f0169e04 100644
          let selection = Selection::new(SelectionType::Semantic, point, side);
          self.events
              .push_back(InternalEvent::SetSelection(Some(selection)));
-@@ -2503,14 +2606,11 @@ impl Terminal {
+@@ -2580,14 +2683,11 @@ impl Terminal {
          region: Bounds<Pixels>,
          cx: &mut Context<Self>,
      ) {
@@ -403,7 +403,7 @@ index 47732f5a71..39f0169e04 100644
  
                  if !hyperlink.range.contains(point) {
                      self.mouse_down_hyperlink = None;
-@@ -2568,12 +2668,9 @@ impl Terminal {
+@@ -2645,12 +2745,9 @@ impl Terminal {
      }
  
      pub fn mouse_down(&mut self, e: &MouseDownEvent, cx: &mut Context<Self>) {
@@ -419,7 +419,7 @@ index 47732f5a71..39f0169e04 100644
  
          if e.button == MouseButton::Left
              && e.modifiers.secondary()
-@@ -2600,7 +2697,7 @@ impl Terminal {
+@@ -2677,7 +2774,7 @@ impl Terminal {
                      self.mouse_down_position = Some(e.position);
                      let (point, side) = grid_point_and_side(
                          position,
@@ -428,7 +428,7 @@ index 47732f5a71..39f0169e04 100644
                          self.last_content.display_offset,
                      );
  
-@@ -2651,13 +2748,10 @@ impl Terminal {
+@@ -2728,13 +2825,10 @@ impl Terminal {
      pub fn mouse_up(&mut self, e: &MouseUpEvent, cx: &Context<Self>) {
          let setting = TerminalSettings::get_global(cx);
  
@@ -445,7 +445,7 @@ index 47732f5a71..39f0169e04 100644
  
              if self
                  .find_hyperlink_at_point(point)
-@@ -2680,11 +2774,7 @@ impl Terminal {
+@@ -2757,11 +2851,7 @@ impl Terminal {
          }
  
          if self.mouse_mode(e.modifiers.shift) {
@@ -458,7 +458,7 @@ index 47732f5a71..39f0169e04 100644
  
              let bytes =
                  mouse_button_report(point, e.button, e.modifiers, false, self.last_content.mode);
-@@ -2699,14 +2789,18 @@ impl Terminal {
+@@ -2776,14 +2866,18 @@ impl Terminal {
  
              //Hyperlinks
              if self.selection_phase == SelectionPhase::Ended {
@@ -485,7 +485,7 @@ index 47732f5a71..39f0169e04 100644
                      cx.open_url(link.uri());
                  } else if e.modifiers.secondary() {
                      self.events
-@@ -2721,17 +2815,50 @@ impl Terminal {
+@@ -2798,17 +2892,50 @@ impl Terminal {
      }
  
      ///Scroll the terminal
@@ -539,7 +539,7 @@ index 47732f5a71..39f0169e04 100644
                      self.last_content.display_offset,
                  );
  
-@@ -3480,6 +3607,30 @@ mod tests {
+@@ -3578,6 +3705,30 @@ mod tests {
      use rand::{Rng, distr, rngs::StdRng};
      use task::{Shell, ShellBuilder};
  
@@ -570,7 +570,7 @@ index 47732f5a71..39f0169e04 100644
      #[test]
      fn test_init_command_startup_marker_commands_do_not_contain_marker() {
          let marker_id = 42;
-@@ -5628,6 +5779,7 @@ mod tests {
+@@ -5711,6 +5862,7 @@ mod tests {
                              ..default()
                          },
                          1.0,
@@ -599,7 +599,7 @@ index e9ac01b71f..35ada91908 100644
              toolbar: Toolbar {
                  breadcrumbs: user_content.toolbar.unwrap().breadcrumbs.unwrap(),
 diff --git a/crates/terminal_view/src/terminal_element.rs b/crates/terminal_view/src/terminal_element.rs
-index 893e908c57..1ec4b67d4b 100644
+index 3067462f41..546029be8d 100644
 --- a/crates/terminal_view/src/terminal_element.rs
 +++ b/crates/terminal_view/src/terminal_element.rs
 @@ -636,7 +636,7 @@ impl TerminalElement {
@@ -690,10 +690,10 @@ index 893e908c57..1ec4b67d4b 100644
              let snap_px = |value: Pixels| {
                  Pixels::from((f32::from(value) * scale_factor).floor() / scale_factor)
 diff --git a/crates/terminal_view/src/terminal_view.rs b/crates/terminal_view/src/terminal_view.rs
-index 6ef5121136..441da628be 100644
+index 5f711f229c..59f8f39cae 100644
 --- a/crates/terminal_view/src/terminal_view.rs
 +++ b/crates/terminal_view/src/terminal_view.rs
-@@ -703,9 +703,11 @@ impl TerminalView {
+@@ -708,9 +708,11 @@ impl TerminalView {
              }
          }
          self.terminal.update(cx, |term, cx| {
