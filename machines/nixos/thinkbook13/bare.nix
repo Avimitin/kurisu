@@ -90,6 +90,8 @@
 
   networking.firewall.enable = lib.mkDefault false;
 
+  services.openssh.enable = true;
+
   # Set your time zone.
   time.timeZone = "Asia/Shanghai";
 
