@@ -8,15 +8,20 @@
 # Rootfs: the self-contained tarball built from the dedicated NixOS config.
 #   nix build .#nixosConfigurations.meka.config.system.build.tarball
 # Extract once (and re-extract whenever the tarball changes):
-#   mkdir -p /var/lib/machines/meka /var/lib/meka
+#   install -d -m 755 /var/lib/machines/meka
+#   install -d -m 700 /var/lib/meka
 #   tar -xJf result/tarball/meka-rootfs.tar.xz -C /var/lib/machines/meka
-#   install -m 600 /path/to/token /run/secrets/meka-token
+#   install -d -m 700 /etc/meka
+#   install -m 600 /path/to/token /etc/meka/token
+# The guest seeds /var/lib/meka/config/config.toml on first boot. Run
+# `meka account add` and `meka profile add` inside the guest to configure a
+# provider; the config and credential database persist under /var/lib/meka.
 #
 # Networking: VirtualEthernet=yes creates host0 (guest) <-> ve-meka (host).
-# The host must run systemd-networkd, whose stock 80-container-ve.network
-# assigns ve-meka an address and runs DHCP + IP masquerade for the guest. The
-# guest's stock 80-container-host0.network brings host0 up via DHCP. Port=
-# then DNATs a host port onto the guest's nginx.
+# The host's stock 80-container-ve.network supplies DHCP and masquerading on
+# ve-meka when systemd-networkd is running. The guest's stock
+# 80-container-host0.network obtains its address via DHCP. Port= DNATs the
+# host port to nginx after the guest obtains an address.
 
 [Exec]
 # Boot systemd inside the container (runs /sbin/init from the rootfs).
@@ -39,7 +44,7 @@ KillSignal=SIGRTMIN+3
 # Read-only bearer-token bind. "rootidmap" maps container UID 0 to the host
 # owner of the source file, so a 0600 token stays readable under
 # PrivateUsers=pick (a plain bind would map host root to "nobody").
-BindReadOnly=/run/secrets/meka-token:/etc/meka/token:rootidmap
+BindReadOnly=/etc/meka/token:/etc/meka/token:rootidmap
 
 # Writable persistent data directory (survives rootfs re-extraction).
 Bind=/var/lib/meka:/var/lib/meka:rootidmap
@@ -48,8 +53,7 @@ Bind=/var/lib/meka:/var/lib/meka:rootidmap
 # Create a veth pair: host0 (guest) <-> ve-meka (host).
 VirtualEthernet=yes
 
-# Expose the guest's nginx (port 80) on the host's port 8080:
-#   http://<host>:8080  ->  nginx in the guest (web UI + /api reverse proxy)
-# Requires the private veth above plus a running systemd-networkd on the host
-# (80-container-ve.network assigns ve-meka and serves DHCP to the guest).
-Port=tcp:8080:80
+# Expose the guest's nginx (port 80) on the host's port 58964:
+#   http://<host>:58964  ->  nginx in the guest (web UI + /api reverse proxy)
+# Requires the private veth above and host systemd-networkd for DHCP and NAT.
+Port=tcp:58964:80

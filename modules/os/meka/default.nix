@@ -38,7 +38,7 @@ let
     default = "unrestricted"
 
     [serve]
-    bind = "0.0.0.0:${toString cfg.port}"
+    bind = "${cfg.bindAddress}:${toString cfg.port}"
     ${optionalString (cfg.corsAllowedOrigins != [ ]) ''
       cors_allowed_origins = ${builtins.toJSON cfg.corsAllowedOrigins}
     ''}
@@ -57,6 +57,18 @@ in
       type = types.port;
       default = 8080;
       description = "Port the meka HTTP API listens on.";
+    };
+
+    bindAddress = mkOption {
+      type = types.str;
+      default = "0.0.0.0";
+      description = "Address the meka HTTP API listens on.";
+    };
+
+    configDir = mkOption {
+      type = types.str;
+      default = "/etc/meka";
+      description = "Directory containing meka's config.toml; CLI edits require it to be writable.";
     };
 
     tokenFile = mkOption {
@@ -141,7 +153,7 @@ in
       wantedBy = [ "multi-user.target" ];
 
       environment = {
-        MEKA_CONFIG_DIR = "/etc/meka";
+        MEKA_CONFIG_DIR = cfg.configDir;
         MEKA_DATA_DIR = "/var/lib/meka";
         RUST_LOG = "meka=info";
       };
@@ -151,6 +163,7 @@ in
         Restart = "on-failure";
         RestartSec = "5s";
         StateDirectory = "meka";
+        StateDirectoryMode = "0700";
         User = "root";
         Group = "root";
       };

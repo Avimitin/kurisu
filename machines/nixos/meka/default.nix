@@ -24,7 +24,7 @@ in
   # systemd-nspawn's VirtualEthernet=yes (see meka.nspawn) creates the veth
   # host0 (guest) <-> ve-meka (host). The guest's stock
   # 80-container-host0.network brings host0 up via DHCP against the host-side
-  # DHCPServer (80-container-ve.network, run by the host's systemd-networkd).
+  # DHCP server (80-container-ve.network, run by the host's systemd-networkd).
   # No static addressing lives here; the host port mapping is in meka.nspawn.
   networking.useNetworkd = true;
 
@@ -34,11 +34,15 @@ in
   # those unused physical-NIC units are not generated.
   networking.useDHCP = false;
 
-  # We only need networkd to bring up the veth; do not run systemd-resolved
-  # inside the guest (it conflicts with the container default of reusing the
-  # host's /etc/resolv.conf, and meka needs no in-guest DNS resolution).
-  services.resolved.enable = false;
-  networking.useHostResolvConf = true;
+  # The guest does not filter traffic. Port= in meka.nspawn forwards the
+  # host's port 58964 to nginx on host0:80.
+  networking.firewall.enable = false;
+
+  # Let guest networkd pass the DHCP DNS server to guest systemd-resolved.
+  # nspawn leaves resolv.conf alone for private networks, so the guest needs
+  # its own resolver for model API requests.
+  services.resolved.enable = true;
+  networking.useHostResolvConf = false;
 
   # No Nix tooling or daemon inside the guest: meka is a pre-built closure
   # and never invokes nix at runtime. Removes the daemon as attack surface and
@@ -48,6 +52,8 @@ in
 
   kurisu.os.meka = {
     enable = true;
+    bindAddress = "127.0.0.1";
+    configDir = "/var/lib/meka/config";
 
     # The bearer token is bind-mounted in by the host (systemd-nspawn
     # `--bind-ro=<host-token>:/etc/meka/token:rootidmap`), never baked into
@@ -68,6 +74,23 @@ in
       ];
     };
   };
+
+  # Make the interactive account/profile commands use the same persistent
+  # config and credential store as meka.service.
+  environment.systemPackages = [ pkgs.meka ];
+  environment.variables = {
+    MEKA_CONFIG_DIR = "/var/lib/meka/config";
+    MEKA_DATA_DIR = "/var/lib/meka";
+  };
+
+  # Seed the writable config only once. Subsequent `meka account` and
+  # `meka profile` changes live on the persistent host bind mount.
+  systemd.services.meka.preStart = ''
+    ${pkgs.coreutils}/bin/install -d -m 0700 /var/lib/meka/config
+    if [ ! -e /var/lib/meka/config/config.toml ]; then
+      ${pkgs.coreutils}/bin/install -m 0600 /etc/meka/config.toml /var/lib/meka/config/config.toml
+    fi
+  '';
 
   # Self-contained rootfs tarball for `systemd-nspawn -D <extracted>`.
   #
