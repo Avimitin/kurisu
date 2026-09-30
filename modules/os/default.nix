@@ -6,4 +6,5 @@
   wayland = ./wayland;
   login_manager = ./login_manager;
   udev = ./udev;
+  meka = ./meka;
 }

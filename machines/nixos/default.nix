@@ -22,4 +22,8 @@ in
 {
   thinkbook13 = mkHost [ ./thinkbook13 ];
   thinkbook13-bootstrap = mkHost [ ./thinkbook13/bare.nix ];
+
+  # Self-contained systemd-nspawn guest image. Build the rootfs tarball with:
+  #   nix build .#nixosConfigurations.meka.config.system.build.tarball
+  meka = mkHost [ ./meka ];
 }
