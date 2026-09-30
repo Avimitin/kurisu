@@ -50,6 +50,8 @@ in
 
   pathy-server = final.callPackage ./pkgs/pathy-server.nix { };
 
+  meka = final.callPackage ./pkgs/meka.nix { };
+
   zed-extensions-path-only = final.lib.recurseIntoAttrs (
     final.callPackage ./pkgs/zed-extensions-path-only.nix { }
   );
