@@ -52,6 +52,8 @@ in
 
   meka = final.callPackage ./pkgs/meka.nix { };
 
+  mekaweb = final.callPackage ./pkgs/mekaweb.nix { };
+
   zed-extensions-path-only = final.lib.recurseIntoAttrs (
     final.callPackage ./pkgs/zed-extensions-path-only.nix { }
   );
