@@ -68,6 +68,8 @@ in
     enable = true;
     bindAddress = "127.0.0.1";
     configDir = "/var/lib/meka/config";
+    # mekaweb uses streaming turns; browser suspension can drop the stream.
+    streamReattachGrace = "24h";
 
     # The bearer token is bind-mounted in by the host (systemd-nspawn
     # `--bind-ro=<host-token>:/etc/meka/token:rootidmap`), never baked into

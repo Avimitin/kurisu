@@ -39,6 +39,9 @@ let
 
     [serve]
     bind = "${cfg.bindAddress}:${toString cfg.port}"
+    ${optionalString (cfg.streamReattachGrace != null) ''
+      stream_reattach_grace = ${builtins.toJSON cfg.streamReattachGrace}
+    ''}
     ${optionalString (cfg.corsAllowedOrigins != [ ]) ''
       cors_allowed_origins = ${builtins.toJSON cfg.corsAllowedOrigins}
     ''}
@@ -63,6 +66,15 @@ in
       type = types.str;
       default = "0.0.0.0";
       description = "Address the meka HTTP API listens on.";
+    };
+
+    streamReattachGrace = mkOption {
+      type = types.nullOr types.str;
+      default = null;
+      description = ''
+        How long a streaming HTTP turn continues after its client disconnects.
+        Null keeps meka's 30-second default.
+      '';
     };
 
     configDir = mkOption {
