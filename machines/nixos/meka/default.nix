@@ -7,6 +7,16 @@
 }:
 let
   systemClosure = config.system.build.toplevel;
+  agentTools = with pkgs; [
+    config.nix.package
+    jq
+    gawk
+    git
+    rclone
+    which
+    python3
+    gnutar
+  ];
 in
 {
   imports = [
@@ -44,11 +54,15 @@ in
   services.resolved.enable = true;
   networking.useHostResolvConf = false;
 
-  # No Nix tooling or daemon inside the guest: meka is a pre-built closure
-  # and never invokes nix at runtime. Removes the daemon as attack surface and
-  # shrinks the image. The host's Nix daemon socket is never mounted into this
-  # self-contained rootfs, so there is no trust boundary to bridge.
-  nix.enable = false;
+  # Keep a writable Nix store and daemon inside the guest for installing tools
+  # at runtime. The host's Nix daemon socket is never mounted into the guest.
+  nix.enable = true;
+  # Nix cannot create another set of build namespaces inside this nspawn guest.
+  nix.settings.sandbox = false;
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   kurisu.os.meka = {
     enable = true;
@@ -76,8 +90,10 @@ in
   };
 
   # Make the interactive account/profile commands use the same persistent
-  # config and credential store as meka.service.
-  environment.systemPackages = [ pkgs.meka ];
+  # config and credential store as meka.service. The agent also needs these
+  # commands on its service PATH; systemPackages alone does not add them there.
+  environment.systemPackages = [ pkgs.meka ] ++ agentTools;
+  systemd.services.meka.path = agentTools;
   environment.variables = {
     MEKA_CONFIG_DIR = "/var/lib/meka/config";
     MEKA_DATA_DIR = "/var/lib/meka";

@@ -152,6 +152,10 @@ in
       wants = [ "network.target" ];
       wantedBy = [ "multi-user.target" ];
 
+      # shell_execute invokes `sh` by name, so it must be on the service's
+      # PATH (the interactive system profile is not inherited by systemd).
+      path = [ pkgs.bashInteractive ];
+
       environment = {
         MEKA_CONFIG_DIR = cfg.configDir;
         MEKA_DATA_DIR = "/var/lib/meka";
