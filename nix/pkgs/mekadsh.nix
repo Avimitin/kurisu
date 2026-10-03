@@ -12,8 +12,8 @@ buildNpmPackage {
   src = fetchFromGitHub {
     owner = "Avimitin";
     repo = "MekaDsh";
-    rev = "19463caad0d0dfbcbe955530ebd93d27ee490203";
-    hash = "sha256-tp82UeeRIRnQjMwOcX93IunNjk0Lt2jEKdyI5fKbVZY=";
+    rev = "74fbb75b3b2324d94207b7a043c9c4673789a7f7";
+    hash = "sha256-XKV+whR0i9QV4yti1uLBwrbJ5eBnGc+lBhO1CrVmD4Q=";
   };
 
   nodejs = nodejs_24;
