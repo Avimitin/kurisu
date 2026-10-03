@@ -20,7 +20,7 @@ let
 in
 {
   imports = [
-    self.nixosModules.meka
+    self.nixosModules.mekadsh
   ];
 
   system.stateVersion = "26.05";
@@ -28,6 +28,11 @@ in
   # Container rootfs, not a bare-metal machine: no kernel, no udev, no
   # bootloader. Boots under systemd-nspawn against the host kernel.
   boot.isContainer = true;
+  # nspawn owns /dev, /proc, and /run; activation must not remount them from
+  # inside the container's unprivileged user namespace.
+  boot.isNspawnContainer = true;
+  # Update nspawn's entry point on switch so the next boot uses this generation.
+  boot.loader.initScript.enable = true;
 
   networking.hostName = "meka";
 
@@ -64,11 +69,11 @@ in
     "flakes"
   ];
 
-  kurisu.os.meka = {
+  kurisu.os.mekadsh = {
     enable = true;
     bindAddress = "127.0.0.1";
     configDir = "/var/lib/meka/config";
-    # mekaweb uses streaming turns; browser suspension can drop the stream.
+    # mekadsh uses streaming turns; browser suspension can drop the stream.
     streamReattachGrace = "24h";
 
     # The bearer token is bind-mounted in by the host (systemd-nspawn
@@ -79,6 +84,11 @@ in
     webUi = {
       enable = true;
       virtualHost = "meka";
+      files = {
+        enable = true;
+        # Provisioned in the persistent data directory, outside the Nix store.
+        basicAuthFile = "/var/lib/meka/file-access.htpasswd";
+      };
 
       # Bind all interfaces inside the guest so the host's port mapping can
       # reach nginx. Access control is enforced at the outer boundary (nspawn

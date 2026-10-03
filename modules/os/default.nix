@@ -7,4 +7,5 @@
   login_manager = ./login_manager;
   udev = ./udev;
   meka = ./meka;
+  mekadsh = ./mekadsh;
 }
