@@ -1,5 +1,5 @@
 diff --git a/assets/keymaps/vim.json b/assets/keymaps/vim.json
-index f2d7b2626152d8..20861dae34e3ee 100644
+index f2d7b26..20861da 100644
 --- a/assets/keymaps/vim.json
 +++ b/assets/keymaps/vim.json
 @@ -648,6 +648,12 @@
@@ -16,23 +16,23 @@ index f2d7b2626152d8..20861dae34e3ee 100644
      "context": "vim_mode == operator",
      "bindings": {
 diff --git a/crates/editor/src/display_map.rs b/crates/editor/src/display_map.rs
-index c6c19d57c87143..ecac65f66fe5ec 100644
+index f65dbf4..b1de1dd 100644
 --- a/crates/editor/src/display_map.rs
 +++ b/crates/editor/src/display_map.rs
-@@ -188,6 +188,7 @@ pub enum HighlightKey {
+@@ -189,6 +189,7 @@ pub enum HighlightKey {
      SelectedTextHighlight,
      SyntaxTreeView(usize),
      VimExchange,
 +    VimFlash,
  }
- 
+
  pub trait ToDisplayPoint {
 diff --git a/crates/editor/src/editor.rs b/crates/editor/src/editor.rs
-index 339593ab601757..58aa299a5fdc1a 100644
+index 420da52..3384aff 100644
 --- a/crates/editor/src/editor.rs
 +++ b/crates/editor/src/editor.rs
-@@ -4091,7 +4091,10 @@ impl Editor {
- 
+@@ -4104,7 +4104,10 @@ impl Editor {
+
          visible_start.to_point(display_snapshot)
              ..display_snapshot
 -                .clip_point(target_end, Bias::Right)
@@ -42,10 +42,10 @@ index 339593ab601757..58aa299a5fdc1a 100644
 +                .clip_ignoring_line_ends(target_end, Bias::Right)
                  .to_point(display_snapshot)
      }
- 
+
 diff --git a/crates/vim/src/flash.rs b/crates/vim/src/flash.rs
 new file mode 100644
-index 00000000000000..c6efadf5fdbd43
+index 0000000..c6efadf
 --- /dev/null
 +++ b/crates/vim/src/flash.rs
 @@ -0,0 +1,1410 @@
@@ -1460,7 +1460,7 @@ index 00000000000000..c6efadf5fdbd43
 +    }
 +}
 diff --git a/crates/vim/src/helix.rs b/crates/vim/src/helix.rs
-index 9b2ecf8f5a81e4..d82eaea3502717 100644
+index 9b2ecf8..d82eaea 100644
 --- a/crates/vim/src/helix.rs
 +++ b/crates/vim/src/helix.rs
 @@ -11,7 +11,7 @@ use editor::{
@@ -1485,7 +1485,7 @@ index 9b2ecf8f5a81e4..d82eaea3502717 100644
 @@ -1218,11 +1219,6 @@ impl Vim {
                  .map(|s| buffer_snapshot.point_to_offset(s.head()))
                  .unwrap_or(start_offset);
- 
+
 -            let style = editor.style(cx);
 -            let font = style.text.font();
 -            let font_size = style.text.font_size.to_pixels(window.rem_size());
@@ -1497,7 +1497,7 @@ index 9b2ecf8f5a81e4..d82eaea3502717 100644
 @@ -1237,7 +1233,7 @@ impl Vim {
          })
      }
- 
+
 -    fn visible_jump_range(
 +    pub(crate) fn visible_jump_range(
          editor: &Editor,
@@ -1506,7 +1506,7 @@ index 9b2ecf8f5a81e4..d82eaea3502717 100644
 @@ -1264,6 +1260,19 @@ impl Vim {
              ..display_snapshot.display_point_to_point(end_display_point, Bias::Right)
      }
- 
+
 +    pub(crate) fn jump_ui_context(
 +        editor: &mut Editor,
 +        window: &mut Window,
@@ -1526,17 +1526,17 @@ index 9b2ecf8f5a81e4..d82eaea3502717 100644
 @@ -1309,7 +1318,8 @@ impl Vim {
              text_system.layout_line(text, font_size, &[run], None).width
          };
- 
+
 -        let is_monospace = Self::is_monospace_jump_font(text_system, &font, font_size);
 +        let is_monospace =
 +            Self::is_monospace_jump_font(text_system, text_system.resolve_font(&font), font_size);
- 
+
          for (label_index, candidate) in ordered_candidates.into_iter().enumerate() {
              let start_anchor = buffer.anchor_after(candidate.word_start);
 @@ -1543,18 +1553,24 @@ impl Vim {
          ]
      }
- 
+
 -    fn is_monospace_jump_font(
 +    pub(crate) fn jump_font_char_width(
          text_system: &WindowTextSystem,
@@ -1564,11 +1564,11 @@ index 9b2ecf8f5a81e4..d82eaea3502717 100644
 -                .unwrap_or_else(|_| text_system.layout_width(font_id, font_size, ch))
 -        };
 +        let width_of_char = |ch| Self::jump_font_char_width(text_system, font_id, font_size, ch);
- 
+
          let a = width_of_char('i');
          let b = width_of_char('w');
 diff --git a/crates/vim/src/insert.rs b/crates/vim/src/insert.rs
-index 063c442c141d1f..74d0a8237ad4ab 100644
+index 063c442..74d0a82 100644
 --- a/crates/vim/src/insert.rs
 +++ b/crates/vim/src/insert.rs
 @@ -40,7 +40,7 @@ impl Vim {
@@ -1581,7 +1581,7 @@ index 063c442c141d1f..74d0a8237ad4ab 100644
              return;
          }
 diff --git a/crates/vim/src/motion.rs b/crates/vim/src/motion.rs
-index 431edda7152723..68056724fe5b69 100644
+index 431edda..6805672 100644
 --- a/crates/vim/src/motion.rs
 +++ b/crates/vim/src/motion.rs
 @@ -170,6 +170,7 @@ pub enum Motion {
@@ -1591,7 +1591,7 @@ index 431edda7152723..68056724fe5b69 100644
 +        inclusive: bool,
      },
  }
- 
+
 @@ -797,7 +798,10 @@ impl Motion {
              | NextWordEnd { .. }
              | PreviousWordEnd { .. }
@@ -1614,7 +1614,7 @@ index 431edda7152723..68056724fe5b69 100644
                  // There will be only one selection, as
                  // Search::SelectNextMatch selects a single match.
 diff --git a/crates/vim/src/normal/mark.rs b/crates/vim/src/normal/mark.rs
-index 7f205a0fb8fda0..d5082b8475f6e7 100644
+index 7f205a0..d5082b8 100644
 --- a/crates/vim/src/normal/mark.rs
 +++ b/crates/vim/src/normal/mark.rs
 @@ -221,6 +221,7 @@ impl Vim {
@@ -1627,7 +1627,7 @@ index 7f205a0fb8fda0..d5082b8475f6e7 100644
                      cx,
 @@ -259,7 +260,15 @@ impl Vim {
              });
- 
+
              if should_jump && let Some(anchor) = anchor {
 -                self.motion(Motion::Jump { anchor, line }, window, cx)
 +                self.motion(
@@ -1643,7 +1643,7 @@ index 7f205a0fb8fda0..d5082b8475f6e7 100644
          }
      }
 diff --git a/crates/vim/src/state.rs b/crates/vim/src/state.rs
-index c76579311ec056..ca1a74d0f2a3b3 100644
+index c765793..ca1a74d 100644
 --- a/crates/vim/src/state.rs
 +++ b/crates/vim/src/state.rs
 @@ -170,6 +170,11 @@ pub enum Operator {
@@ -1656,12 +1656,12 @@ index c76579311ec056..ca1a74d0f2a3b3 100644
 +        target: Option<Range<Anchor>>,
 +    },
  }
- 
+
  #[derive(Clone, Debug, PartialEq)]
 @@ -178,6 +183,12 @@ pub struct HelixJumpLabel {
      pub range: Range<Anchor>,
  }
- 
+
 +#[derive(Clone, Debug, PartialEq)]
 +pub struct FlashJumpLabel {
 +    pub label: char,
@@ -1708,7 +1708,7 @@ index c76579311ec056..ca1a74d0f2a3b3 100644
      }
  }
 diff --git a/crates/vim/src/vim.rs b/crates/vim/src/vim.rs
-index c016bd6d415575..1244100b019e15 100644
+index c016bd6..1244100 100644
 --- a/crates/vim/src/vim.rs
 +++ b/crates/vim/src/vim.rs
 @@ -6,6 +6,7 @@ mod test;
@@ -1729,7 +1729,7 @@ index c016bd6d415575..1244100b019e15 100644
  use workspace::{self, Pane, Workspace};
 @@ -608,12 +610,21 @@ impl Vim {
              running_command: None,
- 
+
              editor: editor.downgrade(),
 -            _subscriptions: vec![
 -                cx.observe_keystrokes(Self::observe_keystrokes),
@@ -1754,7 +1754,7 @@ index c016bd6d415575..1244100b019e15 100644
 +            },
          })
      }
- 
+
 @@ -994,6 +1005,7 @@ impl Vim {
              normal::register(editor, cx);
              insert::register(editor, cx);
@@ -1765,7 +1765,7 @@ index c016bd6d415575..1244100b019e15 100644
              replace::register(editor, cx);
 @@ -1013,6 +1025,12 @@ impl Vim {
      }
- 
+
      fn deactivate(editor: &mut Editor, cx: &mut Context<Editor>) {
 +        // Jump UI is only ever cleared through the Vim entity, which is
 +        // dropped with the addon below; deactivating mid-jump (e.g. a settings
@@ -1802,13 +1802,13 @@ index c016bd6d415575..1244100b019e15 100644
 +                        Operator::HelixJump { .. } | Operator::FlashJump { .. } => {
 +                            cursor_shape.normal
 +                        }
- 
+
                          // Navigation operators -> Block cursor
                          Operator::FindForward { .. }
 @@ -1494,7 +1514,7 @@ impl Vim {
- 
+
          let mut operator_id = "none";
- 
+
 -        let active_operator = self.active_operator();
 +        let active_operator = self.operator_stack.last();
          if active_operator.is_none() && cx.global::<VimGlobals>().pre_count.is_some()
@@ -1840,11 +1840,11 @@ index c016bd6d415575..1244100b019e15 100644
 +        self.clear_operator_stack(window, cx);
          self.sync_vim_settings(window, cx);
      }
- 
+
 @@ -1800,14 +1831,38 @@ impl Vim {
          popped_operator
      }
- 
+
 -    fn clear_operator(&mut self, window: &mut Window, cx: &mut Context<Self>) {
 -        if matches!(self.active_operator(), Some(Operator::HelixJump { .. })) {
 +    /// Tears down UI owned by jump operators anywhere in the stack. Must be
@@ -1882,11 +1882,11 @@ index c016bd6d415575..1244100b019e15 100644
 +        self.clear_operator_stack(window, cx);
          self.sync_vim_settings(window, cx);
      }
- 
+
 @@ -2054,6 +2109,20 @@ impl Vim {
              return;
          }
- 
+
 +        // Handled before the operator match below so each character is fed
 +        // through without cloning the pattern + labels payload: the pattern is
 +        // arbitrary-length, and an IME commit can deliver several characters
@@ -1905,13 +1905,13 @@ index c016bd6d415575..1244100b019e15 100644
              Some(Operator::FindForward { before, multiline }) => {
                  let find = Motion::FindForward {
 diff --git a/docs/src/vim.md b/docs/src/vim.md
-index 6604529a575523..8f7bed2adad438 100644
+index 435ea75..e69910f 100644
 --- a/docs/src/vim.md
 +++ b/docs/src/vim.md
-@@ -552,6 +552,32 @@ The Helix-style jump-to-word action shows jump labels at visible word starts. It
+@@ -553,6 +553,32 @@ The Helix-style jump-to-word action shows jump labels at visible word starts. It
  }
  ```
- 
+
 +The [flash.nvim](https://github.com/folke/flash.nvim)-style jump lets you navigate by typing a search pattern: matches in the visible area are highlighted and tagged with single-character labels, and pressing a label jumps to that match. While flash is active you can keep typing to narrow the matches, press `enter` to jump to the next match after the cursor (wrapping to the first visible match), `backspace` to edit the pattern, or `escape` to cancel. It also works as a target for operators: for example `d s {pattern} {label}` deletes from the cursor through the start of the chosen match (inclusive).
 +
 +Flash matching follows the `use_smartcase_find` setting: it is case-sensitive by default, so a lowercase pattern only matches lowercase text. Enable `use_smartcase_find` to get smartcase matching, where an all-lowercase pattern matches any case and typing an uppercase character makes the whole pattern case-sensitive again. This mirrors flash.nvim, which inherits Neovim's `ignorecase`/`smartcase` options rather than forcing smartcase on.
@@ -1939,5 +1939,5 @@ index 6604529a575523..8f7bed2adad438 100644
 +```
 +
  The [vim-exchange](https://github.com/tommcdo/vim-exchange) feature does not have a default binding for visual mode, as the `shift-x` binding conflicts with the default `shift-x` binding for visual mode (`vim::VisualDeleteLine`). To assign the default vim-exchange binding, add the following keybinding to your keymap:
- 
+
  ```json [keymap]

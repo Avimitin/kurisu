@@ -1,8 +1,8 @@
 diff --git a/crates/auto_update/src/auto_update.rs b/crates/auto_update/src/auto_update.rs
-index 0d86651c00..e23f9e6518 100644
+index 38324d5..4bdfba7 100644
 --- a/crates/auto_update/src/auto_update.rs
 +++ b/crates/auto_update/src/auto_update.rs
-@@ -590,81 +590,43 @@ impl AutoUpdater {
+@@ -597,81 +597,43 @@ impl AutoUpdater {
      // you can override this function. You should also update get_remote_server_release_url to return
      // Ok(None).
      pub async fn download_remote_server_release(
@@ -57,7 +57,7 @@ index 0d86651c00..e23f9e6518 100644
 +            env!("ZED_BUNDLED_REMOTE_SERVER_OS"),
 +            env!("ZED_BUNDLED_REMOTE_SERVER_ARCH"),
 +        );
- 
+
 -        if let Err(error) =
 -            cleanup_remote_server_cache(&platform_dir, &version_path, REMOTE_SERVER_CACHE_LIMIT)
 -                .await
@@ -73,12 +73,12 @@ index 0d86651c00..e23f9e6518 100644
 +            "the Nix-built remote server is missing at {}",
 +            path.display(),
 +        );
- 
+
 -        Ok(version_path)
 +        set_status("Using Nix-built remote development server", cx);
 +        Ok(path)
      }
- 
+
      pub async fn get_remote_server_release_url(
 -        channel: ReleaseChannel,
 -        version: Option<Version>,
@@ -108,6 +108,5 @@ index 0d86651c00..e23f9e6518 100644
 +        // which returns the binary compiled and pinned by Nix above.
 +        Ok(None)
      }
- 
-     async fn get_release_asset(
 
+     async fn get_release_asset(

@@ -1,43 +1,8 @@
-diff --git a/crates/project/src/lsp_store.rs b/crates/project/src/lsp_store.rs
---- a/crates/project/src/lsp_store.rs
-+++ b/crates/project/src/lsp_store.rs
-@@ -506,7 +506,7 @@ impl LocalLspStore {
-             settings,
-             toolchain.clone(),
-             delegate.clone(),
--            true,
-+            false,
-             wait_until_worktree_trust,
-             cx,
-         );
-diff --git a/crates/zed/src/main.rs b/crates/zed/src/main.rs
---- a/crates/zed/src/main.rs
-+++ b/crates/zed/src/main.rs
-@@ -535,7 +535,7 @@ fn main() {
-             let options = NodeBinaryOptions {
-                 allow_path_lookup: !settings.ignore_system_version,
-                 // TODO: Expose this setting
--                allow_binary_download: true,
-+                allow_binary_download: false,
-                 use_paths: settings.path.as_ref().map(|node_path| {
-                     let node_path = PathBuf::from(shellexpand::tilde(node_path).as_ref());
-                     let npm_path = settings
-diff --git a/crates/remote_server/src/server.rs b/crates/remote_server/src/server.rs
---- a/crates/remote_server/src/server.rs
-+++ b/crates/remote_server/src/server.rs
-@@ -1244,7 +1244,7 @@ fn initialize_settings(
-             let options = NodeBinaryOptions {
-                 allow_path_lookup: !new_node_settings.ignore_system_version,
-                 // TODO: Implement this setting
--                allow_binary_download: true,
-+                allow_binary_download: false,
-                 use_paths: new_node_settings.path.as_ref().map(|node_path| {
-                     let node_path = PathBuf::from(shellexpand::tilde(node_path).as_ref());
-                     let npm_path = new_node_settings
 diff --git a/crates/edit_prediction_cli/src/headless.rs b/crates/edit_prediction_cli/src/headless.rs
+index 0b62b11..ef38948 100644
 --- a/crates/edit_prediction_cli/src/headless.rs
 +++ b/crates/edit_prediction_cli/src/headless.rs
-@@ -81,7 +81,7 @@ pub fn init(cx: &mut App) -> EpAppState {
+@@ -82,7 +82,7 @@ pub fn init(cx: &mut App) -> EpAppState {
          let settings = &ProjectSettings::get_global(cx).node;
          let options = NodeBinaryOptions {
              allow_path_lookup: !settings.ignore_system_version,
@@ -47,6 +12,7 @@ diff --git a/crates/edit_prediction_cli/src/headless.rs b/crates/edit_prediction
                  let node_path = PathBuf::from(shellexpand::tilde(node_path).as_ref());
                  let npm_path = settings
 diff --git a/crates/eval_cli/src/headless.rs b/crates/eval_cli/src/headless.rs
+index 7739dcc..bbbdb52 100644
 --- a/crates/eval_cli/src/headless.rs
 +++ b/crates/eval_cli/src/headless.rs
 @@ -83,7 +83,7 @@ pub fn init(cx: &mut App) -> Arc<AgentCliAppState> {
@@ -59,6 +25,7 @@ diff --git a/crates/eval_cli/src/headless.rs b/crates/eval_cli/src/headless.rs
                  let node_path = PathBuf::from(shellexpand::tilde(node_path).as_ref());
                  let npm_path = settings
 diff --git a/crates/extension_host/src/extension_host.rs b/crates/extension_host/src/extension_host.rs
+index 36dd294..23fd267 100644
 --- a/crates/extension_host/src/extension_host.rs
 +++ b/crates/extension_host/src/extension_host.rs
 @@ -453,15 +453,7 @@ impl ExtensionStore {
@@ -78,3 +45,42 @@ diff --git a/crates/extension_host/src/extension_host.rs b/crates/extension_host
 
          // Perform all extension loading in a single task to ensure that we
          // never attempt to simultaneously load/unload extensions from multiple
+diff --git a/crates/project/src/lsp_store.rs b/crates/project/src/lsp_store.rs
+index 912d3db..5748f68 100644
+--- a/crates/project/src/lsp_store.rs
++++ b/crates/project/src/lsp_store.rs
+@@ -506,7 +506,7 @@ impl LocalLspStore {
+             settings,
+             toolchain.clone(),
+             delegate.clone(),
+-            true,
++            false,
+             wait_until_worktree_trust,
+             cx,
+         );
+diff --git a/crates/remote_server/src/server.rs b/crates/remote_server/src/server.rs
+index 6a4bf3d..ad25ac4 100644
+--- a/crates/remote_server/src/server.rs
++++ b/crates/remote_server/src/server.rs
+@@ -1244,7 +1244,7 @@ fn initialize_settings(
+             let options = NodeBinaryOptions {
+                 allow_path_lookup: !new_node_settings.ignore_system_version,
+                 // TODO: Implement this setting
+-                allow_binary_download: true,
++                allow_binary_download: false,
+                 use_paths: new_node_settings.path.as_ref().map(|node_path| {
+                     let node_path = PathBuf::from(shellexpand::tilde(node_path).as_ref());
+                     let npm_path = new_node_settings
+diff --git a/crates/zed/src/main.rs b/crates/zed/src/main.rs
+index ec31980..867ee7f 100644
+--- a/crates/zed/src/main.rs
++++ b/crates/zed/src/main.rs
+@@ -535,7 +535,7 @@ fn main() {
+             let options = NodeBinaryOptions {
+                 allow_path_lookup: !settings.ignore_system_version,
+                 // TODO: Expose this setting
+-                allow_binary_download: true,
++                allow_binary_download: false,
+                 use_paths: settings.path.as_ref().map(|node_path| {
+                     let node_path = PathBuf::from(shellexpand::tilde(node_path).as_ref());
+                     let npm_path = settings

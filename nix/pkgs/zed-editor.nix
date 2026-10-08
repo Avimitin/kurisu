@@ -1,13 +1,28 @@
 {
   lib,
+  rustPlatform,
   stdenv,
+  stdenvAdapters,
   unpatchedZedEditor,
   zedRemoteServer ? null,
 }:
 
+let
+  buildZedEditor =
+    if stdenv.hostPlatform.isLinux then
+      unpatchedZedEditor.override {
+        rustPlatform = rustPlatform // {
+          buildRustPackage = rustPlatform.buildRustPackage.override {
+            stdenv = stdenvAdapters.useMoldLinker stdenv;
+          };
+        };
+      }
+    else
+      unpatchedZedEditor;
+in
 # See zed-patches.md for the source and scope of the latest audit.
-assert lib.assertMsg (unpatchedZedEditor.version == "1.21.0") ''
-  The Zed patches were audited against zed-editor 1.21.0, but
+assert lib.assertMsg (unpatchedZedEditor.version == "1.22.0") ''
+  The Zed patches were audited against zed-editor 1.22.0, but
   nixpkgs now provides ${unpatchedZedEditor.version}. Rebase and re-audit
   nix/pkgs/zed-*.patch before updating this assertion.
 '';
@@ -17,7 +32,7 @@ assert lib.assertMsg
     The bundled remote server (${zedRemoteServer.version}) must be built from the
     same Zed source as the editor (${unpatchedZedEditor.version}).
   '';
-unpatchedZedEditor.overrideAttrs (oldAttrs: {
+buildZedEditor.overrideAttrs (oldAttrs: {
   patches =
     (oldAttrs.patches or [ ])
     ++ [
@@ -33,11 +48,22 @@ unpatchedZedEditor.overrideAttrs (oldAttrs: {
 
   env =
     (oldAttrs.env or { })
+    // lib.optionalAttrs stdenv.hostPlatform.isLinux {
+      # Allow large release crates to generate code in parallel on builders.
+      # Keep upstream's ThinLTO setting for release optimization.
+      CARGO_PROFILE_RELEASE_CODEGEN_UNITS = "16";
+    }
     // lib.optionalAttrs (zedRemoteServer != null) {
       ZED_BUNDLED_REMOTE_SERVER = "${zedRemoteServer}/share/zed/remote_server.gz";
       ZED_BUNDLED_REMOTE_SERVER_OS = if stdenv.hostPlatform.isLinux then "linux" else "macos";
       ZED_BUNDLED_REMOTE_SERVER_ARCH = if stdenv.hostPlatform.isx86_64 then "x86_64" else "aarch64";
     };
+
+  preCheck = (oldAttrs.preCheck or "") + ''
+    # The source archive has no Git metadata. Zed's test asset lookup needs a
+    # checkout marker to find the bundled development assets at runtime.
+    mkdir -p .git
+  '';
 
   passthru =
     (oldAttrs.passthru or { })

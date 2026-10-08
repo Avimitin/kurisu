@@ -1,7 +1,8 @@
 diff --git a/crates/agent_ui/src/agent_panel.rs b/crates/agent_ui/src/agent_panel.rs
+index 8a14624..e3d6e94 100644
 --- a/crates/agent_ui/src/agent_panel.rs
 +++ b/crates/agent_ui/src/agent_panel.rs
-@@ -2687,6 +2687,23 @@ impl AgentPanel {
+@@ -2673,6 +2673,23 @@ impl AgentPanel {
              return;
          }
          let settings = AgentSettings::get_global(cx);
@@ -26,9 +27,10 @@ diff --git a/crates/agent_ui/src/agent_panel.rs b/crates/agent_ui/src/agent_pane
              NotifyWhenAgentWaiting::PrimaryScreen => {
                  window.request_attention();
 diff --git a/crates/agent_ui/src/conversation_view.rs b/crates/agent_ui/src/conversation_view.rs
+index 4811335..0cb9f02 100644
 --- a/crates/agent_ui/src/conversation_view.rs
 +++ b/crates/agent_ui/src/conversation_view.rs
-@@ -2939,6 +2939,7 @@ impl ConversationView {
+@@ -2969,6 +2969,7 @@ impl ConversationView {
          };
          let root_thread = root_thread.read(cx).thread.read(cx);
          let root_thread_id = self.thread_id;
@@ -36,7 +38,7 @@ diff --git a/crates/agent_ui/src/conversation_view.rs b/crates/agent_ui/src/conv
          let root_work_dirs = root_thread.work_dirs().cloned();
          let root_title = root_thread.title();
 
-@@ -2946,6 +2947,26 @@ impl ConversationView {
+@@ -2976,6 +2977,26 @@ impl ConversationView {
              .clone()
              .unwrap_or_else(|| self.agent.agent_id().0);
 
@@ -64,6 +66,7 @@ diff --git a/crates/agent_ui/src/conversation_view.rs b/crates/agent_ui/src/conv
              NotifyWhenAgentWaiting::PrimaryScreen => {
                  window.request_attention();
 diff --git a/crates/zed/src/main.rs b/crates/zed/src/main.rs
+index 867ee7f..981c215 100644
 --- a/crates/zed/src/main.rs
 +++ b/crates/zed/src/main.rs
 @@ -490,6 +490,8 @@ fn main() {
