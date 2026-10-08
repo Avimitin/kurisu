@@ -68,8 +68,6 @@ in
 
         htop
         btop
-
-        qsoc
       ]
       ++ cfg.extraPackages
       ++ (lib.optionals cfg.enableLsp [
