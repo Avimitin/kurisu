@@ -110,7 +110,7 @@
       pkgs.zathura
       pkgs.loupe
       pkgs.tigervnc
-      pkgs.steam
+      pkgs.osu-lazer-bin
     ];
 
     kurisu.hm.tools = {
