@@ -31,6 +31,7 @@ This directory defines the actual hosts and how they compose the modules.
 
 *   **`machines/nixos/` (NixOS Hosts)**:
     *   Managed via standard **NixOS configurations**.
+    *   **[`cf-rz4`](machines/nixos/cf-rz4/README.md)**: Panasonic CF-RZ4 server with Xorg/XFCE and persistent Sony BVM-9045D 480i output; includes fresh-install instructions.
     *   **`thinkbook13`**: A specific machine configuration.
         *   **`bare.nix`**: The base system (bootloader, ZFS partitions, networking). Imports `self.nixosModules.common-config`, `partitions`, `ovpn`.
         *   **`desktop.nix`**: The graphical environment. Imports `self.nixosModules.wayland`, `graphic`, `login_manager`. It also configures the user `sh1marin` via the embedded `home-manager` module, importing `self.homeModules.tools`.
