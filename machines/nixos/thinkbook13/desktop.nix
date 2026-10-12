@@ -111,6 +111,7 @@
       pkgs.loupe
       pkgs.tigervnc
       pkgs.osu-lazer-bin
+      pkgs.flameshot
     ];
 
     kurisu.hm.tools = {
