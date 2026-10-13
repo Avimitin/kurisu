@@ -5,6 +5,7 @@ let
   crtOutput = "DP1";
   panelOutput = "eDP1";
   modeName = "bvm-480i-525";
+  themeName = "Chicago95";
   # Based on ~/screen.sh, with the vertical total corrected from 526 to 525.
   # The user confirmed sharper text in a live comparison on the BVM.
   # 15.750 kHz horizontal, 60 fields/s, 30 complete frames/s.
@@ -14,9 +15,15 @@ let
     name = "bvm-output";
     runtimeInputs = [
       pkgs.xrandr
+      pkgs.xset
       pkgs.gnugrep
     ];
     text = ''
+      # Keep the CRT session visible when idle, including at the greeter.
+      xset s off
+      xset s noblank
+      xset -dpms
+
       if xrandr --query | grep '^${crtOutput} connected' > /dev/null; then
         # The mode is registered by Xorg. Never select --auto on the CRT:
         # its bridge advertises a progressive 31 kHz 640x480 fallback.
@@ -50,7 +57,10 @@ in
       Load "shadowfb"
     '';
     dpi = 96;
-    desktopManager.xfce.enable = true;
+    desktopManager.xfce = {
+      enable = true;
+      enableScreensaver = false;
+    };
 
     deviceSection = ''
       Option "Monitor-${crtOutput}" "Sony-BVM"
@@ -72,12 +82,22 @@ in
     displayManager = {
       lightdm = {
         enable = true;
-        greeters.gtk.extraConfig = ''
-          font-name=DejaVu Sans Bold 14
-          xft-antialias=true
-          xft-hintstyle=hintslight
-          xft-rgba=none
-        '';
+        greeters.gtk = {
+          theme = {
+            name = themeName;
+            package = pkgs.chicago95;
+          };
+          iconTheme = {
+            name = themeName;
+            package = pkgs.chicago95;
+          };
+          extraConfig = ''
+            font-name=DejaVu Sans Bold 14
+            xft-antialias=true
+            xft-hintstyle=hintslight
+            xft-rgba=none
+          '';
+        };
       };
       # Set the output before the greeter, and again before the user session.
       setupCommands = "${setOutput}/bin/bvm-output";
@@ -95,6 +115,7 @@ in
   environment.systemPackages = [
     setOutput
     pkgs.xrandr
+    pkgs.chicago95
   ];
 
   # Grayscale antialiasing: LCD RGB subpixel rendering is unsuitable here.
@@ -127,6 +148,10 @@ in
     "xdg/xfce4/xfconf/xfce-perchannel-xml/xsettings.xml".text = ''
       <?xml version="1.0" encoding="UTF-8"?>
       <channel name="xsettings" version="1.0">
+        <property name="Net" type="empty">
+          <property name="ThemeName" type="string" value="${themeName}"/>
+          <property name="IconThemeName" type="string" value="${themeName}"/>
+        </property>
         <property name="Gtk" type="empty">
           <property name="FontName" type="string" value="DejaVu Sans Bold 14"/>
           <property name="MonospaceFontName" type="string" value="DejaVu Sans Mono Bold 14"/>
@@ -147,9 +172,16 @@ in
       <?xml version="1.0" encoding="UTF-8"?>
       <channel name="xfwm4" version="1.0">
         <property name="general" type="empty">
+          <property name="theme" type="string" value="${themeName}"/>
           <property name="use_compositing" type="bool" value="false"/>
           <property name="title_font" type="string" value="DejaVu Sans Bold 14"/>
         </property>
+      </channel>
+    '';
+    "xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-notifyd.xml".text = ''
+      <?xml version="1.0" encoding="UTF-8"?>
+      <channel name="xfce4-notifyd" version="1.0">
+        <property name="theme" type="string" value="${themeName}"/>
       </channel>
     '';
     "xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-terminal.xml".text = ''

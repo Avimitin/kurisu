@@ -3,12 +3,29 @@
 Build target: `nixosConfigurations.cf-rz4`. This is a small standalone host
 configuration with SSH, NetworkManager, Xorg, LightDM and XFCE. It does not import
 the ThinkBook's Wayland desktop, ZFS layout or Home Manager configuration.
-Chromium and mpv are installed system-wide.
+Chromium, mpv and yt-dlp are installed system-wide. To play a supported website
+on the CRT, run `mpv --fs 'VIDEO_URL'`; mpv uses yt-dlp to resolve the stream.
+Playback preserves the video's aspect ratio. Add `--panscan=1` to fill the
+4:3 screen by cropping the sides of widescreen video instead of stretching it.
+Chromium starts with `--password-store=basic` to avoid keyring unlock prompts
+in the automatic-login session. Saved passwords have no keyring encryption
+protection; see [Chromium's password storage documentation](https://chromium.googlesource.com/chromium/src.git/+/master/docs/linux/password_storage.md).
+Fully exit and reopen Chromium after changing this flag. Existing credentials
+encrypted with the keyring may require signing in again when switching stores.
+
+The desktop uses [Chicago95](https://github.com/grassmunk/Chicago95), provided by
+the pinned `pkgs.chicago95` package, for GTK applications, icons, window borders,
+notifications and the LightDM greeter. It uses the CRT's 14 pt bold fonts.
+XFCE theme defaults are in `display.nix`; existing user settings take precedence.
+Select Chicago95 in Appearance (Style and Icons), Window Manager and
+Notifications if restoring a home directory with another theme selected.
 
 Hardware inspected over SSH at `172.24.5.224`: Core M-5Y70, Intel HD 5300 (`i915`),
 16 GiB RAM, Samsung 128 GB SATA SSD, UEFI, Intel I218-LM Ethernet and 7265 Wi-Fi.
 The fresh-install layout is a 1 GiB EFI partition and ext4 root, with zram swap.
 Lid closure and idle time do not suspend the server.
+XFCE's screensaver, X11 screen blanking and DPMS are disabled so the CRT stays
+visible when idle. Display blanking is separate from system suspend.
 Boot output is quiet, and LightDM automatically signs in as `sh1marin` to XFCE.
 System logs remain available with `journalctl -b`; the kernel still prints
 errors. To restore the login screen, set `services.displayManager.autoLogin.enable`

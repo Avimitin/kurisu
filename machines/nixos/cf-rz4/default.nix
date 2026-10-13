@@ -97,10 +97,15 @@
     cores = 2;
   };
   environment.systemPackages = with pkgs; [
-    chromium
+    (chromium.override {
+      # Automatic login leaves the keyring locked. Use Chromium's basic store
+      # to avoid unlock prompts; saved passwords lose keyring encryption.
+      commandLineArgs = "--password-store=basic";
+    })
     git
     vim
     htop
     mpv
+    yt-dlp
   ];
 }
