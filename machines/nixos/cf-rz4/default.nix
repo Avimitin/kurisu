@@ -33,7 +33,6 @@
 
   services.openssh = {
     enable = true;
-    settings.PermitRootLogin = "no";
   };
 
   users.users.sh1marin = {
@@ -107,5 +106,6 @@
     htop
     mpv
     yt-dlp
+    qmmp
   ];
 }
