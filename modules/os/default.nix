@@ -8,4 +8,5 @@
   udev = ./udev;
   meka = ./meka;
   mekadsh = ./mekadsh;
+  mekabridge = ./mekabridge;
 }

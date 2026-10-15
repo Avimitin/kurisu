@@ -1,0 +1,6 @@
+# Put your numeric Telegram user ID here, then fill telegram-token with the
+# token from @BotFather. Empty lists keep the bridge stopped during setup.
+allowed_users = []
+
+# A group ID admits everyone in that group. Leave empty for personal DMs.
+allowed_chats = []

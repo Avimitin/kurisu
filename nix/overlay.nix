@@ -52,6 +52,8 @@ in
 
   meka = final.callPackage ./pkgs/meka.nix { };
 
+  mekabridge = final.callPackage ./pkgs/mekabridge.nix { };
+
   mekaweb = final.callPackage ./pkgs/mekaweb.nix { };
 
   mekadsh = final.callPackage ./pkgs/mekadsh.nix { };

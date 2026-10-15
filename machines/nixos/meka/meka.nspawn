@@ -10,9 +10,14 @@
 # Extract once (and re-extract whenever the tarball changes):
 #   install -d -m 755 /var/lib/machines/meka
 #   install -d -m 700 /var/lib/meka
+#   install -d -m 700 /var/lib/meka-workspace
 #   tar -xJf result/tarball/meka-rootfs.tar.xz -C /var/lib/machines/meka
 #   install -d -m 700 /etc/meka
 #   install -m 600 /path/to/token /etc/meka/token
+#   install -d -m 700 /etc/mekabridge /var/lib/mekabridge
+# Provision Telegram files only on first installation; preserve them on updates:
+#   test -e /etc/mekabridge/telegram-token || install -m 600 /dev/null /etc/mekabridge/telegram-token
+#   test -e /etc/mekabridge/telegram.toml || install -m 600 machines/nixos/meka/telegram.toml.example /etc/mekabridge/telegram.toml
 # The guest seeds /var/lib/meka/config/config.toml on first boot. Run
 # `meka account add` and `meka profile add` inside the guest to configure a
 # provider; the config and credential database persist under /var/lib/meka.
@@ -45,9 +50,13 @@ KillSignal=SIGRTMIN+3
 # owner of the source file, so a 0600 token stays readable under
 # PrivateUsers=pick (a plain bind would map host root to "nobody").
 BindReadOnly=/etc/meka/token:/etc/meka/token:rootidmap
+BindReadOnly=/etc/mekabridge:/etc/mekabridge:rootidmap
 
 # Writable persistent data directory (survives rootfs re-extraction).
 Bind=/var/lib/meka:/var/lib/meka:rootidmap
+Bind=/var/lib/mekabridge:/var/lib/mekabridge:rootidmap
+# Keep agent writes outside MEKA_DATA_DIR, which meka's sandbox protects.
+Bind=/var/lib/meka-workspace:/srv/meka-workspace:rootidmap
 
 [Network]
 # Create a veth pair: host0 (guest) <-> ve-meka (host).

@@ -21,6 +21,7 @@ in
 {
   imports = [
     self.nixosModules.mekadsh
+    self.nixosModules.mekabridge
   ];
 
   system.stateVersion = "26.05";
@@ -101,6 +102,12 @@ in
     };
   };
 
+  kurisu.os.mekabridge = {
+    enable = true;
+    permission = "workspace";
+    workingDirectory = "/srv/meka-workspace";
+  };
+
   # Make the interactive account/profile commands use the same persistent
   # config and credential store as meka.service. The agent also needs these
   # commands on its service PATH; systemPackages alone does not add them there.
@@ -118,6 +125,8 @@ in
     if [ ! -e /var/lib/meka/config/config.toml ]; then
       ${pkgs.coreutils}/bin/install -m 0600 /etc/meka/config.toml /var/lib/meka/config/config.toml
     fi
+    ${pkgs.coreutils}/bin/install -d -m 0700 /var/lib/meka/config/instructions
+    ${pkgs.coreutils}/bin/install -m 0600 ${./telegram-chat.md} /var/lib/meka/config/instructions/70-telegram-chat.md
   '';
 
   # Self-contained rootfs tarball for `systemd-nspawn -D <extracted>`.
