@@ -50,6 +50,8 @@ in
 
   pathy-server = final.callPackage ./pkgs/pathy-server.nix { };
 
+  akira-companion = final.callPackage ./pkgs/akira-companion.nix { };
+
   meka = final.callPackage ./pkgs/meka.nix { };
 
   mekabridge = final.callPackage ./pkgs/mekabridge.nix { };

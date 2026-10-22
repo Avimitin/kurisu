@@ -79,7 +79,10 @@
     '';
   };
   programs.vim.package = pkgs.vim-full;
-  environment.systemPackages = [ pkgs.moonlight-qt ];
+  environment.systemPackages = [
+    pkgs.moonlight-qt
+    pkgs.akira-companion
+  ];
   nix.distributedBuilds = true;
 
   # --- Home Configuration ---
