@@ -25,10 +25,10 @@ index 7739dcc..bbbdb52 100644
                  let node_path = PathBuf::from(shellexpand::tilde(node_path).as_ref());
                  let npm_path = settings
 diff --git a/crates/extension_host/src/extension_host.rs b/crates/extension_host/src/extension_host.rs
-index 36dd294..23fd267 100644
+index 7d22d21..c9b6ee3 100644
 --- a/crates/extension_host/src/extension_host.rs
 +++ b/crates/extension_host/src/extension_host.rs
-@@ -453,15 +453,7 @@ impl ExtensionStore {
+@@ -459,15 +459,7 @@ impl ExtensionStore {
                  }
              })
              .shared();
@@ -46,10 +46,10 @@ index 36dd294..23fd267 100644
          // Perform all extension loading in a single task to ensure that we
          // never attempt to simultaneously load/unload extensions from multiple
 diff --git a/crates/project/src/lsp_store.rs b/crates/project/src/lsp_store.rs
-index 912d3db..5748f68 100644
+index 8060738..55a945c 100644
 --- a/crates/project/src/lsp_store.rs
 +++ b/crates/project/src/lsp_store.rs
-@@ -506,7 +506,7 @@ impl LocalLspStore {
+@@ -521,7 +521,7 @@ impl LocalLspStore {
              settings,
              toolchain.clone(),
              delegate.clone(),
@@ -59,10 +59,10 @@ index 912d3db..5748f68 100644
              cx,
          );
 diff --git a/crates/remote_server/src/server.rs b/crates/remote_server/src/server.rs
-index 6a4bf3d..ad25ac4 100644
+index 48004fd..7ae75f2 100644
 --- a/crates/remote_server/src/server.rs
 +++ b/crates/remote_server/src/server.rs
-@@ -1244,7 +1244,7 @@ fn initialize_settings(
+@@ -1354,7 +1354,7 @@ fn initialize_settings(
              let options = NodeBinaryOptions {
                  allow_path_lookup: !new_node_settings.ignore_system_version,
                  // TODO: Implement this setting
@@ -72,7 +72,7 @@ index 6a4bf3d..ad25ac4 100644
                      let node_path = PathBuf::from(shellexpand::tilde(node_path).as_ref());
                      let npm_path = new_node_settings
 diff --git a/crates/zed/src/main.rs b/crates/zed/src/main.rs
-index ec31980..867ee7f 100644
+index c3bde91..4687dfc 100644
 --- a/crates/zed/src/main.rs
 +++ b/crates/zed/src/main.rs
 @@ -535,7 +535,7 @@ fn main() {

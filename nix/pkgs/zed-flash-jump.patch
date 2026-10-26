@@ -1,5 +1,5 @@
 diff --git a/assets/keymaps/vim.json b/assets/keymaps/vim.json
-index f2d7b26..20861da 100644
+index b815233..2ed14ff 100644
 --- a/assets/keymaps/vim.json
 +++ b/assets/keymaps/vim.json
 @@ -648,6 +648,12 @@
@@ -16,10 +16,10 @@ index f2d7b26..20861da 100644
      "context": "vim_mode == operator",
      "bindings": {
 diff --git a/crates/editor/src/display_map.rs b/crates/editor/src/display_map.rs
-index f65dbf4..b1de1dd 100644
+index b8c77c4..161590e 100644
 --- a/crates/editor/src/display_map.rs
 +++ b/crates/editor/src/display_map.rs
-@@ -189,6 +189,7 @@ pub enum HighlightKey {
+@@ -190,6 +190,7 @@ pub enum HighlightKey {
      SelectedTextHighlight,
      SyntaxTreeView(usize),
      VimExchange,
@@ -28,10 +28,10 @@ index f65dbf4..b1de1dd 100644
 
  pub trait ToDisplayPoint {
 diff --git a/crates/editor/src/editor.rs b/crates/editor/src/editor.rs
-index 420da52..3384aff 100644
+index dc7cdad..42e6f22 100644
 --- a/crates/editor/src/editor.rs
 +++ b/crates/editor/src/editor.rs
-@@ -4104,7 +4104,10 @@ impl Editor {
+@@ -4115,7 +4115,10 @@ impl Editor {
 
          visible_start.to_point(display_snapshot)
              ..display_snapshot
@@ -1643,7 +1643,7 @@ index 7f205a0..d5082b8 100644
          }
      }
 diff --git a/crates/vim/src/state.rs b/crates/vim/src/state.rs
-index c765793..ca1a74d 100644
+index 45a0856..a22c7a9 100644
 --- a/crates/vim/src/state.rs
 +++ b/crates/vim/src/state.rs
 @@ -170,6 +170,11 @@ pub enum Operator {
@@ -1671,7 +1671,7 @@ index c765793..ca1a74d 100644
  #[derive(Clone, Copy, Debug, PartialEq, Eq)]
  pub enum HelixJumpBehaviour {
      Move,
-@@ -1115,6 +1126,7 @@ impl Operator {
+@@ -1116,6 +1127,7 @@ impl Operator {
              Operator::HelixNext { .. } => "helix_next",
              Operator::HelixPrevious { .. } => "helix_previous",
              Operator::HelixJump { .. } => "gw",
@@ -1679,7 +1679,7 @@ index c765793..ca1a74d 100644
              Operator::HelixSurroundAdd => "helix_ms",
              Operator::HelixSurroundReplace { .. } => "helix_mr",
              Operator::HelixSurroundDelete => "helix_md",
-@@ -1143,6 +1155,7 @@ impl Operator {
+@@ -1144,6 +1156,7 @@ impl Operator {
              Operator::HelixNext { .. } => "]".to_string(),
              Operator::HelixPrevious { .. } => "[".to_string(),
              Operator::HelixJump { .. } => "gw".to_string(),
@@ -1687,7 +1687,7 @@ index c765793..ca1a74d 100644
              Operator::HelixSurroundAdd => "ms".to_string(),
              Operator::HelixSurroundReplace {
                  replaced_char: None,
-@@ -1174,7 +1187,8 @@ impl Operator {
+@@ -1175,7 +1188,8 @@ impl Operator {
                  target: Some(_), ..
              }
              | Operator::DeleteSurrounds
@@ -1697,7 +1697,7 @@ index c765793..ca1a74d 100644
              Operator::Change
              | Operator::Delete
              | Operator::Yank
-@@ -1246,7 +1260,8 @@ impl Operator {
+@@ -1247,7 +1261,8 @@ impl Operator {
              | Operator::RecordRegister
              | Operator::ReplayRegister
              | Operator::HelixMatch
@@ -1905,10 +1905,10 @@ index c016bd6..1244100 100644
              Some(Operator::FindForward { before, multiline }) => {
                  let find = Motion::FindForward {
 diff --git a/docs/src/vim.md b/docs/src/vim.md
-index 435ea75..e69910f 100644
+index 845b86c..46c4474 100644
 --- a/docs/src/vim.md
 +++ b/docs/src/vim.md
-@@ -553,6 +553,32 @@ The Helix-style jump-to-word action shows jump labels at visible word starts. It
+@@ -552,6 +552,32 @@ The Helix-style jump-to-word action shows jump labels at visible word starts. It
  }
  ```
 

@@ -1,5 +1,5 @@
 diff --git a/crates/extension_host/Cargo.toml b/crates/extension_host/Cargo.toml
-index b5a94c0..3634e0d 100644
+index d4209c0..029889c 100644
 --- a/crates/extension_host/Cargo.toml
 +++ b/crates/extension_host/Cargo.toml
 @@ -43,6 +43,7 @@ semver.workspace = true
@@ -11,7 +11,7 @@ index b5a94c0..3634e0d 100644
  task.workspace = true
  telemetry.workspace = true
 diff --git a/crates/extension_host/src/extension_host.rs b/crates/extension_host/src/extension_host.rs
-index 23fd267..eaabd9b 100644
+index c9b6ee3..8750f5c 100644
 --- a/crates/extension_host/src/extension_host.rs
 +++ b/crates/extension_host/src/extension_host.rs
 @@ -46,6 +46,7 @@ use remote::{ConnectionState, RemoteClient, RemoteClientEvent};
@@ -30,7 +30,7 @@ index 23fd267..eaabd9b 100644
  pub(crate) const REMOTE_SYNC_RETRY_DELAY: Duration = Duration::from_secs(1);
  pub(crate) const MAX_REMOTE_SYNC_RETRY_DELAY: Duration = Duration::from_secs(60);
  pub(crate) const MAX_REMOTE_SYNC_ATTEMPTS: usize = 10;
-@@ -360,6 +362,29 @@ impl ExtensionStore {
+@@ -366,6 +368,29 @@ impl ExtensionStore {
          cx.global::<GlobalExtensionStore>().0.clone()
      }
 
@@ -42,7 +42,7 @@ index 23fd267..eaabd9b 100644
 +        checksum.len() == 64 && checksum.bytes().all(|byte| byte.is_ascii_hexdigit())
 +    }
 +
-+    async fn is_dev_extension(fs: &dyn Fs, extension_dir: &Path) -> Result<bool> {
++    async fn is_dev_extension_dir(fs: &dyn Fs, extension_dir: &Path) -> Result<bool> {
 +        if Self::has_valid_extension_checksum(fs, extension_dir).await {
 +            return Ok(false);
 +        }
@@ -60,7 +60,7 @@ index 23fd267..eaabd9b 100644
      pub fn new(
          extensions_dir: PathBuf,
          build_dir: Option<PathBuf>,
-@@ -423,16 +448,32 @@ impl ExtensionStore {
+@@ -429,16 +454,32 @@ impl ExtensionStore {
          // is invalid or is out-of-date according to the filesystem mtimes, then
          // it must be asynchronously rebuilt.
          let mut extension_index = ExtensionIndex::default();
@@ -77,7 +77,7 @@ index 23fd267..eaabd9b 100644
 +                let extension_dir = this.installed_dir.join(extension_id.as_ref());
 +                let is_dev = cx
 +                    .foreground_executor()
-+                    .block_on(Self::is_dev_extension(this.fs.as_ref(), &extension_dir))
++                    .block_on(Self::is_dev_extension_dir(this.fs.as_ref(), &extension_dir))
 +                    .unwrap_or(entry.dev);
 +                if entry.dev != is_dev {
 +                    entry.dev = is_dev;
@@ -93,7 +93,7 @@ index 23fd267..eaabd9b 100644
              {
                  extension_index_needs_rebuild = false;
              }
-@@ -875,6 +916,7 @@ impl ExtensionStore {
+@@ -902,6 +943,7 @@ impl ExtensionStore {
                      }
                  }
 
@@ -101,7 +101,7 @@ index 23fd267..eaabd9b 100644
                  let decompressed_bytes = GzipDecoder::new(BufReader::new(tar_gz_bytes.as_slice()));
                  let archive = Archive::new(decompressed_bytes);
 
-@@ -896,6 +938,12 @@ impl ExtensionStore {
+@@ -923,6 +965,12 @@ impl ExtensionStore {
                  match temp_dir {
                      Ok(temp_dir) => {
                          archive.unpack(temp_dir.path()).await?;
@@ -114,7 +114,7 @@ index 23fd267..eaabd9b 100644
                          remove_dir().await?;
                          fs.rename(
                              temp_dir.path(),
-@@ -910,7 +958,13 @@ impl ExtensionStore {
+@@ -937,7 +985,13 @@ impl ExtensionStore {
                      }
                      Err(_) => {
                          remove_dir().await?;
@@ -129,7 +129,7 @@ index 23fd267..eaabd9b 100644
                      }
                  }
              })
-@@ -1760,13 +1814,7 @@ impl ExtensionStore {
+@@ -1783,13 +1837,7 @@ impl ExtensionStore {
          let mut extension_manifest = ExtensionManifest::load(fs.clone(), &extension_dir).await?;
          let extension_id = extension_manifest.id.clone();
 
@@ -140,7 +140,7 @@ index 23fd267..eaabd9b 100644
 -            .await?
 -            .with_context(|| format!("missing extension directory {extension_dir:?}"))?
 -            .is_symlink;
-+        let is_dev = Self::is_dev_extension(fs.as_ref(), &extension_dir).await?;
++        let is_dev = Self::is_dev_extension_dir(fs.as_ref(), &extension_dir).await?;
 
          let language_dir = extension_dir.join("languages");
          if let Ok(mut language_paths) = fs.read_dir(&language_dir).await {

@@ -21,8 +21,8 @@ let
       unpatchedZedEditor;
 in
 # See zed-patches.md for the source and scope of the latest audit.
-assert lib.assertMsg (unpatchedZedEditor.version == "1.22.0") ''
-  The Zed patches were audited against zed-editor 1.22.0, but
+assert lib.assertMsg (unpatchedZedEditor.version == "1.25.3") ''
+  The Zed patches were audited against zed-editor 1.25.3, but
   nixpkgs now provides ${unpatchedZedEditor.version}. Rebase and re-audit
   nix/pkgs/zed-*.patch before updating this assertion.
 '';
