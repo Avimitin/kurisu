@@ -391,6 +391,11 @@ window-rule {
 }
 
 window-rule {
+    match app-id=r#"^org\.gnome\.Nautilus$"#
+    open-floating true
+}
+
+window-rule {
     match is-active=false
     opacity 0.95
 }
