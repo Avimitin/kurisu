@@ -3,6 +3,12 @@
     inactive_opacity = 0.7;
   };
   agent = {
+    default_model = {
+      effort = "high";
+      enable_thinking = true;
+      model = "deepseek-flash";
+      provider = "deepseek";
+    };
     default_profile = "write";
     dock = "right";
     enable_feedback = false;
@@ -15,6 +21,9 @@
         "raw.githubusercontent.com"
         "api.github.com"
       ];
+    };
+    threads_sidebar = {
+      auto_open = false;
     };
   };
   auto_install_extensions = {
@@ -116,7 +125,7 @@
     pathy = {
       settings = {
         auto_download = false;
-        server_path = "/nix/store/a615415qvcb3vwlgvk9a3y363r0k4n37-pathy-server-0.2.0/bin/pathy-server";
+        server_path = "/nix/store/3mb0skbb7xpirkkqz3f2z5zzh0w2l6cc-pathy-server-0.2.0/bin/pathy-server";
       };
     };
     tinymist = {
@@ -143,7 +152,7 @@
   project_panel = {
     dock = "left";
     file_icons = true;
-    folder_icons = true;
+    folder_indicator = "icon";
   };
   relative_line_numbers = "wrapped";
   semantic_tokens = "combined";
