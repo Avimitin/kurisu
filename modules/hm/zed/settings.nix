@@ -105,6 +105,12 @@
     Json = {
       enable_language_server = false;
     };
+    Markdown = {
+      prettier = {
+        printWidth = 120;
+        proseWrap = "always";
+      };
+    };
     Nix = {
       language_servers = [
         "nil"
