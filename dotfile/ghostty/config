@@ -1,5 +1,5 @@
 # ctrl+shift+, reload config
-font-family = SF Mono
+font-family = Nordwand Mono
 font-size = 14
 theme = Cobalt Next Minimal
 keybind = ctrl+b>n=new_window

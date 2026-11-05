@@ -40,8 +40,11 @@
     scala = false;
     typst = false;
   };
-  buffer_font_fallbacks = [ "Noto Sans Mono CJK SC" ];
-  buffer_font_family = "IoskeleyMono Nerd Font Mono";
+  buffer_font_fallbacks = [
+    "IoskeleyMono Nerd Font Mono"
+    "Noto Sans Mono CJK SC"
+  ];
+  buffer_font_family = "Nordwand Mono";
   buffer_font_size = 13;
   buffer_font_weight = 400;
   buffer_line_height = "standard";
@@ -177,7 +180,7 @@
       TERM = "alacritty";
     };
     font_fallbacks = [ "IoskeleyMono Nerd Font Mono" ];
-    font_family = "Ioskeley Mono Term";
+    font_family = "Nordwand Mono";
     pixel_scroll = true;
     scroll_multiplier = 0.7;
   };

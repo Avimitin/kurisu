@@ -41,6 +41,8 @@ in
 
   ioskeley-mono = final.lib.recurseIntoAttrs (final.callPackage ./pkgs/ioskeley-mono.nix { });
 
+  nordwand-mono = final.callPackage ./pkgs/nordwand-mono.nix { };
+
   zed-editor = final.callPackage ./pkgs/zed-editor.nix {
     inherit unpatchedZedEditor;
     inherit zedRemoteServer;

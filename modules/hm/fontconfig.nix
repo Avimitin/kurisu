@@ -37,6 +37,7 @@ in
         noto-fonts
         noto-fonts-cjk-sans
         noto-fonts-color-emoji
+        nordwand-mono
         ioskeley-mono.normal-NF
         ioskeley-mono.normal-term
         apple-sf-mono
@@ -60,6 +61,7 @@ in
         "Noto Sans"
       ];
       monospace = [
+        "Nordwand Mono"
         "SF Mono"
         "Noto Sans Mono CJK SC"
         "Noto Sans Mono"
