@@ -78,4 +78,6 @@ in
   inherit (import inputs.nixpkgs-master { system = final.stdenv.hostPlatform.system; })
     niri
     ;
+
+  iets = inputs.iets.packages.${final.stdenv.hostPlatform.system}.default;
 }

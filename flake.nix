@@ -50,6 +50,8 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    iets.url = "github:numtide/iets";
   };
 
   outputs =
