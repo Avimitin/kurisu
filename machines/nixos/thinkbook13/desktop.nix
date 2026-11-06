@@ -47,27 +47,6 @@
   };
 
   services.udisks2.enable = true;
-  services.nginx = {
-    enable = true;
-
-    # Pull in the RTMP module natively
-    additionalModules = [ pkgs.nginxModules.rtmp ];
-
-    # Append the RTMP configuration to the root context of the nginx.conf
-    appendConfig = ''
-      rtmp {
-        server {
-          listen 1935;
-          chunk_size 4096;
-
-          application live {
-            live on;
-            record off;
-          }
-        }
-      }
-    '';
-  };
 
   services.gnome.gnome-keyring.enable = true;
   programs.seahorse.enable = true;
