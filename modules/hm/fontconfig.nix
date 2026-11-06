@@ -38,8 +38,7 @@ in
         noto-fonts-cjk-sans
         noto-fonts-color-emoji
         nordwand-mono
-        ioskeley-mono.normal-NF
-        ioskeley-mono.normal-term
+        nerd-fonts.symbols-only
         apple-sf-mono
         apple-sf-pro
         apple-newyork

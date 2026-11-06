@@ -41,7 +41,7 @@
     typst = false;
   };
   buffer_font_fallbacks = [
-    "IoskeleyMono Nerd Font Mono"
+    "Symbols Nerd Font"
     "Noto Sans Mono CJK SC"
   ];
   buffer_font_family = "Nordwand Mono";
@@ -162,6 +162,7 @@
     dock = "left";
     file_icons = true;
     folder_indicator = "icon";
+    starts_open = false;
   };
   relative_line_numbers = "wrapped";
   semantic_tokens = "combined";
@@ -171,6 +172,7 @@
     icon_size = "default";
     show = true;
   };
+  suggest_extensions = false;
   tab_size = 2;
   tabs = {
     file_icons = true;
@@ -194,7 +196,7 @@
   theme = {
     dark = "Fleet Dark Purple";
     light = "Fleet Light";
-    mode = "light";
+    mode = "dark";
   };
   title_bar = {
     show = false;

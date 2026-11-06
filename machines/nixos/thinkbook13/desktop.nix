@@ -57,11 +57,15 @@
         IdentityAgent none
     '';
   };
+
   programs.vim.package = pkgs.vim-full;
+
   environment.systemPackages = [
     pkgs.moonlight-qt
     pkgs.akira-companion
+    pkgs.iets
   ];
+
   nix.distributedBuilds = true;
 
   # --- Home Configuration ---
