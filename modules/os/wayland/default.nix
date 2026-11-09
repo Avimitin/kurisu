@@ -63,9 +63,6 @@ in
         kurisu.hm.fcitx5 = {
           enable = cfg.enableFcitx5;
           themesDir = ../../../dotfile/fcitx5/themes;
-          extraRimeData = [
-            ../../../dotfile/fcitx5/rime
-          ];
         };
 
         kurisu.hm.fontconfig.enable = cfg.enableFontconfig;

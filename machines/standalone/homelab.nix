@@ -64,9 +64,6 @@ in
     kurisu.hm.fcitx5 = {
       enable = true;
       themesDir = ../../dotfile/fcitx5/themes;
-      extraRimeData = [
-        ../../dotfile/fcitx5/rime
-      ];
     };
 
     kurisu.hm.terminal = {

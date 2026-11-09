@@ -26,16 +26,10 @@ let
       null;
 in
 {
-  rime-dict =
-    let
-      src = final.fetchFromGitHub {
-        repo = "rime-extended-dict";
-        owner = "Avimitin";
-        rev = "e46a1a2c42f00cb08eb797cb426469656e1f661e";
-        hash = "sha256-UfgGvuV7yo3/wOH4/4TCRGqX5nxT5wVsFb4rrdXqYKU=";
-      };
-    in
-    final.callPackage src { };
+  inherit (inputs.phono.packages.${final.stdenv.hostPlatform.system})
+    phono-fcitx5-addon
+    phono-model
+    ;
 
   mkAppleFonts = final.callPackage ./pkgs/make-apple-fonts.nix { };
 

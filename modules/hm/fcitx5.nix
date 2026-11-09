@@ -12,7 +12,7 @@ in
   imports = [ ];
 
   options.kurisu.hm.fcitx5 = {
-    enable = mkEnableOption "Enable Fcitx5 with rime";
+    enable = mkEnableOption "Enable Fcitx5 with Phono Xiaohe and Mozc";
 
     themesDir = mkOption {
       type = lib.types.nullOr lib.types.path;
@@ -20,23 +20,6 @@ in
       description = "Path to theme directory";
     };
 
-    rimeData = mkOption {
-      type = lib.types.listOf lib.types.package;
-      default = with pkgs; [
-        rime-data # Do I really need default rime scheme?
-        rime-dict
-        rime-moegirl
-      ];
-      example = [ ];
-      description = "List of rime scheme/dictionary to set in user data directory. Use `lib.mkForce` to override the list.";
-    };
-
-    extraRimeData = mkOption {
-      type = lib.types.listOf lib.types.path;
-      default = [ ];
-      example = [ ];
-      description = "List of directory to append into user data directory.";
-    };
   };
 
   config = mkIf cfg.enable {
@@ -45,7 +28,10 @@ in
       enable = true;
       fcitx5 = {
         addons = with pkgs; [
-          fcitx5-rime # Rime
+          phono-fcitx5-addon # Chinese: Phono Xiaohe Shuangpin
+          qt6Packages.fcitx5-chinese-addons # Native Chinese punctuation used by Phono
+          fcitx5-pinyin-moegirl
+          fcitx5-pinyin-zhwiki
           fcitx5-gtk # GTK module
           fcitx5-mozc # Japanese
         ];
@@ -61,27 +47,22 @@ in
         };
       in
       {
-        fcitx5-conf = ln "conf";
+        fcitx5-conf = {
+          target = "fcitx5/conf";
+          source = pkgs.symlinkJoin {
+            name = "fcitx5-conf";
+            paths = [
+              ../../dotfile/fcitx5/conf
+              (pkgs.writeTextDir "phono.conf" ''
+                Enabled=True
+                ModelDirectory=${pkgs.phono-model}
+                ShuangpinScheme=Xiaohe
+              '')
+            ];
+          };
+        };
         fcitx5-config = ln "config";
         fcitx5-profile = ln "profile";
-      };
-
-    xdg.dataFile.kurisu-no-rime-data =
-      let
-        groupped = pkgs.symlinkJoin {
-          name = "kurisu-no-rime-data";
-          paths = cfg.rimeData;
-          postBuild = lib.optionalString (cfg.extraRimeData != [ ]) (
-            lib.concatStringsSep "\n" (
-              map (p: "${pkgs.lndir}/bin/lndir -silent ${p} $out/share/rime-data") cfg.extraRimeData
-            )
-          );
-        };
-      in
-      {
-        recursive = true;
-        source = "${groupped}/share/rime-data";
-        target = "fcitx5/rime";
       };
 
     xdg.dataFile.kurisu-fcitx5-themes = mkIf (cfg.themesDir != null) {

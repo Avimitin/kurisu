@@ -235,6 +235,27 @@
         "type": "github"
       }
     },
+    "phono": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1794209107,
+        "narHash": "sha256-OKygtUChEsyELbPuIhT3tVR0p+eHv2XmyQvfQ2XpZlw=",
+        "owner": "Avimitin",
+        "repo": "phono-fcitx5-addon",
+        "rev": "2058c496b5d10840769d76d1d06b7ba0e70307c4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Avimitin",
+        "ref": "extra-pinyin-dictionaries",
+        "repo": "phono-fcitx5-addon",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "disko": "disko",
@@ -245,6 +266,7 @@
         "nix-zed-extensions": "nix-zed-extensions",
         "nixpkgs": "nixpkgs_2",
         "nixpkgs-master": "nixpkgs-master",
+        "phono": "phono",
         "rust-overlay": "rust-overlay",
         "sops-nix": "sops-nix",
         "treefmt-nix": "treefmt-nix"

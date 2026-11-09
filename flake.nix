@@ -18,6 +18,11 @@
       inputs.rust-overlay.follows = "rust-overlay";
     };
 
+    phono = {
+      url = "github:Avimitin/phono-fcitx5-addon/extra-pinyin-dictionaries";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Configure flake as module
     flake-parts.url = "github:hercules-ci/flake-parts";
 
