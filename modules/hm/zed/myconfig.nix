@@ -103,6 +103,13 @@ in
                 "workspace::SendKeystrokes"
                 "f23 f24"
               ];
+              "alt-g g" = [
+                "task::Spawn"
+                {
+                  task_name = "Lazygit";
+                  reveal_target = "center";
+                }
+              ];
             };
           }
           {
@@ -122,8 +129,35 @@ in
             };
           }
           {
-            context = "VimControl && (vim_mode == normal || vim_mode == visual) && !menu";
-            bindings."; y" = "editor::CopyFileLocation";
+            context = "(vim_mode == normal || vim_mode == visual) && !menu";
+            bindings = {
+              s = "vim::PushFlash";
+              "; y" = "editor::CopyFileLocation";
+              "shift-l" = [
+                "vim::EndOfLine"
+                { display_lines = true; }
+              ];
+              "shift-h" = [
+                "vim::FirstNonWhitespace"
+                { display_lines = true; }
+              ];
+            };
+          }
+          {
+            # Keep the default `g s` (outline toggle) from firing in every
+            # Vim command mode. It is re-added in normal mode below so that
+            # visual mode keeps `g s` for surrounds.
+            context = "VimControl && !menu";
+            unbind = {
+              "g s" = "outline::Toggle";
+            };
+          }
+          {
+            context = "vim_mode == normal && !menu";
+            bindings = {
+              "g s" = "outline::Toggle";
+              "; w" = "workspace::Save";
+            };
           }
           {
             context = "Terminal";
@@ -141,60 +175,79 @@ in
               ];
           }
           {
-            context = "(VimControl && vim_mode == normal) || Dock";
-            bindings."alt-k" = "workspace::ActivatePaneUp";
-          }
-          {
-            context = "(VimControl && vim_mode == normal) || Dock";
-            bindings."alt-j" = "workspace::ActivatePaneDown";
-          }
-          {
-            context = "(VimControl && vim_mode == normal) || Workspace || Dock";
-            bindings."alt-l" = "workspace::ActivatePaneRight";
-          }
-          {
-            context = "(VimControl && vim_mode == normal) || Workspace || Dock";
-            bindings."alt-h" = "workspace::ActivatePaneLeft";
-          }
-          {
-            # Next/previous tab, like gt / gT.
-            context = "(VimControl && vim_mode == normal) || Workspace || Dock";
+            context = "vim_mode == normal || Dock";
             bindings = {
-              "alt-n" = "vim::GoToTab";
-              "alt-p" = "vim::GoToPreviousTab";
+              "alt-k" = "workspace::ActivatePaneUp";
+              "alt-j" = "workspace::ActivatePaneDown";
             };
           }
           {
-            context = "(vim_mode == normal || vim_mode == visual) && !menu";
-            bindings.s = "vim::PushFlash";
+            context = "vim_mode == normal || Workspace || Dock";
+            bindings = {
+              "alt-l" = "workspace::ActivatePaneRight";
+              "alt-h" = "workspace::ActivatePaneLeft";
+              # Next/previous tab, like gt / gT.
+              "alt-n" = "vim::GoToTab";
+              "alt-p" = "vim::GoToPreviousTab";
+            };
           }
           {
             context = "vim_mode == visual && !menu";
             bindings."g s" = "vim::PushAddSurrounds";
           }
           {
-            context = "VimControl && (vim_mode == normal || vim_mode == visual) && !menu";
-            bindings."shift-l" = [
-              "vim::EndOfLine"
-              { display_lines = true; }
-            ];
-          }
-          {
-            context = "VimControl && (vim_mode == normal || vim_mode == visual) && !menu";
-            bindings."shift-h" = [
-              "vim::FirstNonWhitespace"
-              { display_lines = true; }
-            ];
-          }
-          {
-            context = "Workspace";
-            bindings."alt-g g" = [
-              "task::Spawn"
-              {
-                task_name = "Lazygit";
-                reveal_target = "center";
-              }
-            ];
+            # Readline/bash-style editing in Vim insert mode. Zed's Linux
+            # defaults use several of these keys for Vim insert commands
+            # (Ctrl-K opens the digraph prompt, Ctrl-E copies the line below,
+            # ...), so shadow them only while inserting. Ctrl-P/Ctrl-N are
+            # left alone because Vim uses them for word completion, and
+            # Ctrl-V/Ctrl-R/Ctrl-O keep their Vim meanings.
+            context = "vim_mode == insert && !menu";
+            bindings = {
+              # Cursor movement.
+              "ctrl-a" = [
+                "editor::MoveToBeginningOfLine"
+                { stop_at_soft_wraps = false; }
+              ];
+              "ctrl-e" = [
+                "editor::MoveToEndOfLine"
+                { stop_at_soft_wraps = false; }
+              ];
+              "ctrl-b" = "editor::MoveLeft";
+              "ctrl-f" = "editor::MoveRight";
+              "alt-b" = "editor::MoveToPreviousWordStart";
+              "alt-f" = "editor::MoveToNextWordEnd";
+
+              # Character and word editing.
+              "ctrl-d" = "editor::Delete";
+              "ctrl-h" = "editor::Backspace";
+              "ctrl-w" = [
+                "editor::DeleteToPreviousWordStart"
+                {
+                  ignore_newlines = false;
+                  ignore_brackets = false;
+                }
+              ];
+              "alt-backspace" = [
+                "editor::DeleteToPreviousWordStart"
+                {
+                  ignore_newlines = false;
+                  ignore_brackets = false;
+                }
+              ];
+              "alt-d" = [
+                "editor::DeleteToNextWordEnd"
+                {
+                  ignore_newlines = false;
+                  ignore_brackets = false;
+                }
+              ];
+
+              # Line editing. Zed has no cut-to-beginning-of-line action,
+              # so Ctrl-U deletes without populating the kill ring.
+              "ctrl-k" = "editor::KillRingCut";
+              "ctrl-u" = "editor::DeleteToBeginningOfLine";
+            };
           }
         ];
       };
