@@ -1,8 +1,8 @@
 diff --git a/assets/settings/default.json b/assets/settings/default.json
-index 2ba29d6..16eda6b 100644
+index 8172ebd..e6ae221 100644
 --- a/assets/settings/default.json
 +++ b/assets/settings/default.json
-@@ -2211,6 +2211,9 @@
+@@ -2220,6 +2220,9 @@
      "max_scroll_history_lines": 10000,
      // The multiplier for scrolling speed in the terminal.
      "scroll_multiplier": 1.0,
@@ -13,7 +13,7 @@ index 2ba29d6..16eda6b 100644
      // APCA (Accessible Perceptual Contrast Algorithm) is more accurate than WCAG 2.x,
      // especially for dark mode. Values range from 0 to 106.
 diff --git a/crates/settings/src/vscode_import.rs b/crates/settings/src/vscode_import.rs
-index 1b5c2fd..cae4442 100644
+index 3cc0736..1d6a64e 100644
 --- a/crates/settings/src/vscode_import.rs
 +++ b/crates/settings/src/vscode_import.rs
 @@ -980,6 +980,7 @@ impl VsCodeSettings {
@@ -81,7 +81,7 @@ index b2e2107..d2650d7 100644
      let start = AlacPoint::new(term.topmost_line(), Column(0));
      let end = AlacPoint::new(term.bottommost_line(), term.last_column());
 diff --git a/crates/terminal/src/terminal.rs b/crates/terminal/src/terminal.rs
-index aee760e..04ecc5e 100644
+index 8f65502..e020ac7 100644
 --- a/crates/terminal/src/terminal.rs
 +++ b/crates/terminal/src/terminal.rs
 @@ -64,14 +64,14 @@ use crate::alacritty::current_child_signal_mask;
@@ -366,7 +366,7 @@ index aee760e..04ecc5e 100644
      ) {
 +        let terminal_bounds = self.mouse_bounds();
          if self.selection_phase == SelectionPhase::Selecting
-             || !modifiers.secondary()
+             || !modifiers.secondary(cx)
              || !self.last_content.terminal_bounds.bounds.contains(&position)
 @@ -2645,19 +2751,17 @@ impl Terminal {
          self.last_mouse_move_time = now;
@@ -426,7 +426,7 @@ index aee760e..04ecc5e 100644
 +        let point = grid_point(position, terminal_bounds, self.last_content.display_offset);
 
          if e.button == MouseButton::Left
-             && e.modifiers.secondary()
+             && e.modifiers.secondary(cx)
 @@ -2767,7 +2865,7 @@ impl Terminal {
                      self.mouse_down_position = Some(e.position);
                      let (point, side) = grid_point_and_side(
@@ -491,14 +491,20 @@ index aee760e..04ecc5e 100644
 +                };
 +                if let Some(link) = mouse_cell.and_then(|cell| cell.hyperlink()) {
                      cx.open_url(link.uri());
-                 } else if e.modifiers.secondary() {
+                 } else if e.modifiers.secondary(cx) {
                      self.events
-@@ -2895,17 +2990,46 @@ impl Terminal {
-         e: &ScrollWheelEvent,
-         scroll_multiplier: f32,
-         mode: MouseInputMode,
+@@ -2890,17 +2985,51 @@ impl Terminal {
+     }
+
+     ///Scroll the terminal
+-    pub fn scroll_wheel(&mut self, e: &ScrollEvent, scroll_multiplier: f32, mode: MouseInputMode) {
++    pub fn scroll_wheel(
++        &mut self,
++        e: &ScrollEvent,
++        scroll_multiplier: f32,
++        mode: MouseInputMode,
 +        pixel_scroll_enabled: bool,
-     ) {
++    ) {
          let mouse_mode = self.mouse_mode(e.shift, mode);
          let scroll_multiplier = if mouse_mode { 1. } else { scroll_multiplier };
 
@@ -542,7 +548,7 @@ index aee760e..04ecc5e 100644
                      self.last_content.display_offset,
                  );
 
-@@ -3686,6 +3810,30 @@ mod tests {
+@@ -3677,6 +3806,30 @@ mod tests {
      use rand::{Rng, distr, rngs::StdRng};
      use task::{Shell, ShellBuilder};
 
@@ -573,7 +579,7 @@ index aee760e..04ecc5e 100644
      #[test]
      fn test_init_command_startup_marker_commands_do_not_contain_marker() {
          let marker_id = 42;
-@@ -4139,6 +4287,86 @@ mod tests {
+@@ -4130,6 +4283,86 @@ mod tests {
          });
      }
 
@@ -586,7 +592,7 @@ index aee760e..04ecc5e 100644
 +        let terminal = init_terminal_test(cx, &output);
 +
 +        terminal.update(cx, |terminal, cx| {
-+            let scroll_event = ScrollWheelEvent {
++            let scroll_event = ScrollEvent {
 +                position: point(px(50.0), px(10.0)),
 +                delta: ScrollDelta::Pixels(point(px(0.0), px(5.0))),
 +                touch_phase: TouchPhase::Moved,
@@ -618,7 +624,7 @@ index aee760e..04ecc5e 100644
 +
 +        terminal.update(cx, |terminal, _| {
 +            assert!(terminal.last_content.mode.intersects(Modes::MOUSE_MODE));
-+            let scroll_event = ScrollWheelEvent {
++            let scroll_event = ScrollEvent {
 +                position: point(px(50.0), px(10.0)),
 +                delta: ScrollDelta::Pixels(point(px(0.0), px(5.0))),
 +                touch_phase: TouchPhase::Moved,
@@ -636,7 +642,7 @@ index aee760e..04ecc5e 100644
 +            assert!(terminal.take_pty_write_log().is_empty());
 +            terminal.events.clear();
 +
-+            let line_scroll_event = ScrollWheelEvent {
++            let line_scroll_event = ScrollEvent {
 +                delta: ScrollDelta::Pixels(point(px(0.0), px(20.0))),
 +                ..scroll_event
 +            };
@@ -660,7 +666,7 @@ index aee760e..04ecc5e 100644
      #[gpui::test]
      async fn test_local_selection_scrolls_without_terminal_reports(cx: &mut TestAppContext) {
          let mut output = Vec::new();
-@@ -4160,13 +4388,13 @@ mod tests {
+@@ -4151,13 +4384,13 @@ mod tests {
                  ..Default::default()
              };
 
@@ -676,7 +682,7 @@ index aee760e..04ecc5e 100644
              assert!(!terminal.take_pty_write_log().is_empty());
 
              terminal.write_output(b"\x1b[?1049h\x1b[?1007h", cx);
-@@ -4188,7 +4416,7 @@ mod tests {
+@@ -4179,7 +4412,7 @@ mod tests {
                  delta: ScrollDelta::Lines(point(0.0, 1.0)),
                  ..Default::default()
              };
@@ -685,7 +691,7 @@ index aee760e..04ecc5e 100644
              terminal.sync(window, cx);
              assert_eq!(display_offset(&terminal.term.lock()), 0);
              assert!(terminal.take_input_log().is_empty());
-@@ -6249,6 +6477,7 @@ mod tests {
+@@ -6241,6 +6474,7 @@ mod tests {
                          },
                          1.0,
                          MouseInputMode::ReportToTerminal,
@@ -714,7 +720,7 @@ index 6464d49..425144a 100644
              toolbar: Toolbar {
                  breadcrumbs: user_content.toolbar.unwrap().breadcrumbs.unwrap(),
 diff --git a/crates/terminal_view/src/terminal_element.rs b/crates/terminal_view/src/terminal_element.rs
-index 7dc4818..a786ec3 100644
+index 6db4b3b..d15b14b 100644
 --- a/crates/terminal_view/src/terminal_element.rs
 +++ b/crates/terminal_view/src/terminal_element.rs
 @@ -636,7 +636,7 @@ impl TerminalElement {
@@ -804,7 +810,7 @@ index 7dc4818..a786ec3 100644
              let snap_px = |value: Pixels| {
                  Pixels::from((f32::from(value) * scale_factor).floor() / scale_factor)
 diff --git a/crates/terminal_view/src/terminal_view.rs b/crates/terminal_view/src/terminal_view.rs
-index 0cd612f..0fccf59 100644
+index 0eb6243..d835bc7 100644
 --- a/crates/terminal_view/src/terminal_view.rs
 +++ b/crates/terminal_view/src/terminal_view.rs
 @@ -784,10 +784,12 @@ impl TerminalView {

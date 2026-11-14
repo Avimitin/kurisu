@@ -32,6 +32,10 @@ pkgsStatic.rustPlatform.buildRustPackage {
   ];
 
   dontUseCmakeConfigure = true;
+  # The portable musl build compiles native libraries from the pinned Cargo
+  # sources. nixpkgs' system-library hook would force pkg-config lookups for
+  # libraries that are intentionally absent from this isolated build.
+  dontCargoUseSystemLibs = true;
   doCheck = false;
 
   postPatch = ''

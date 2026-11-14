@@ -11,7 +11,7 @@ index d4209c0..029889c 100644
  task.workspace = true
  telemetry.workspace = true
 diff --git a/crates/extension_host/src/extension_host.rs b/crates/extension_host/src/extension_host.rs
-index c9b6ee3..8750f5c 100644
+index 13af11b..b7861b4 100644
 --- a/crates/extension_host/src/extension_host.rs
 +++ b/crates/extension_host/src/extension_host.rs
 @@ -46,6 +46,7 @@ use remote::{ConnectionState, RemoteClient, RemoteClientEvent};
@@ -129,7 +129,7 @@ index c9b6ee3..8750f5c 100644
                      }
                  }
              })
-@@ -1783,13 +1837,7 @@ impl ExtensionStore {
+@@ -1802,13 +1856,7 @@ impl ExtensionStore {
          let mut extension_manifest = ExtensionManifest::load(fs.clone(), &extension_dir).await?;
          let extension_id = extension_manifest.id.clone();
 

@@ -1,5 +1,5 @@
 diff --git a/assets/keymaps/vim.json b/assets/keymaps/vim.json
-index b815233..2ed14ff 100644
+index 9c765b2..dee2d06 100644
 --- a/assets/keymaps/vim.json
 +++ b/assets/keymaps/vim.json
 @@ -648,6 +648,12 @@
@@ -16,7 +16,7 @@ index b815233..2ed14ff 100644
      "context": "vim_mode == operator",
      "bindings": {
 diff --git a/crates/editor/src/display_map.rs b/crates/editor/src/display_map.rs
-index b8c77c4..161590e 100644
+index 7a8a9e2..785bd6b 100644
 --- a/crates/editor/src/display_map.rs
 +++ b/crates/editor/src/display_map.rs
 @@ -190,6 +190,7 @@ pub enum HighlightKey {
@@ -28,10 +28,10 @@ index b8c77c4..161590e 100644
 
  pub trait ToDisplayPoint {
 diff --git a/crates/editor/src/editor.rs b/crates/editor/src/editor.rs
-index dc7cdad..42e6f22 100644
+index e112f71..5bcd3df 100644
 --- a/crates/editor/src/editor.rs
 +++ b/crates/editor/src/editor.rs
-@@ -4115,7 +4115,10 @@ impl Editor {
+@@ -4130,7 +4130,10 @@ impl Editor {
 
          visible_start.to_point(display_snapshot)
              ..display_snapshot
@@ -1460,7 +1460,7 @@ index 0000000..c6efadf
 +    }
 +}
 diff --git a/crates/vim/src/helix.rs b/crates/vim/src/helix.rs
-index 9b2ecf8..d82eaea 100644
+index eacc807..49234a1 100644
 --- a/crates/vim/src/helix.rs
 +++ b/crates/vim/src/helix.rs
 @@ -11,7 +11,7 @@ use editor::{
@@ -1708,7 +1708,7 @@ index 45a0856..a22c7a9 100644
      }
  }
 diff --git a/crates/vim/src/vim.rs b/crates/vim/src/vim.rs
-index c016bd6..1244100 100644
+index c4d56a8..2ae121e 100644
 --- a/crates/vim/src/vim.rs
 +++ b/crates/vim/src/vim.rs
 @@ -6,6 +6,7 @@ mod test;
@@ -1755,7 +1755,7 @@ index c016bd6..1244100 100644
          })
      }
 
-@@ -994,6 +1005,7 @@ impl Vim {
+@@ -997,6 +1008,7 @@ impl Vim {
              normal::register(editor, cx);
              insert::register(editor, cx);
              helix::register(editor, cx);
@@ -1763,7 +1763,7 @@ index c016bd6..1244100 100644
              motion::register(editor, cx);
              command::register(editor, cx);
              replace::register(editor, cx);
-@@ -1013,6 +1025,12 @@ impl Vim {
+@@ -1016,6 +1028,12 @@ impl Vim {
      }
 
      fn deactivate(editor: &mut Editor, cx: &mut Context<Editor>) {
@@ -1776,7 +1776,7 @@ index c016bd6..1244100 100644
          editor.set_cursor_shape(
              EditorSettings::get_global(cx)
                  .cursor_shape
-@@ -1199,7 +1217,7 @@ impl Vim {
+@@ -1202,7 +1220,7 @@ impl Vim {
                  | Operator::DeleteSurrounds
                  | Operator::Exchange
          ) {
@@ -1785,7 +1785,7 @@ index c016bd6..1244100 100644
          };
          self.operator_stack.push(operator);
          self.sync_vim_settings(window, cx);
-@@ -1228,7 +1246,7 @@ impl Vim {
+@@ -1231,7 +1249,7 @@ impl Vim {
          let prior_tx = self.current_tx;
          self.last_mode = last_mode;
          self.mode = mode;
@@ -1794,7 +1794,7 @@ index c016bd6..1244100 100644
          self.selected_register.take();
          self.cancel_running_command(window, cx);
          if mode == Mode::Normal || mode != last_mode {
-@@ -1402,7 +1420,9 @@ impl Vim {
+@@ -1405,7 +1423,9 @@ impl Vim {
                      match operator {
                          // Vim jump labels are transient navigation, so keep the
                          // user's normal cursor shape while waiting for the label.
@@ -1805,7 +1805,7 @@ index c016bd6..1244100 100644
 
                          // Navigation operators -> Block cursor
                          Operator::FindForward { .. }
-@@ -1494,7 +1514,7 @@ impl Vim {
+@@ -1497,7 +1517,7 @@ impl Vim {
 
          let mut operator_id = "none";
 
@@ -1814,7 +1814,7 @@ index c016bd6..1244100 100644
          if active_operator.is_none() && cx.global::<VimGlobals>().pre_count.is_some()
              || active_operator.is_some() && cx.global::<VimGlobals>().post_count.is_some()
          {
-@@ -1507,6 +1527,17 @@ impl Vim {
+@@ -1510,6 +1530,17 @@ impl Vim {
                      mode = "literal".to_string();
                  } else {
                      mode = "waiting".to_string();
@@ -1832,7 +1832,7 @@ index c016bd6..1244100 100644
                  }
              } else if matches!(
                  active_operator,
-@@ -1785,7 +1816,7 @@ impl Vim {
+@@ -1788,7 +1819,7 @@ impl Vim {
              self.selected_register
                  .replace(register.chars().next().unwrap());
          }
@@ -1841,7 +1841,7 @@ index c016bd6..1244100 100644
          self.sync_vim_settings(window, cx);
      }
 
-@@ -1800,14 +1831,38 @@ impl Vim {
+@@ -1803,14 +1834,38 @@ impl Vim {
          popped_operator
      }
 
@@ -1883,7 +1883,7 @@ index c016bd6..1244100 100644
          self.sync_vim_settings(window, cx);
      }
 
-@@ -2054,6 +2109,20 @@ impl Vim {
+@@ -2057,6 +2112,20 @@ impl Vim {
              return;
          }
 
