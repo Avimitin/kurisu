@@ -52,15 +52,16 @@
   programs.seahorse.enable = true;
   programs.ssh = {
     enableAskPassword = true;
-    extraConfig = ''
-      Host github.com ssh.github.com
-        IdentityAgent none
-    '';
+    askPassword = "${pkgs.egui-askpass}/bin/egui-askpass";
   };
+
+  systemd.user.services.gcr-ssh-agent.environment.SSH_ASKPASS =
+    "${pkgs.egui-askpass}/bin/egui-askpass";
 
   programs.vim.package = pkgs.vim-full;
 
   environment.systemPackages = [
+    pkgs.egui-askpass
     pkgs.moonlight-qt
     pkgs.akira-companion
     pkgs.iets

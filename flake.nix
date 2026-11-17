@@ -108,6 +108,10 @@
               buildInputs = [ ];
             };
 
+            devShells.egui-askpass = import ./nix/pkgs/egui-askpass/shell.nix {
+              inherit pkgs;
+            };
+
             apps.home-manager = {
               type = "app";
               program = inputs'.home-manager.packages.home-manager;

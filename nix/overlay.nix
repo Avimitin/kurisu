@@ -46,6 +46,8 @@ in
 
   pathy-server = final.callPackage ./pkgs/pathy-server.nix { };
 
+  egui-askpass = final.callPackage ./pkgs/egui-askpass { };
+
   akira-companion = final.callPackage ./pkgs/akira-companion.nix { };
 
   meka = final.callPackage ./pkgs/meka.nix { };
