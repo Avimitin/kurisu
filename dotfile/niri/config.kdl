@@ -23,17 +23,25 @@ input {
     // Next sections include libinput settings.
     // Omitting settings disables them, or leaves them at their default values.
     touchpad {
-        // off
+        // Mac-style clicking: one finger for left, two for right.
         tap
-        // dwt
-        // dwtp
-        // drag false
-        // drag-lock
+        tap-button-map "left-right-middle"
+        click-method "clickfinger"
+
+        // Tap, then hold and move to drag; lift to release without drag lock.
+        drag true
+        dwt
+
         natural-scroll
-        // accel-speed 0.2
-        // accel-profile "flat"
-        // scroll-method "two-finger"
-        // disabled-on-external-mouse
+        scroll-method "two-finger"
+
+        // Starting points for pointer and scroll speed, adjustable independently.
+        accel-profile "adaptive"
+        accel-speed 0.2
+        scroll-factor 0.7
+
+        // Native gestures: three fingers move the view / switch workspaces;
+        // four fingers vertically open / close the overview.
     }
 
     mouse {
