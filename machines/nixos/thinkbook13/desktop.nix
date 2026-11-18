@@ -2,6 +2,7 @@
   self,
   inputs,
   pkgs,
+  lib,
   config,
   ...
 }:
@@ -55,8 +56,17 @@
     askPassword = "${pkgs.egui-askpass}/bin/egui-askpass";
   };
 
-  systemd.user.services.gcr-ssh-agent.environment.SSH_ASKPASS =
-    "${pkgs.egui-askpass}/bin/egui-askpass";
+  # The askpass helper needs WAYLAND_DISPLAY from the running compositor, so
+  # only start the agent once the niri session has imported it instead of at
+  # login (default.target).  The socket still comes up with sockets.target so
+  # SSH_AUTH_SOCK is set in the user manager environment before niri starts.
+  systemd.user.services.gcr-ssh-agent = {
+    environment.SSH_ASKPASS = "${pkgs.egui-askpass}/bin/egui-askpass";
+
+    wantedBy = lib.mkForce [ "graphical-session.target" ];
+    after = [ "niri.service" ];
+    partOf = [ "graphical-session.target" ];
+  };
 
   programs.vim.package = pkgs.vim-full;
 
